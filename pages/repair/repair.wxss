@@ -1,0 +1,63 @@
+/* pages/repair/repair.wxss */
+page{
+  background-color: #eee;
+}
+
+.banner image{
+  width: 100%;
+  height: 400rpx;
+}
+
+.middle{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80rpx;
+}
+
+.middle .scan_query{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0067A5;
+  border: 8rpx solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.middle .scan_query image {
+  width: 75rpx;
+  height: 75rpx;
+  margin-top: 30rpx;
+  margin-bottom: 15rpx;
+}
+
+.bottom{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80rpx;
+}
+
+.bottom .scan_repair{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #0067A5;
+  border-radius: 50%;
+  border: 8rpx solid rgba(255, 255, 255, 0.5);
+  width: 200rpx;
+  height: 200rpx;
+}
+
+.bottom .scan_repair image{
+  width: 100rpx;
+  height: 100rpx;
+  margin-top: 20rpx;
+}
+
+.scan_text{
+  color: white;
+  font-size: 25rpx;
+}

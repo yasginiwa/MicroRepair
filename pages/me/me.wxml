@@ -1,0 +1,39 @@
+<!--pages/me/me.wxml-->
+
+<view class='userInfo'>
+
+  <!-- 图标 -->
+  <view class='user_icon'>
+    <image src='{{iconUrl}}'></image>
+  </view>
+
+  <!-- 描述 -->
+  <view class='user_desc'>
+    <text>{{nickname}}</text>
+
+    <view wx:if='{{gender == 0}}'>
+      <image src='../../assets/images/me/girl.png'></image>
+      <text>美女工程师</text>
+    </view>
+
+    <view wx:elif='{{gender == 1}}'>
+      <image src='../../assets/images/me/boy.png'></image>
+      <text>帅哥工程师</text>
+    </view>
+
+    <view wx:else='{{gender > 1}}'>
+    </view>
+  </view>
+
+  <button class='user_login' wx:if='{{!hasLogin}}' bindgetuserinfo='onGotUserInfo' open-type='getUserInfo'>点击登录</button>
+</view>
+
+<view class='block' >
+  <view class='item' wx:for='{{settingItems}}' data-url='{{item.gotoUrl}}' bindtap='gotoUrl'>
+    <image class='icon' src='{{item.icon}}'></image>
+    <text class='desc'>{{item.desc}}</text>
+    <image class='arrow' src='{{item.indicator}}'></image>
+  </view>
+</view>
+
+<button class='logoff' wx:if='{{hasLogin == true}}' type='warn' bindtap='logoff'>注销</button>

@@ -1,0 +1,106 @@
+/* pages/me/me.wxss */
+page{
+  background-color: #eee;
+}
+
+.userInfo{
+  background-color: #0067A5;
+  width: 100%;
+  height: 150rpx;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+
+.userInfo .user_icon{
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 5rpx solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20rpx;
+}
+
+.userInfo .user_icon image{
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.userInfo .user_desc{
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  margin-left: 20rpx;
+}
+
+.userInfo .user_desc text{
+  color: white;
+  font-size: 32rpx;
+  width: 320rpx;
+}
+
+.userInfo .user_desc view{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-top: 10rpx;
+}
+
+.userInfo .user_desc view image{
+  width: 24rpx;
+  height: 24rpx;
+}
+
+.userInfo .user_desc view text{
+  color: white;
+  font-size: 26rpx;
+  margin-left: 10rpx;
+}
+
+.userInfo .user_login{
+  background-color: transparent;
+  color: white;
+  font-size: 32rpx;
+}
+
+.block{
+  background-color: white;
+  margin-top: 20rpx;
+}
+
+.block .item{
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+  height: 100rpx;
+  border-bottom: 1rpx #ddd solid;
+}
+
+.block .item .icon{
+  width: 50rpx;
+  height: 50rpx;
+  margin-left: 20rpx;
+}
+
+.block .item .desc{
+margin-left: 20rpx;
+}
+
+.block .item .arrow{
+  position: absolute;
+  right: 10rpx;
+  width: 60rpx;
+  height: 60rpx;
+}
+
+.logoff{
+  position: absolute;
+  width: 98%;
+  bottom: 1%;
+  left: 1%;
+}

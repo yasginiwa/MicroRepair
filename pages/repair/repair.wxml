@@ -1,0 +1,22 @@
+<!--pages/repair/repair.wxml-->
+<!-- 首页banner -->
+
+<view class='banner'>
+  <image src='../../assets/images/repair/banner.png'></image>
+</view>
+
+<!-- 扫码查询维修 -->
+<view class='middle'>
+  <view class='scan_query' bindtap='query'>
+    <image src='../../assets/images/repair/scan.png'></image>
+    <text class='scan_text'>扫码查询</text>
+  </view>
+</view>
+
+<!--  扫码增加维修记录 -->
+<view class='bottom'>
+  <view class='scan_repair' bindtap='repair'>
+    <image src='../../assets/images/repair/scanRepair.png'></image>
+    <text class='scan_text'>扫码维修</text>
+  </view>
+</view>

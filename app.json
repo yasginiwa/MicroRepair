@@ -1,0 +1,38 @@
+{
+  "pages": [
+    "pages/repair/repair",
+    "pages/record/record",
+    "pages/me/me",
+    "pages/repairDetail/repairDetail"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0067A5",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#eee"
+  },
+  "tabBar": {
+    "color": "#bfbfbf",
+    "selectedColor": "#0067A5",
+    "list": [
+      {
+        "pagePath": "pages/repair/repair",
+        "text": "维修",
+        "iconPath": "assets/images/tabbar/repair.png",
+        "selectedIconPath": "assets/images/tabbar/repairSel.png"
+      },
+      {
+        "pagePath": "pages/record/record",
+        "text": "记录",
+        "iconPath": "assets/images/tabbar/record.png",
+        "selectedIconPath": "assets/images/tabbar/recordSel.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "assets/images/tabbar/me.png",
+        "selectedIconPath": "assets/images/tabbar/meSel.png"
+      }
+    ]
+  }
+}

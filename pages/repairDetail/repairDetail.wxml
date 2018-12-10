@@ -1,0 +1,62 @@
+<!--pages/repairDetail/repairDetail.wxml-->
+<view class='block'>
+  <view class='item'>
+    <text>资产标识</text>
+    <text class='recordID'>{{record.id}}</text>
+  </view>
+
+  <view class='item'>
+    <text>设备分类</text>
+    <picker bindchange='selectCategory' value='{{cateIdx}}' range='{{category}}'>
+      <view placeholder='请选择'>{{category[cateIdx]}}</view>
+    </picker>
+    <image src='../../assets/images/repairDetail/arrow.png'></image>
+  </view>
+
+  <view class='item'>
+    <text>设备名称</text>
+    <input bindblur='OnNameConfirm' bindconfirm='OnNameConfirm' confirm-type='next' placeholder='请输入'></input>
+    <image src='../../assets/images/repairDetail/arrow.png'></image>
+  </view>
+
+  <view class='item'>
+    <text>故障原因</text>
+    <input bindblur='OnReasonConfirm' bindconfirm='OnReasonConfirm' confirm-type='next' placeholder='请输入'></input>
+    <image src='../../assets/images/repairDetail/arrow.png'></image>
+  </view>
+
+  <view class='item'>
+    <text>维修结果</text>
+    <input bindblur='OnResultConfirm' bindconfirm='OnResultConfirm' confirm-type='done' placeholder='请输入'></input>
+    <image src='../../assets/images/repairDetail/arrow.png'></image>
+  </view>
+
+  <view class='item_audio'>
+    <text>语音描述</text>
+    <text wx:if='{{record.audioDesc.length == 0}}' class='hint'>按住说话</text>
+    <image class='audioImg' bindtap='playAudioDesc' mode='aspectFit' wx:else='{{record.audioDesc.length > 0}}' src='../../assets/images/repairDetail/audioRecord.png'></image>
+    <image src='../../assets/images/repairDetail/audio.png' bindtouchstart='onRecordVoice' bindtouchend='stopRecordVoice'></image>
+  </view>
+
+  <view class='item'>
+    <text>维修时间</text>
+    <picker bindchange='selectDate' mode='date' start='2018-01-01' end='2030-01-01'>
+      <view>{{record.date}}</view>
+    </picker>
+    <image src='../../assets/images/repairDetail/arrow.png'></image>
+  </view>
+
+  <view wx:if='{{isSpeaking}}' class='speak-style'>
+    <image class='sound-style' src='../../assets/images/repairDetail/sound_1.png'></image>
+    <image wx:if='{{frame == 2}}' class='sound-style' src='../../assets/images/repairDetail/sound_2.png'></image>
+    <image wx:if='{{frame == 3}}' class='sound-style' src='../../assets/images/repairDetail/sound_3.png'></image>
+    <image wx:if='{{frame == 4}}' class='sound-style' src='../../assets/images/repairDetail/sound_4.png'></image>
+    <image wx:if='{{frame == 5}}' class='sound-style' src='../../assets/images/repairDetail/sound_5.png'></image>
+  </view>
+</view>
+
+
+
+<view class='commit'>
+  <button type='primary' bindtap='onCommit' disabled='{{commitDisable}}'>提 交</button>
+</view>
