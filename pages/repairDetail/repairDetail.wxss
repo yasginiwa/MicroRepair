@@ -24,7 +24,8 @@ page {
 }
 
 .block .item .recordID {
-  margin-right: 20rpx;
+  position: absolute;
+  right: 20rpx;
   text-align: right;
 }
 

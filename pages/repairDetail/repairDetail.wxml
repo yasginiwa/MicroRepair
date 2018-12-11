@@ -40,7 +40,7 @@
 
   <view class='item'>
     <text>维修时间</text>
-    <picker bindchange='selectDate' mode='date' start='2018-01-01' end='2030-01-01'>
+    <picker bindchange='selectDate' mode='date' start='1980-01-01' end='2030-01-01'>
       <view>{{record.date}}</view>
     </picker>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
