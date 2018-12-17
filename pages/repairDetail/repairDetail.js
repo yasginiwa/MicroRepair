@@ -11,7 +11,7 @@ Page({
     category: ['请选择', '打印设备', '收银设备', '通信设备', 'PC主机', 'PC外设', '监控设备', '入侵设备', '音频设备'],
     cateIdx: 0,
     record: {
-      r_id: '',
+      deviceID: '',
       cate: '',
       name: '',
       reason: '',
@@ -202,7 +202,39 @@ Page({
       console.log(e);
     }
 
-    console.log(this.data.record);
+    wx.showLoading({
+      title: '请稍后...',
+      mask: true
+    })
+
+    wx.request({
+      url: 'http://192.168.0.172:3001/record.do',
+      method: 'POST',
+      data: {
+        deviceID : this.data.record.deviceID,
+        cate : this.data.record.cate,
+        name: this.data.record.name,
+        reason: this.data.record.reason,
+        result: this.data.record.result,
+        audioDesc: this.data.record.audioDesc,
+        date: this.data.record.date,
+        engineer: this.data.record.engineer
+      },
+      success: function(res) {
+        console.log('--success--' + res.data);
+        wx.hideLoading();
+        wx.switchTab({
+          url: '../repair/repair',
+        })
+      },
+      fail: function(res){
+        console.log('fail' + res.data);
+      },
+      complete: function(res) {
+        console.log('comp' + res.data);
+      }
+
+    })
   },
 
   /**
@@ -210,7 +242,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      'record.r_id': options.scanCode
+      'record.deviceID': options.scanCode
     })
 
     var now = new Date();

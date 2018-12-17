@@ -2,7 +2,7 @@
 <view class='block'>
   <view class='item'>
     <text>资产标识</text>
-    <text class='recordID'>{{record.r_id}}</text>
+    <text class='recordID'>{{record.deviceID}}</text>
   </view>
 
   <view class='item'>
