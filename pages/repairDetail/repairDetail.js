@@ -11,7 +11,7 @@ Page({
     category: ['请选择', '打印设备', '收银设备', '通信设备', 'PC主机', 'PC外设', '监控设备', '入侵设备', '音频设备'],
     cateIdx: 0,
     record: {
-      id: '',
+      r_id: '',
       cate: '',
       name: '',
       reason: '',
@@ -210,7 +210,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      'record.id': options.scanCode
+      'record.r_id': options.scanCode
     })
 
     var now = new Date();

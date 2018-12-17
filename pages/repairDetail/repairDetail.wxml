@@ -2,7 +2,7 @@
 <view class='block'>
   <view class='item'>
     <text>资产标识</text>
-    <text class='recordID'>{{record.id}}</text>
+    <text class='recordID'>{{record.r_id}}</text>
   </view>
 
   <view class='item'>
@@ -14,19 +14,19 @@
   </view>
 
   <view class='item'>
-    <text>设备名称</text><text class='star'>*</text>
+    <text>设备名称</text>
     <input bindblur='OnNameConfirm' bindconfirm='OnNameConfirm' confirm-type='next' placeholder='请输入'></input>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
 
   <view class='item'>
-    <text>故障原因</text><text class='star'>*</text>
+    <text>故障原因</text>
     <input bindblur='OnReasonConfirm' bindconfirm='OnReasonConfirm' confirm-type='next' placeholder='请输入'></input>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
 
   <view class='item'>
-    <text>维修结果</text><text class='star'>*</text>
+    <text>维修结果</text>
     <input bindblur='OnResultConfirm' bindconfirm='OnResultConfirm' confirm-type='done' placeholder='请输入'></input>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
@@ -40,7 +40,7 @@
 
   <view class='item'>
     <text>维修时间</text>
-    <picker bindchange='selectDate' mode='date' start='1980-01-01' end='2030-01-01'>
+    <picker bindchange='selectDate' mode='date' start='2000-01-01' end='2030-01-01'>
       <view>{{record.date}}</view>
     </picker>
     <image src='../../assets/images/repairDetail/arrow.png'></image>

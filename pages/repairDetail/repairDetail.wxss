@@ -24,12 +24,6 @@ page {
   margin-left: 20rpx;
 }
 
-.block .item .star {
-  color: red;
-  position: absolute;
-  left: 120rpx;
-}
-
 .block .item .recordID {
   position: absolute;
   right: 40rpx;
