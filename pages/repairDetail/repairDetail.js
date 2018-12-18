@@ -11,7 +11,7 @@ Page({
     category: ['请选择', '打印设备', '收银设备', '通信设备', 'PC主机', 'PC外设', '监控设备', '入侵设备', '音频设备'],
     cateIdx: 0,
     record: {
-      deviceID: '',
+      deviceId: '',
       cate: '',
       name: '',
       reason: '',
@@ -203,15 +203,32 @@ Page({
     }
 
     wx.showLoading({
-      title: '请稍后...',
+      title: '请稍候...',
       mask: true
     })
 
+    wx.uploadFile({
+      url: 'http://192.168.5.214:3002/upload',
+      filePath: 'this.data.record.audioDesc',
+      name: 'file',
+      header: {},
+      formData: {
+        user: 'audio'
+      },
+      success: function(res) {
+        console.log(res.data);
+      },
+      fail: function(res) {
+        console.log(res.data);
+      },
+      complete: function(res) {},
+    })
+
     wx.request({
-      url: 'http://192.168.0.172:3001/record.do',
+      url: 'http://192.168.5.214:3002/record.do',
       method: 'POST',
       data: {
-        deviceID : this.data.record.deviceID,
+        deviceId : this.data.record.deviceId,
         cate : this.data.record.cate,
         name: this.data.record.name,
         reason: this.data.record.reason,
@@ -242,7 +259,7 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      'record.deviceID': options.scanCode
+      'record.deviceId': options.scanCode
     })
 
     var now = new Date();
