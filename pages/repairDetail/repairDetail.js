@@ -20,7 +20,7 @@ Page({
       date: '',
       engineer: ''
     },
-    commitDisable: true,  //  提交按钮disable
+    commitDisable: true, //  提交按钮disable
     frame: 1, //  序列帧动画初始帧
     isSpeaking: false //  正在讲话
   },
@@ -105,15 +105,15 @@ Page({
 
     //  录音错误回调
     recorderManager.onError((res) => {
-        wx.showToast({
-          title: '提示',
-          content: '手指按住姿势不对!',
-          icon: 'none',
-          image: '',
-          duration: 2000,
-          mask: true
-        })
+      wx.showToast({
+        title: '提示',
+        content: '手指按住姿势不对!',
+        icon: 'none',
+        image: '',
+        duration: 2000,
+        mask: true
       })
+    })
 
     this.setData({
       isSpeaking: true
@@ -131,9 +131,9 @@ Page({
     //  录音停止回调
     recorderManager.onStop((res) => {
       console.log('recorder stop', res)
-        that.setData({
-          'record.audioDesc': res.tempFilePath
-        })
+      that.setData({
+        'record.audioDesc': res.tempFilePath
+      })
       const {
         tempFilePath
       } = res
@@ -165,7 +165,7 @@ Page({
   speaking() {
     var that = this;
     var i = 1;
-    this.timer = setInterval(function () {
+    this.timer = setInterval(function() {
       i++;
       i = i % 5;
       that.setData({
@@ -207,57 +207,44 @@ Page({
       mask: true
     })
 
+    var that = this;
     wx.uploadFile({
-      url: 'http://192.168.5.214:3002/upload',
-      filePath: 'this.data.record.audioDesc',
-      name: 'file',
-      header: {},
-      formData: {
-        user: 'audio'
-      },
+      url: 'http://127.0.0.1:3002/upload',
+      filePath: that.data.record.audioDesc,
+      name: 'audio',
       success: function(res) {
-        console.log(res.data);
-      },
-      fail: function(res) {
-        console.log(res.data);
-      },
-      complete: function(res) {},
-    })
-
-    wx.request({
-      url: 'http://192.168.5.214:3002/record.do',
-      method: 'POST',
-      data: {
-        deviceId : this.data.record.deviceId,
-        cate : this.data.record.cate,
-        name: this.data.record.name,
-        reason: this.data.record.reason,
-        result: this.data.record.result,
-        audioDesc: this.data.record.audioDesc,
-        date: this.data.record.date,
-        engineer: this.data.record.engineer
-      },
-      success: function(res) {
-        console.log('--success--' + res.data);
         wx.hideLoading();
-        wx.switchTab({
-          url: '../repair/repair',
+        var audioUrl = JSON.parse(res.data);
+        wx.request({
+          url: 'http://127.0.0.1:3002/record.do',
+          method: 'POST',
+          data: {
+            deviceId: that.data.record.deviceId,
+            cate: that.data.record.cate,
+            name: that.data.record.name,
+            reason: that.data.record.reason,
+            result: that.data.record.result,
+            audioDesc: audioUrl.success,
+            date: that.data.record.date,
+            engineer: that.data.record.engineer
+          },
+          success: function(res) {
+            wx.switchTab({
+              url: '../repair/repair',
+            })
+          }
         })
-      },
-      fail: function(res){
-        console.log('fail' + res.data);
-      },
-      complete: function(res) {
-        console.log('comp' + res.data);
-      }
 
+      }
     })
+
+
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.setData({
       'record.deviceId': options.scanCode
     })
@@ -271,49 +258,49 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })
