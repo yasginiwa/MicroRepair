@@ -214,7 +214,7 @@ Page({
       name: 'audio',
       success: function(res) {
         wx.hideLoading();
-        var audioUrl = JSON.parse(res.data);
+        var audio = JSON.parse(res.data);
         wx.request({
           url: 'http://127.0.0.1:3002/record.do',
           method: 'POST',
@@ -224,7 +224,7 @@ Page({
             name: that.data.record.name,
             reason: that.data.record.reason,
             result: that.data.record.result,
-            audioDesc: audioUrl.success,
+            audioDesc: audio.audioUrl,
             date: that.data.record.date,
             engineer: that.data.record.engineer
           },
