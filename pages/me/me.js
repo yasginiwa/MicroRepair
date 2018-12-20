@@ -26,11 +26,11 @@ Page({
       key: 'userInfo',
       // 获取本地存储成功
       success: function(res) {
-        var userObj = JSON.parse(res.data);
+        var userInfo = res.data
         that.setData({
-          iconUrl: userObj.avatarUrl,
-          nickname: userObj.nickName,
-          gender: userObj.gender,
+          iconUrl: userInfo.avatarUrl,
+          nickname: userInfo.nickName,
+          gender: userInfo.gender,
           hasLogin: true
         })
       },
@@ -49,11 +49,29 @@ Page({
     wx.showLoading({
       title: '登录中...',
     })
-    var userData = JSON.stringify(e.detail.userInfo);
+    var userInfo = e.detail.userInfo;
     wx.setStorage({
       key: 'userInfo',
-      data: userData
+      data: userInfo
     })
+
+    wx.request({
+      url: 'http://127.0.0.1:3002/login',
+      data: {
+        user: userInfo.nickName
+      },
+      method: 'POST',
+      success: function(res) {
+        wx.setStorage({
+          key: 'token',
+          data: res.data.token,
+        })
+        console.log(res);
+      },
+      fail: function(res) {},
+      complete: function(res) {},
+    })
+
     this.onLoad();
     wx.hideLoading();
   },
