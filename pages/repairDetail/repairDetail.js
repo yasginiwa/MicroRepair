@@ -22,7 +22,8 @@ Page({
     },
     commitDisable: true, //  提交按钮disable
     frame: 1, //  序列帧动画初始帧
-    isSpeaking: false //  正在讲话
+    isSpeaking: false, //  正在讲话
+    token: ''
   },
 
   /**
@@ -193,8 +194,9 @@ Page({
    * 提交数据
    */
   onCommit() {
+    //  从本地获取用户信息
     try {
-      var userInfo = JSON.parse(wx.getStorageSync('userInfo'));
+      var userInfo = wx.getStorageSync('userInfo');
       this.setData({
         'record.engineer': userInfo.nickName
       })
@@ -202,11 +204,21 @@ Page({
       console.log(e);
     }
 
+    //  从本地获取token信息
+    try {
+      var tokenInfo = wx.getStorageSync('token');
+      this.setData({
+        token: tokenInfo
+      })
+    } catch (e) {
+      console.log(e);
+    }
+    console.log(this.data.token);
+
     wx.showLoading({
       title: '请稍候...',
       mask: true
     })
-
     var that = this;
     wx.uploadFile({
       url: 'http://127.0.0.1:3002/upload',
@@ -226,7 +238,8 @@ Page({
             result: that.data.record.result,
             audioDesc: audio.audioUrl,
             date: that.data.record.date,
-            engineer: that.data.record.engineer
+            engineer: that.data.record.engineer,
+            token: that.data.token
           },
           success: function(res) {
             wx.switchTab({
