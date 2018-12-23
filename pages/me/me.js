@@ -1,6 +1,7 @@
 // pages/me/me.js
-Page({
+var api = require('../../utils/apiUtil.js');
 
+Page({
   /**
    * 页面的初始数据
    */
@@ -45,6 +46,9 @@ Page({
     })
   },
 
+/**
+ * 登录
+ */
   onGotUserInfo(e) {
     wx.showLoading({
       title: '登录中...',
@@ -56,7 +60,7 @@ Page({
     })
 
     wx.request({
-      url: 'http://127.0.0.1:3002/login',
+      url: api.loginUrl,
       data: {
         user: userInfo.nickName
       },
@@ -76,6 +80,9 @@ Page({
     wx.hideLoading();
   },
 
+/**
+ * 注销
+ */
   logoff() {
     var that = this;
     wx.showModal({
@@ -83,9 +90,7 @@ Page({
       content: '注销后无法使用“扫码维修”功能!',
       showCancel: true,
       cancelText: '取消',
-      cancelColor: '',
       confirmText: '确定',
-      confirmColor: '',
       success: function (res) {
         if (res.confirm) {
           wx.clearStorage();
@@ -98,21 +103,13 @@ Page({
   gotoUrl() {
     if (this.data.hasLogin) {
       wx.switchTab({
-        url: '../record/record',
-        success: function (res) { },
-        fail: function (res) { },
-        complete: function (res) { },
+        url: '../record/record'
       })
     } else {
       wx.showToast({
         title: '请先登录系统...',
         icon: 'none',
-        image: '',
-        duration: 2000,
-        mask: true,
-        success: function (res) { },
-        fail: function (res) { },
-        complete: function (res) { },
+        mask: true
       })
     }
   },

@@ -1,4 +1,4 @@
-// pages/record/record.js
+// pages/deviceRecord/deviceRecord.js
 var api = require('../../utils/apiUtil.js');
 
 Page({
@@ -38,19 +38,12 @@ Page({
       console.log(e);
     }
 
-    //  从本地获取userInfo信息
-    try {
-      var userInfo = wx.getStorageSync('userInfo');
-    } catch (e) {
-      console.log(e);
-    }
-
     var that = this;
     wx.request({
-      url: api.userrecordUrl,
+      url: api.devicerecordUrl,
       method: 'POST',
       data: {
-        engineer: userInfo.nickName,
+        scanCode: options.scanCode,
         token: token
       },
       success: function (res) {

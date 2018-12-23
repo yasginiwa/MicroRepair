@@ -3,7 +3,9 @@
     "pages/repair/repair",
     "pages/record/record",
     "pages/me/me",
-    "pages/repairDetail/repairDetail"
+    "pages/repairDetail/repairDetail",
+    "pages/deviceRecord/deviceRecord",
+    "pages/deviceRecordDetail/deviceRecordDetail"
   ],
   "window": {
     "backgroundTextStyle": "light",

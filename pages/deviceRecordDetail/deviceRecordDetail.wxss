@@ -1,0 +1,123 @@
+/* pages/deviceRecordDetail/deviceRecordDetail.wxss */
+
+page {
+  background-color: #eee;
+}
+
+.deviceInfo {
+  margin-top: 20rpx;
+}
+
+.deviceInfo .title {
+  margin-left: 20rpx;
+  color: gray;
+  font-size: 30rpx;
+}
+
+.deviceInfo .content {
+  margin-top: 10rpx;
+  background-color: white;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.deviceInfo .content text {
+  margin-left: 20rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+}
+
+.reason {
+  margin-top: 20rpx;
+}
+
+.reason .title {
+  margin-left: 20rpx;
+  color: gray;
+  font-size: 30rpx;
+}
+
+.reason .content {
+  margin-top: 10rpx;
+  padding-top: 10rpx;
+  background-color: white;
+  padding-bottom: 10rpx;
+}
+
+.reason .content .wrapper {
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+
+.reason .content .reasonDesc {
+  font-size: 28rpx;
+}
+
+.result {
+  margin-top: 20rpx;
+}
+
+.result .title {
+  margin-left: 20rpx;
+  color: gray;
+  font-size: 30rpx;
+}
+
+.result .content {
+  margin-top: 10rpx;
+  padding-top: 10rpx;
+  background-color: white;
+  padding-bottom: 10rpx;
+}
+
+.result .content .wrapper {
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+
+.result .content .resultDesc {
+  font-size: 28rpx;
+}
+
+.result .content .audio {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.result .content .audio .audioDesc {
+  margin-left: 20rpx;
+  font-size: 32rpx;
+}
+
+.result .content .audio image {
+  width: 150rpx;
+  height: 41rpx;
+  margin-left: 20rpx;
+}
+
+.repairInfo {
+  margin-top: 20rpx;
+}
+
+.repairInfo .title {
+  color: gray;
+  font-size: 30rpx;
+  margin-left: 20rpx;
+}
+
+.repairInfo .content {
+  background-color: white;
+  display: flex;
+  flex-flow: column nowrap;
+  margin-top: 10rpx;
+}
+
+.repairInfo .content text {
+  margin-left: 20rpx;
+  margin-top: 10rpx;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+}

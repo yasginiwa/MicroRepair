@@ -2,6 +2,7 @@
 const recorderManager = wx.getRecorderManager()
 const innerAudioContext = wx.createInnerAudioContext();
 var util = require('../../utils/util.js');
+var api = require('../../utils/apiUtil.js');
 
 Page({
   /**
@@ -22,7 +23,8 @@ Page({
     },
     commitDisable: true, //  提交按钮disable
     frame: 1, //  序列帧动画初始帧
-    isSpeaking: false, //  正在讲话
+    isSpeaking: false, //  是否正在讲话
+    isPlaying: false, //  是否播放录音  
     token: ''
   },
 
@@ -110,7 +112,6 @@ Page({
         title: '提示',
         content: '手指按住姿势不对!',
         icon: 'none',
-        image: '',
         duration: 2000,
         mask: true
       })
@@ -119,8 +120,6 @@ Page({
     this.setData({
       isSpeaking: true
     })
-
-    this.speaking();
   },
 
   /**
@@ -149,30 +148,23 @@ Page({
    * 播放语音描述
    */
   playAudioDesc() {
+    var that = this;
     innerAudioContext.src = this.data.record.audioDesc;
     innerAudioContext.play();
     innerAudioContext.onPlay(() => {
-      console.log('开始播放')
+      that.setData({
+        isPlaying: true
+      })
     })
     innerAudioContext.onError((res) => {
       console.log(res.errMsg)
       console.log(res.errCode)
     })
-  },
-
-  /**
-   * 麦克风序列帧动画
-   */
-  speaking() {
-    var that = this;
-    var i = 1;
-    this.timer = setInterval(function() {
-      i++;
-      i = i % 5;
+    innerAudioContext.onStop(() => {
       that.setData({
-        frame: i
+        isPlaying: false
       })
-    }, 150);
+    })
   },
 
   /**
@@ -213,51 +205,70 @@ Page({
     } catch (e) {
       console.log(e);
     }
-    console.log(this.data.token);
 
     wx.showLoading({
       title: '请稍候...',
       mask: true
     })
     var that = this;
-    wx.uploadFile({
-      url: 'http://127.0.0.1:3002/upload',
-      filePath: that.data.record.audioDesc,
-      name: 'audio',
-      success: function(res) {
-        wx.hideLoading();
-        var audio = JSON.parse(res.data);
-        wx.request({
-          url: 'http://127.0.0.1:3002/record.do',
-          method: 'POST',
-          data: {
-            deviceId: that.data.record.deviceId,
-            cate: that.data.record.cate,
-            name: that.data.record.name,
-            reason: that.data.record.reason,
-            result: that.data.record.result,
-            audioDesc: audio.audioUrl,
-            date: that.data.record.date,
-            engineer: that.data.record.engineer,
-            token: that.data.token
-          },
-          success: function(res) {
-            wx.switchTab({
-              url: '../repair/repair',
-            })
-          }
-        })
-
-      }
-    })
-
-
+    if (that.data.record.audioDesc.length == 0) { // 无录音
+      wx.hideLoading();
+      wx.request({
+        url: api.dorecordUrl,
+        method: 'POST',
+        data: {
+          deviceId: that.data.record.deviceId,
+          cate: that.data.record.cate,
+          name: that.data.record.name,
+          reason: that.data.record.reason,
+          result: that.data.record.result,
+          date: that.data.record.date,
+          engineer: that.data.record.engineer,
+          token: that.data.token
+        },
+        success: function (res) {
+          wx.switchTab({
+            url: '../repair/repair',
+          })
+        }
+      })
+    } else {  // 有录音、
+      wx.uploadFile({
+        url: api.uploadUrl,
+        filePath: that.data.record.audioDesc,
+        name: 'audio',
+        success: function (res) {
+          wx.hideLoading();
+          var audio = JSON.parse(res.data);
+          wx.request({
+            url: api.dorecordUrl,
+            method: 'POST',
+            data: {
+              deviceId: that.data.record.deviceId,
+              cate: that.data.record.cate,
+              name: that.data.record.name,
+              reason: that.data.record.reason,
+              result: that.data.record.result,
+              audioDesc: audio.audioUrl,
+              date: that.data.record.date,
+              engineer: that.data.record.engineer,
+              token: that.data.token
+            },
+            success: function (res) {
+              wx.switchTab({
+                url: '../repair/repair',
+              })
+            }
+          })
+        }
+      })
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.setData({
       'record.deviceId': options.scanCode
     })
@@ -271,49 +282,49 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   }
 })

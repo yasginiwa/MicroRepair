@@ -1,8 +1,7 @@
-<!--pages/record/record.wxml-->
 <!--pages/deviceRecord/deviceRecord.wxml-->
 <view class='norecord' wx:if='{{deviceRecords.length == 0}}'>
   <image src='../../assets/images/deviceRecord/norecord.png'></image>
-  <text>暂无我的维修记录！</text>
+  <text>暂无设备维修记录！</text>
 </view>
 <view class='block' wx:elif='{{deviceRecords.length > 0}}'>
   <view class='cells' wx:for='{{deviceRecords}}' bindtap='clickToDeviceRecordDetail' data-index='{{index}}'>

@@ -47,15 +47,9 @@
   </view>
 
   <view wx:if='{{isSpeaking}}' class='speak-style'>
-    <image class='sound-style' src='../../assets/images/repairDetail/sound_1.png'></image>
-    <image wx:if='{{frame == 2}}' class='sound-style' src='../../assets/images/repairDetail/sound_2.png'></image>
-    <image wx:if='{{frame == 3}}' class='sound-style' src='../../assets/images/repairDetail/sound_3.png'></image>
-    <image wx:if='{{frame == 4}}' class='sound-style' src='../../assets/images/repairDetail/sound_4.png'></image>
-    <image wx:if='{{frame == 5}}' class='sound-style' src='../../assets/images/repairDetail/sound_5.png'></image>
+    <image class='sound-style' src='../../assets/images/repairDetail/sound.gif'></image>
   </view>
 </view>
-
-
 
 <view class='commit'>
   <button type='primary' bindtap='onCommit' disabled='{{commitDisable}}'>提 交</button>

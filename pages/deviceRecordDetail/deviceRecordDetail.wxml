@@ -1,0 +1,41 @@
+<!--pages/deviceRecordDetail/deviceRecordDetail.wxml-->
+
+<view class='deviceInfo'>
+  <text class='title'>设备信息</text>
+  <view class='content'>
+    <text class='number'>资产编号: {{currentRecord.deviceId}}</text>
+    <text class='cate'>设备类型: {{currentRecord.cate}}</text>
+    <text class='name'>设备名称: {{currentRecord.name}}</text>
+  </view>
+</view>
+
+<view class='reason'>
+  <text class='title'>故障原因</text>
+  <view class='content'>
+    <view class='wrapper'>
+      <text class='reasonDesc'>{{currentRecord.reason}}</text>
+    </view>
+  </view>
+</view>
+
+<view class='result'>
+  <text class='title'>维修结果</text>
+  <view class='content'>
+    <view class='wrapper'>
+      <text class='resultDesc'>{{currentRecord.result}}</text>
+    </view>
+    <view class='audio' wx:if='{{currentRecord.audioDesc != null}}'>
+      <text class='audioDesc'>语音描述: </text>
+        <image bindtap='playAudioDesc' wx:if='{{isSpeaking == false}}' src='../../assets/images/deviceRecordDetail/audioNormal.png'></image>
+        <image wx:elif='{{isSpeaking == true}}' src='../../assets/images/deviceRecordDetail/audio.gif'></image>
+    </view>
+  </view>
+</view>
+
+<view class='repairInfo'>
+  <text class='title'>维修人员</text>
+  <view class='content'>
+    <text class='engineer'>维修工程师: {{currentRecord.engineer}}</text>
+    <text class='date'>维修日期: {{currentRecord.date}}</text>
+  </view>
+</view>
