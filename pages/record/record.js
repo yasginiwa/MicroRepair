@@ -2,14 +2,6 @@
 var api = require('../../utils/apiUtil.js');
 
 Page({
-
-  /**
-   * 页面的初始数据
-   */
-  data: {
-    deviceRecords: [],
-  },
-
   /**
    * 点击进入设备记录详情
    */
@@ -24,12 +16,23 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面加载
+   * 请求数据
    */
-  onLoad: function (options) {
+  requestData() {
     wx.showLoading({
       title: '加载中...',
     })
+
+    this.setData({
+      deviceRecords: []
+    })
+
+    //  从本地获取userInfo信息
+    try {
+      var nickName = wx.getStorageSync('userInfo').nickName;
+    } catch (e) {
+      console.log(e);
+    }
 
     //  从本地获取token信息
     try {
@@ -38,29 +41,47 @@ Page({
       console.log(e);
     }
 
-    //  从本地获取userInfo信息
-    try {
-      var userInfo = wx.getStorageSync('userInfo');
-    } catch (e) {
-      console.log(e);
+    if (nickName == null || token == null) {
+      wx.hideLoading();
+      wx.showToast({
+        title: '请登录系统...',
+        icon: 'none',
+        mask: true
+      })
     }
 
     var that = this;
+    var deviceRecordArray = that.data.deviceRecords;
     wx.request({
       url: api.userrecordUrl,
       method: 'POST',
       data: {
-        engineer: userInfo.nickName,
+        engineer: nickName,
         token: token
       },
       success: function (res) {
+        deviceRecordArray = deviceRecordArray.concat(res.data.result);
         that.setData({
-          deviceRecords: res.data.result
+          deviceRecords: deviceRecordArray
         })
         wx.hideLoading();
       },
-      fail: function (res) { }
+      fail: function (res) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络超时,请检查网络设置!',
+          icon: 'none',
+          mask: true
+        })
+      }
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.requestData();
   },
 
   /**
@@ -74,7 +95,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.requestData();
   },
 
   /**
@@ -96,6 +117,62 @@ Page({
    */
   onPullDownRefresh: function () {
 
+    wx.showLoading({
+      title: '加载中...',
+    })
+
+    this.setData({
+      deviceRecords: []
+    })
+
+    //  从本地获取userInfo信息
+    try {
+      var nickName = wx.getStorageSync('userInfo').nickName;
+    } catch (e) {
+      wx.showToast({
+        title: '请登录系统...',
+        icon: 'none',
+        mask: true
+      })
+    }
+
+    //  从本地获取token信息
+    try {
+      var token = wx.getStorageSync('token');
+    } catch (e) {
+      wx.showToast({
+        title: '请登录系统...',
+        icon: 'none',
+        mask: true
+      })
+    }
+
+    var that = this;
+    var deviceRecordArray = that.data.deviceRecords;
+    wx.request({
+      url: api.userrecordUrl,
+      method: 'POST',
+      data: {
+        engineer: nickName,
+        token: token
+      },
+      success: function (res) {
+        deviceRecordArray = deviceRecordArray.concat(res.data.result);
+        that.setData({
+          deviceRecords: deviceRecordArray
+        })
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '网络超时,请检查网络设置!',
+          icon: 'none',
+          mask: true
+        })
+        wx.stopPullDownRefresh();
+      }
+    })
   },
 
   /**

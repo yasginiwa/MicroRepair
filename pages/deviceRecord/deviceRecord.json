@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "设备记录"
+  "navigationBarTitleText": "设备记录",
+  "enablePullDownRefresh": true
 }

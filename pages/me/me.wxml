@@ -29,7 +29,7 @@
 </view>
 
 <view class='block' >
-  <view class='item' wx:for='{{settingItems}}' data-url='{{item.gotoUrl}}' bindtap='gotoUrl'>
+  <view class='item' wx:for='{{settingItems}}' wx:key='{{settingItemId}}' data-url='{{item.gotoUrl}}' bindtap='gotoUrl'>
     <image class='icon' src='{{item.icon}}'></image>
     <text class='desc'>{{item.desc}}</text>
     <image class='arrow' src='{{item.indicator}}'></image>

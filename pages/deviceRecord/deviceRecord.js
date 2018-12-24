@@ -23,10 +23,8 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
+  requestData(params) {
+    //  添加toast
     wx.showLoading({
       title: '加载中...',
     })
@@ -39,21 +37,67 @@ Page({
     }
 
     var that = this;
+    var deviceRecordArray = that.data.deviceRecords;
+    deviceRecordArray = [];
+
     wx.request({
       url: api.devicerecordUrl,
       method: 'POST',
       data: {
-        scanCode: options.scanCode,
-        token: token
+        token: token,
+        scanCode: params
       },
-      success: function (res) {
+      success: function(res) {
+        deviceRecordArray = deviceRecordArray.concat(res.data.result);
         that.setData({
-          deviceRecords: res.data.result
+          deviceRecords: deviceRecordArray
         })
         wx.hideLoading();
       },
-      fail: function (res) { }
+      fail: function(res) {
+
+      },
+      complete: function(res) {
+
+      }
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    this.requestData(options.scanCode);
+    // wx.showLoading({
+    //   title: '加载中...',
+    // })
+
+    // //  从本地获取token信息
+    // try {
+    //   var token = wx.getStorageSync('token');
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
+    // var that = this;
+    // var deviceRecordArray = that.data.deviceRecords;
+    // wx.request({
+    //   url: api.devicerecordUrl,
+    //   method: 'POST',
+    //   data: {
+    //     scanCode: options.scanCode,
+    //     token: token
+    //   },
+    //   success: function (res) {
+    //     deviceRecordArray = deviceRecordArray.concat(res.data.result);
+    //     that.setData({
+    //       deviceRecords: deviceRecordArray
+    //     })
+    //     wx.hideLoading();
+    //   },
+    //   fail: function (res) { }
+    // })
+    // console.log(this.data.deviceRecords);
   },
 
   /**
@@ -88,7 +132,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.onLoad();
   },
 
   /**

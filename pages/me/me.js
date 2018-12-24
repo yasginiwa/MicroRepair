@@ -46,9 +46,9 @@ Page({
     })
   },
 
-/**
- * 登录
- */
+  /**
+   * 登录
+   */
   onGotUserInfo(e) {
     wx.showLoading({
       title: '登录中...',
@@ -80,9 +80,9 @@ Page({
     wx.hideLoading();
   },
 
-/**
- * 注销
- */
+  /**
+   * 注销
+   */
   logoff() {
     var that = this;
     wx.showModal({
@@ -101,17 +101,9 @@ Page({
   },
 
   gotoUrl() {
-    if (this.data.hasLogin) {
-      wx.switchTab({
-        url: '../record/record'
-      })
-    } else {
-      wx.showToast({
-        title: '请先登录系统...',
-        icon: 'none',
-        mask: true
-      })
-    }
+    wx.switchTab({
+      url: '../record/record'
+    })
   },
 
   /**
