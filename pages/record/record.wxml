@@ -5,7 +5,7 @@
   <text>暂无我的维修记录！</text>
 </view>
 
-<view class='block' wx:elif='{{deviceRecords.length != 0}}'>
+<view class='block' wx:if='{{deviceRecords.length > 0}}'>
   <view class='cells' wx:for='{{deviceRecords}}' wx:key='{{deviceRecordId}}' bindtap='clickToDeviceRecordDetail' data-index='{{index}}'>
     <image class='icon' wx:if="{{item.cate == '打印设备'}}" src='../../assets/images/deviceRecord/printer.png'></image>
     <image class='icon' wx:elif="{{item.cate == '收银设备'}}" src='../../assets/images/deviceRecord/pos.png'></image>

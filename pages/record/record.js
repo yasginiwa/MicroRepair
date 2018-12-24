@@ -2,6 +2,11 @@
 var api = require('../../utils/apiUtil.js');
 
 Page({
+
+  data:{
+    deviceRecords: []
+  },
+
   /**
    * 点击进入设备记录详情
    */
@@ -23,9 +28,9 @@ Page({
       title: '加载中...',
     })
 
-    this.setData({
-      deviceRecords: []
-    })
+    // this.setData({
+    //   deviceRecords: []
+    // })
 
     //  从本地获取userInfo信息
     try {
@@ -42,7 +47,6 @@ Page({
     }
 
     if (nickName == null || token == null) {
-      wx.hideLoading();
       wx.showToast({
         title: '请登录系统...',
         icon: 'none',
@@ -116,63 +120,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
-    wx.showLoading({
-      title: '加载中...',
-    })
-
-    this.setData({
-      deviceRecords: []
-    })
-
-    //  从本地获取userInfo信息
-    try {
-      var nickName = wx.getStorageSync('userInfo').nickName;
-    } catch (e) {
-      wx.showToast({
-        title: '请登录系统...',
-        icon: 'none',
-        mask: true
-      })
-    }
-
-    //  从本地获取token信息
-    try {
-      var token = wx.getStorageSync('token');
-    } catch (e) {
-      wx.showToast({
-        title: '请登录系统...',
-        icon: 'none',
-        mask: true
-      })
-    }
-
-    var that = this;
-    var deviceRecordArray = that.data.deviceRecords;
-    wx.request({
-      url: api.userrecordUrl,
-      method: 'POST',
-      data: {
-        engineer: nickName,
-        token: token
-      },
-      success: function (res) {
-        deviceRecordArray = deviceRecordArray.concat(res.data.result);
-        that.setData({
-          deviceRecords: deviceRecordArray
-        })
-        wx.hideLoading();
-        wx.stopPullDownRefresh();
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '网络超时,请检查网络设置!',
-          icon: 'none',
-          mask: true
-        })
-        wx.stopPullDownRefresh();
-      }
-    })
+    this.requestData();
+    wx.stopPullDownRefresh();
   },
 
   /**
