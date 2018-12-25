@@ -27,9 +27,16 @@ Page({
       })
     })
     innerAudioContext.onError((res) => {
-      console.log(res.errMsg)
-      console.log(res.errCode)
+      wx.showToast({
+        title: '播放失败,请检查网络...',
+        icon: 'none',
+      })
     })
+
+    innerAudioContext.onWaiting((res) => {
+      console.log(res);
+    })
+
     innerAudioContext.onEnded((res) => {
       console.log('stop');
       // 停止播放 设置isSpeaking标记为false

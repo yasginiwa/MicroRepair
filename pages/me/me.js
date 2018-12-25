@@ -87,7 +87,7 @@ Page({
     var that = this;
     wx.showModal({
       title: '注销',
-      content: '注销后无法使用“扫码维修”功能!',
+      content: '注销后无法使用此系统!',
       showCancel: true,
       cancelText: '取消',
       confirmText: '确定',

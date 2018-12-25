@@ -28,10 +28,6 @@ Page({
       title: '加载中...',
     })
 
-    // this.setData({
-    //   deviceRecords: []
-    // })
-
     //  从本地获取userInfo信息
     try {
       var nickName = wx.getStorageSync('userInfo').nickName;
@@ -52,9 +48,16 @@ Page({
         icon: 'none',
         mask: true
       })
-    }
+      this.setData({
+        deviceRecords: []
+      })
+      return;
+    } 
 
     var that = this;
+    that.setData({
+      deviceRecords: []
+    })
     var deviceRecordArray = that.data.deviceRecords;
     wx.request({
       url: api.userrecordUrl,
@@ -64,6 +67,7 @@ Page({
         token: token
       },
       success: function (res) {
+
         deviceRecordArray = deviceRecordArray.concat(res.data.result);
         that.setData({
           deviceRecords: deviceRecordArray
@@ -99,7 +103,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.requestData();
+   
   },
 
   /**
