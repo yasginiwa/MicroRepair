@@ -55,9 +55,6 @@ Page({
     } 
 
     var that = this;
-    that.setData({
-      deviceRecords: []
-    })
     var deviceRecordArray = that.data.deviceRecords;
     wx.request({
       url: api.userrecordUrl,
@@ -103,7 +100,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-   
+
+    //  从本地获取userInfo信息
+    try {
+      var nickName = wx.getStorageSync('userInfo').nickName;
+    } catch (e) {
+      console.log(e);
+    }
+
+    //  从本地获取token信息
+    try {
+      var token = wx.getStorageSync('token');
+    } catch (e) {
+      console.log(e);
+    }
+
+   if (this.data.deviceRecords.length == 0 || nickName == null || token == null) {
+     this.requestData();
+   } else return;
   },
 
   /**
@@ -124,8 +138,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    this.requestData();
-    wx.stopPullDownRefresh();
+    // this.requestData();
+    // wx.stopPullDownRefresh();
   },
 
   /**
