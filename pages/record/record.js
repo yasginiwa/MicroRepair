@@ -43,21 +43,6 @@ Page({
       console.log(e);
     }
 
-    //  从本地获取deviceRecordArray
-    try {
-      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
-    } catch (e) {
-      console.log(e);
-    }
-
-    if (!deviceRecordArray) {
-      try {
-        wx.setStorageSync('deviceRecordArray', []);
-      } catch (e) {
-        console.log(e);
-      }
-    }
-
     if (nickName == null || token == null) {
       wx.showToast({
         title: '请登录系统...',
@@ -68,6 +53,13 @@ Page({
         deviceRecords: []
       })
       return;
+    }
+
+    //  从本地获取deviceRecordArray
+    try {
+      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
+    } catch (e) {
+      console.log(e);
     }
 
     var that = this;
@@ -81,35 +73,31 @@ Page({
         token: token
       },
       success: function (res) {
-        deviceRecordArray = res.data.result.concat(deviceRecordArray);
-        //  设置本Model数据
+        if (!deviceRecordArray) { //  如果本地存储为空 则把请求到的数组赋值给deviceRecordArray
+          deviceRecordArray = res.data.result;
+        } else {  //  如果本地存储有值 则判断r_id与本地存储r_id 
+          if (res.data.result[0].r_id == deviceRecordArray[0].r_id) { //  相等直接返回
+            wx.hideLoading();
+            return;
+          } else if (res.data.result[0].r_id > deviceRecordArray[0].r_id) { //  大于则把请求值加到本地存储数组前面
+            deviceRecordArray = res.data.result.concat(deviceRecordArray);
+          } else {  //  小于则把请求值加到本地存储数组后面
+            deviceRecordArray = deviceRecordArray.concat(res.data.result);
+          }
+        }
+
         that.setData({
           deviceRecords: deviceRecordArray
         })
 
-        if (res.data.result[0].r_id != deviceRecordArray[0].r_id) {
-          console.log(res.data.result[0].r_id);
-          console.log(deviceRecordArray[0].r_id);
-
-          //  存储数组到本地存储
-          wx.setStorage({
-            key: 'deviceRecordArray',
-            data: deviceRecordArray,
-          })
-        }
+        //  存储数组到本地存储
+        wx.setStorage({
+          key: 'deviceRecordArray',
+          data: deviceRecordArray,
+        })
 
         // 隐藏toast
         wx.hideLoading();
-
-
-        // if (res.data.deviceRecords[0].r_id == deviceRecordArray[0].r_id) return;
-        // else {
-        //   //  存到deviceRecordArray本地
-        //   wx.setStorage({
-        //     key: 'deviceRecordArray',
-        //     data: that.data.deviceRecords,
-        //   })
-        // }
       },
       fail: function (res) {
         wx.hideLoading();
@@ -237,6 +225,9 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+    wx.pageScrollTo({
+      scrollTop: 0,
+    })
     console.log('下拉刷新');
     this.requestData();
     wx.stopPullDownRefresh();
