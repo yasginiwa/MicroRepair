@@ -15,9 +15,9 @@ Page({
     var deviceRecord = JSON.stringify(this.data.deviceRecords[e.currentTarget.dataset.index]);
     wx.navigateTo({
       url: '../deviceRecordDetail/deviceRecordDetail?deviceRecord=' + deviceRecord,
-      success: function(res) {},
-      fail: function(res) {},
-      complete: function(res) {},
+      success: function (res) { },
+      fail: function (res) { },
+      complete: function (res) { },
     })
   },
 
@@ -50,9 +50,9 @@ Page({
       console.log(e);
     }
 
-    if(!deviceRecordArray) {
+    if (!deviceRecordArray) {
       try {
-      wx.setStorageSync(deviceRecordArray, []);
+        wx.setStorageSync('deviceRecordArray', []);
       } catch (e) {
         console.log(e);
       }
@@ -80,21 +80,38 @@ Page({
         page: 0,
         token: token
       },
-      success: function(res) {
+      success: function (res) {
+        deviceRecordArray = res.data.result.concat(deviceRecordArray);
+        //  设置本Model数据
         that.setData({
-          deviceRecords: res.data.result.concat(deviceRecordArray)
+          deviceRecords: deviceRecordArray
         })
+
+        if (res.data.result[0].r_id != deviceRecordArray[0].r_id) {
+          console.log(res.data.result[0].r_id);
+          console.log(deviceRecordArray[0].r_id);
+
+          //  存储数组到本地存储
+          wx.setStorage({
+            key: 'deviceRecordArray',
+            data: deviceRecordArray,
+          })
+        }
 
         // 隐藏toast
         wx.hideLoading();
 
-        //  存到deviceRecordArray本地
-        wx.setStorage({
-          key: 'deviceRecordArray',
-          data: that.data.deviceRecords,
-        })
+
+        // if (res.data.deviceRecords[0].r_id == deviceRecordArray[0].r_id) return;
+        // else {
+        //   //  存到deviceRecordArray本地
+        //   wx.setStorage({
+        //     key: 'deviceRecordArray',
+        //     data: that.data.deviceRecords,
+        //   })
+        // }
       },
-      fail: function(res) {
+      fail: function (res) {
         wx.hideLoading();
         wx.showToast({
           title: '网络超时,请检查网络设置!',
@@ -157,7 +174,7 @@ Page({
         page: that.data.page,
         token: token
       },
-      success: function(res) {
+      success: function (res) {
         deviceRecordArray = deviceRecordArray.concat(res.data.result);
         that.setData({
           deviceRecords: deviceRecordArray
@@ -170,7 +187,7 @@ Page({
           data: that.data.deviceRecords,
         })
       },
-      fail: function(res) {
+      fail: function (res) {
         wx.hideLoading();
         wx.showToast({
           title: '网络超时,请检查网络设置!',
@@ -184,42 +201,42 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.requestData();
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
     wx.startPullDownRefresh();
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     console.log('下拉刷新');
     this.requestData();
     wx.stopPullDownRefresh();
@@ -228,7 +245,7 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
     console.log('上拉加载');
     this.loadMore();
   },
@@ -236,7 +253,7 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   }
 })
