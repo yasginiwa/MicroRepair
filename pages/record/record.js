@@ -21,6 +21,105 @@ Page({
     })
   },
 
+  hasLogin(nickName, token) {
+    if (nickName == null || token == null) {
+      wx.showToast({
+        title: '请登录系统...',
+        icon: 'none',
+        mask: true
+      })
+      this.setData({
+        deviceRecords: []
+      })
+      return false;
+    } else return true;
+  },
+
+  /**
+   * 加载数据
+   */
+  loadData() {
+    //  从本地获取deviceRecordArray
+    try {
+      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (deviceRecordArray) {
+      this.requestData();
+    } else {
+      this.loadDataNoCache();
+    }
+  },
+
+  /**
+   * 无数据时请求
+   */
+  loadDataNoCache() {
+    wx.showLoading({
+      title: '加载中...',
+    })
+
+    //  从本地获取userInfo信息
+    try {
+      var nickName = wx.getStorageSync('userInfo').nickName;
+    } catch (e) {
+      console.log(e);
+    }
+
+    //  从本地获取token信息
+    try {
+      var token = wx.getStorageSync('token');
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (!this.hasLogin(nickName, token)) return;
+
+    //  从本地获取deviceRecordArray
+    try {
+      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
+    } catch (e) {
+      console.log(e);
+    }
+
+    var that = this;
+
+    wx.request({
+      url: api.userrecordUrl,
+      method: 'POST',
+      data: {
+        engineer: nickName,
+        page: 0,
+        token: token
+      },
+      success: function (res) {
+        that.setData({
+          deviceRecords: res.data.result
+        })
+
+        //  存储数组到本地存储
+        wx.setStorage({
+          key: 'deviceRecordArray',
+          data: res.data.result,
+        })
+
+        // 隐藏toast
+        wx.hideLoading();
+
+      },
+      fail: function (res) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '网络超时,请检查网络设置!',
+          icon: 'none',
+          mask: true
+        })
+      }
+    })
+  },
+
   /**
    * 请求数据
    */
@@ -43,17 +142,7 @@ Page({
       console.log(e);
     }
 
-    if (nickName == null || token == null) {
-      wx.showToast({
-        title: '请登录系统...',
-        icon: 'none',
-        mask: true
-      })
-      this.setData({
-        deviceRecords: []
-      })
-      return;
-    }
+    if (!this.hasLogin(nickName, token)) return;
 
     //  从本地获取deviceRecordArray
     try {
@@ -73,17 +162,13 @@ Page({
         token: token
       },
       success: function (res) {
-        if (!deviceRecordArray) { //  如果本地存储为空 则把请求到的数组赋值给deviceRecordArray
-          deviceRecordArray = res.data.result;
-        } else {  //  如果本地存储有值 则判断r_id与本地存储r_id 
-          if (res.data.result[0].r_id == deviceRecordArray[0].r_id) { //  相等直接返回
-            wx.hideLoading();
-            return;
-          } else if (res.data.result[0].r_id > deviceRecordArray[0].r_id) { //  大于则把请求值加到本地存储数组前面
-            deviceRecordArray = res.data.result.concat(deviceRecordArray);
-          } else {  //  小于则把请求值加到本地存储数组后面
-            deviceRecordArray = deviceRecordArray.concat(res.data.result);
-          }
+        if (res.data.result[0].r_id == deviceRecordArray[0].r_id) { //  相等直接返回
+          wx.hideLoading();
+          return;
+        } else if (res.data.result[0].r_id > deviceRecordArray[0].r_id) { //  大于则把请求值加到本地存储数组前面
+          deviceRecordArray = res.data.result.concat(deviceRecordArray);
+        } else { //  小于则把请求值加到本地存储数组后面
+          deviceRecordArray = deviceRecordArray.concat(res.data.result);
         }
 
         that.setData({
@@ -190,7 +275,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.requestData();
+    this.loadData();
   },
 
   /**
@@ -204,7 +289,38 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    wx.startPullDownRefresh();
+    //  从本地获取userInfo信息
+    try {
+      var nickName = wx.getStorageSync('userInfo').nickName;
+    } catch (e) {
+      console.log(e);
+    }
+
+    //  从本地获取token信息
+    try {
+      var token = wx.getStorageSync('token');
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      var commitSuccess = wx.getStorageSync('commitSuccess');
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (commitSuccess && this.hasLogin(nickName, token)) {
+      wx.pageScrollTo({
+        scrollTop: 0,
+      })
+      wx.startPullDownRefresh();
+      this.onPullDownRefresh();
+      wx.setStorage({
+        key: 'commitSuccess',
+        data: false,
+      })
+    } else return;
+
   },
 
   /**
@@ -225,11 +341,8 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    wx.pageScrollTo({
-      scrollTop: 0,
-    })
     console.log('下拉刷新');
-    this.requestData();
+    this.loadData();
     wx.stopPullDownRefresh();
   },
 
