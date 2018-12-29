@@ -15,24 +15,25 @@ Page({
     var deviceRecord = JSON.stringify(this.data.deviceRecords[e.currentTarget.dataset.index]);
     wx.navigateTo({
       url: '../deviceRecordDetail/deviceRecordDetail?deviceRecord=' + deviceRecord,
-      success: function (res) { },
-      fail: function (res) { },
-      complete: function (res) { },
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
     })
   },
 
-  hasLogin(nickName, token) {
-    if (nickName == null || token == null) {
+  logoutRefresh() {
+    var hasLogin = wx.getStorageSync('hasLogin');
+    if (!hasLogin) {
+      this.setData({
+        deviceRecords: []
+      })
+
       wx.showToast({
         title: '请登录系统...',
         icon: 'none',
         mask: true
       })
-      this.setData({
-        deviceRecords: []
-      })
-      return false;
-    } else return true;
+    } else return;
   },
 
   /**
@@ -46,17 +47,17 @@ Page({
       console.log(e);
     }
 
-    if (deviceRecordArray) {
-      this.requestData();
+    if (deviceRecordArray.length > 0) {
+      this.requestDataWithCaches();
     } else {
-      this.loadDataNoCache();
+      this.loadDataWithoutCaches();
     }
   },
 
   /**
    * 无数据时请求
    */
-  loadDataNoCache() {
+  loadDataWithoutCaches() {
     wx.showLoading({
       title: '加载中...',
     })
@@ -68,14 +69,24 @@ Page({
       console.log(e);
     }
 
-    //  从本地获取token信息
+    //  从本地存储获取token信息
     try {
       var token = wx.getStorageSync('token');
     } catch (e) {
       console.log(e);
     }
 
-    if (!this.hasLogin(nickName, token)) return;
+    //  从本地存储获取登录状态
+    // try {
+    //   var hasLogin = wx.getStorageSync('hasLogin');
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
+    // if (!hasLogin) {
+    //   this.logoutRefresh();
+    //   return;
+    // }
 
     //  从本地获取deviceRecordArray
     try {
@@ -94,7 +105,7 @@ Page({
         page: 0,
         token: token
       },
-      success: function (res) {
+      success: function(res) {
         that.setData({
           deviceRecords: res.data.result
         })
@@ -109,7 +120,7 @@ Page({
         wx.hideLoading();
 
       },
-      fail: function (res) {
+      fail: function(res) {
         wx.hideLoading();
         wx.showToast({
           title: '网络超时,请检查网络设置!',
@@ -123,7 +134,7 @@ Page({
   /**
    * 请求数据
    */
-  requestData() {
+  requestDataWithCaches() {
     wx.showLoading({
       title: '加载中...',
     })
@@ -142,7 +153,17 @@ Page({
       console.log(e);
     }
 
-    if (!this.hasLogin(nickName, token)) return;
+    //  从本地获取登录状态
+    // try {
+    //   var hasLogin = wx.getStorageSync('hasLogin');
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
+    // if (!hasLogin) {
+    //   this.logoutRefresh();
+    //   return;
+    // }
 
     //  从本地获取deviceRecordArray
     try {
@@ -150,6 +171,11 @@ Page({
     } catch (e) {
       console.log(e);
     }
+
+    //  利用缓存数据作为页面
+    this.setData({
+      deviceRecords: deviceRecordArray
+    })
 
     var that = this;
 
@@ -161,7 +187,7 @@ Page({
         page: 0,
         token: token
       },
-      success: function (res) {
+      success: function(res) {
         if (res.data.result[0].r_id == deviceRecordArray[0].r_id) { //  相等直接返回
           wx.hideLoading();
           return;
@@ -171,6 +197,7 @@ Page({
           deviceRecordArray = deviceRecordArray.concat(res.data.result);
         }
 
+        //  请求成功后刷新数据
         that.setData({
           deviceRecords: deviceRecordArray
         })
@@ -184,7 +211,7 @@ Page({
         // 隐藏toast
         wx.hideLoading();
       },
-      fail: function (res) {
+      fail: function(res) {
         wx.hideLoading();
         wx.showToast({
           title: '网络超时,请检查网络设置!',
@@ -195,6 +222,9 @@ Page({
     })
   },
 
+  /**
+   * 上拉加载
+   */
   loadMore() {
     wx.showLoading({
       title: '加载中...',
@@ -221,17 +251,17 @@ Page({
       console.log(e);
     }
 
-    if (nickName == null || token == null) {
-      wx.showToast({
-        title: '请登录系统...',
-        icon: 'none',
-        mask: true
-      })
-      this.setData({
-        deviceRecords: []
-      })
-      return;
-    }
+    //  从本地获取登录状态
+    // try {
+    //   var hasLogin = wx.getStorageSync('hasLogin');
+    // } catch (e) {
+    //   console.log(e);
+    // }
+
+    // if (!hasLogin) {
+    //   this.logoutRefresh();
+    //   return;
+    // }
 
     // 上拉 页面自增
     this.setData({
@@ -247,7 +277,7 @@ Page({
         page: that.data.page,
         token: token
       },
-      success: function (res) {
+      success: function(res) {
         deviceRecordArray = deviceRecordArray.concat(res.data.result);
         that.setData({
           deviceRecords: deviceRecordArray
@@ -260,7 +290,7 @@ Page({
           data: that.data.deviceRecords,
         })
       },
-      fail: function (res) {
+      fail: function(res) {
         wx.hideLoading();
         wx.showToast({
           title: '网络超时,请检查网络设置!',
@@ -274,21 +304,21 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: function(options) {
     this.loadData();
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
+  onReady: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: function() {
     //  从本地获取userInfo信息
     try {
       var nickName = wx.getStorageSync('userInfo').nickName;
@@ -309,38 +339,48 @@ Page({
       console.log(e);
     }
 
-    if (commitSuccess && this.hasLogin(nickName, token)) {
+    try {
+      var loginStatusChange = wx.getStorageSync('loginStatusChange');
+    } catch (e) {
+      console.log(e);
+    }
+
+    if (commitSuccess || loginStatusChange) {
       wx.pageScrollTo({
         scrollTop: 0,
       })
       wx.startPullDownRefresh();
-      this.onPullDownRefresh();
       wx.setStorage({
         key: 'commitSuccess',
         data: false,
       })
-    } else return;
-
+      wx.setStorage({
+        key: 'loginStatusChange',
+        data: false,
+      })
+    } else {
+      this.logoutRefresh();
+    }
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function () {
+  onHide: function() {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function () {
+  onUnload: function() {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     console.log('下拉刷新');
     this.loadData();
     wx.stopPullDownRefresh();
@@ -349,7 +389,7 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
+  onReachBottom: function() {
     console.log('上拉加载');
     this.loadMore();
   },
@@ -357,7 +397,7 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })

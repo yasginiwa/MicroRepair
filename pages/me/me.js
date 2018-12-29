@@ -66,11 +66,24 @@ Page({
       },
       method: 'POST',
       success: function (res) {
-        try {
-          wx.setStorageSync('token', res.data.token);
-        } catch (error) {
-          console.log(error);
-        }
+        //  登录成功 设置token存储到本地
+        wx.setStorage({
+          key: 'token',
+          data: res.data.token,
+        })
+
+        //  登录成功 设置登录状态存储到本地
+        wx.setStorage({
+          key: 'hasLogin',
+          data: true,
+        })
+
+        //  改变登录状态 保存到本地存储
+        wx.setStorage({
+          key: 'loginStatusChange',
+          data: true,
+        })
+
       },
       fail: function (res) { },
       complete: function (res) { },
@@ -96,6 +109,13 @@ Page({
           wx.clearStorage();
           that.onLoad();
         }
+      },
+      complete: function (res) {
+        //  改变登录状态 保存到本地存储
+        wx.setStorage({
+          key: 'loginStatusChange',
+          data: true,
+        })
       }
     })
   },
