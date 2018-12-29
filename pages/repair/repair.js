@@ -11,6 +11,21 @@ Page({
    * 扫描查询
    */
   query() {
+    try {
+      var hasLogin = wx.getStorageSync('hasLogin');
+    } catch (e) {
+      console.log(e);
+    }
+    if (!hasLogin) {
+      wx.showToast({
+        title: '请登录系统...',
+        icon: 'none',
+        mask: true
+      })
+      return;
+    }
+
+    var that = this;
     wx.scanCode({
       onlyFromCamera: true,
       scanType: [],
@@ -31,6 +46,21 @@ Page({
    * 扫描维修
    */
   repair() {
+    try {
+      var hasLogin = wx.getStorageSync('hasLogin');
+    } catch (e) {
+      console.log(e);
+    }
+    if (!hasLogin) {
+      wx.showToast({
+        title: '请登录系统...',
+        icon: 'none',
+        mask: true
+      })
+      return;
+    }
+
+    var that = this;
     wx.getStorage({
       key: 'userInfo',
       success: function (res) {
@@ -45,12 +75,7 @@ Page({
           }
         })
       },
-      fail: function (res) {
-        wx.showToast({
-          title: '请先登录系统...',
-          icon: 'none'
-        })
-      }
+      fail: function (res) {}
     })
   },
 

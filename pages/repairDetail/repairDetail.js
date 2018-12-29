@@ -109,8 +109,7 @@ Page({
     //  录音错误回调
     recorderManager.onError((res) => {
       wx.showToast({
-        title: '提示',
-        content: '手指按住姿势不对!',
+        title: '手指按住姿势不对!',
         icon: 'none',
         duration: 2000,
         mask: true

@@ -31,37 +31,15 @@ Page({
       title: '加载中...',
     })
 
-    //  从本地获取userInfo信息
-    try {
-      var nickName = wx.getStorageSync('userInfo').nickName;
-    } catch (e) {
-      console.log(e);
-    }
+    var that = this;
 
-    //  从本地获取token信息
+    //  从本地存储获取token信息
     try {
       var token = wx.getStorageSync('token');
     } catch (e) {
       console.log(e);
     }
 
-    if (nickName == null || token == null) {
-      wx.showToast({
-        title: '请登录系统...',
-        icon: 'none',
-        mask: true
-      })
-      this.setData({
-        deviceRecords: []
-      })
-      return;
-    }
-
-    var that = this;
-    that.setData({
-      deviceRecords: []
-    })
-    var deviceRecordArray = that.data.deviceRecords;
     wx.request({
       url: api.devicerecordUrl,
       method: 'POST',
@@ -70,10 +48,8 @@ Page({
         token: token
       },
       success: function (res) {
-
-        deviceRecordArray = deviceRecordArray.concat(res.data.result);
         that.setData({
-          deviceRecords: deviceRecordArray
+          deviceRecords: res.data.result
         })
         wx.hideLoading();
       },
@@ -127,7 +103,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    
+
   },
 
   /**
