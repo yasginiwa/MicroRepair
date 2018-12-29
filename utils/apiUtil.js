@@ -1,5 +1,4 @@
 var api = {
-  host: 'http://192.168.0.172:3002',
   loginUrl: 'http://192.168.0.172:3002/login',
   recordUrl: 'http://192.168.0.172:3002/record',
   dorecordUrl: 'http://192.168.0.172:3002/record.do',
