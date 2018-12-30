@@ -56,7 +56,7 @@ Page({
       fail: function (res) {
         wx.hideLoading();
         wx.showToast({
-          title: '网络超时,请检查网络设置!',
+          title: '网络错误,请检查网络设置!',
           icon: 'none',
           mask: true
         })

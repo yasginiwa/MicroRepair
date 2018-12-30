@@ -85,7 +85,11 @@ Page({
         })
 
       },
-      fail: function (res) { },
+      fail: function (res) {
+        wx.showToast({
+          title: '网络错误，请检查网络设置',
+        })
+      },
       complete: function (res) { },
     })
 
