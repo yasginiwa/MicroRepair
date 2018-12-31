@@ -15,19 +15,19 @@
 
   <view class='item'>
     <text>设备名称</text>
-    <input bindblur='OnNameConfirm' bindconfirm='OnNameConfirm' confirm-type='next' placeholder='请输入'></input>
+    <input bindinput='OnNameConfirm' bindconfirm='OnNameConfirm' confirm-type='next' placeholder='请输入'></input>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
 
   <view class='item'>
     <text>故障原因</text>
-    <input bindblur='OnReasonConfirm' bindconfirm='OnReasonConfirm' confirm-type='next' placeholder='请输入'></input>
+    <input bindinput='OnReasonConfirm' bindconfirm='OnReasonConfirm' confirm-type='next' placeholder='请输入'></input>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
 
   <view class='item'>
     <text>维修结果</text>
-    <input bindblur='OnResultConfirm' bindconfirm='OnResultConfirm' confirm-type='done' placeholder='请输入'></input>
+    <input bindinput='OnResultConfirm' bindconfirm='OnResultConfirm' confirm-type='done' placeholder='请输入'></input>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
 

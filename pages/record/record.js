@@ -51,6 +51,12 @@ Page({
       console.log(e);
     }
 
+    //  利用缓存数据作为页面
+    this.setData({
+      deviceRecords: deviceRecordArray
+    })
+
+
     if (deviceRecordArray.length > 0) {
       this.requestDataWithCaches();
     } else {
@@ -152,10 +158,10 @@ Page({
       console.log(e);
     }
 
-    //  利用缓存数据作为页面
-    this.setData({
-      deviceRecords: deviceRecordArray
-    })
+    // //  利用缓存数据作为页面
+    // this.setData({
+    //   deviceRecords: deviceRecordArray
+    // })
 
     var that = this;
 

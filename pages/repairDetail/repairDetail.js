@@ -45,7 +45,6 @@ Page({
    * 设置设备名称
    */
   OnNameConfirm(e) {
-    console.log(e);
     this.setData({
       'record.name': e.detail.value
     })
@@ -167,10 +166,10 @@ Page({
   },
 
   /**
-   * 判断record中的name、reason、result属性是否为空，按条件disable提交按钮
+   * 判断record中的cate、name、reason、result属性是否为空，按条件disable提交按钮
    */
   editHasCompleted() {
-    if (this.data.record.name.length == 0 || this.data.record.reason.length == 0 || this.data.record.result.length == 0) {
+    if (this.data.record.cate.length == 0 || this.data.record.name.length == 0 || this.data.record.reason.length == 0 || this.data.record.result.length == 0) {
       this.setData({
         commitDisable: true
       })
@@ -206,7 +205,7 @@ Page({
     }
 
     wx.showLoading({
-      title: '请稍候...',
+      title: '提交中...',
       mask: true
     })
     var that = this;

@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "维修管理"
+  "navigationBarTitleText": "维修管理",
+  "disableScroll": true
 }
