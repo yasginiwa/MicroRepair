@@ -51,11 +51,12 @@ Page({
       console.log(e);
     }
 
+    if (!deviceRecordArray) deviceRecordArray = [];
+
     //  利用缓存数据作为页面
     this.setData({
       deviceRecords: deviceRecordArray
     })
-
 
     if (deviceRecordArray.length > 0) {
       this.requestDataWithCaches();
@@ -86,15 +87,8 @@ Page({
       console.log(e);
     }
 
-    //  从本地获取deviceRecordArray
-    try {
-      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
-    } catch (e) {
-      console.log(e);
-    }
 
     var that = this;
-
     wx.request({
       url: api.userrecordUrl,
       method: 'POST',
@@ -106,12 +100,6 @@ Page({
       success: function (res) {
         that.setData({
           deviceRecords: res.data.result
-        })
-
-        //  存储数组到本地存储
-        wx.setStorage({
-          key: 'deviceRecordArray',
-          data: res.data.result,
         })
 
         // 隐藏toast
@@ -158,13 +146,8 @@ Page({
       console.log(e);
     }
 
-    // //  利用缓存数据作为页面
-    // this.setData({
-    //   deviceRecords: deviceRecordArray
-    // })
 
     var that = this;
-
     wx.request({
       url: api.userrecordUrl,
       method: 'POST',
@@ -186,12 +169,6 @@ Page({
         //  请求成功后刷新数据
         that.setData({
           deviceRecords: deviceRecordArray
-        })
-
-        //  存储数组到本地存储
-        wx.setStorage({
-          key: 'deviceRecordArray',
-          data: deviceRecordArray,
         })
 
         // 隐藏toast
@@ -230,13 +207,6 @@ Page({
       console.log(e);
     }
 
-    //  从本地获取deviceRecordArray
-    try {
-      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
-    } catch (e) {
-      console.log(e);
-    }
-
     // 上拉 页面自增
     this.setData({
       page: this.data.page + 1
@@ -252,17 +222,10 @@ Page({
         token: token
       },
       success: function (res) {
-        deviceRecordArray = deviceRecordArray.concat(res.data.result);
         that.setData({
-          deviceRecords: deviceRecordArray
+          deviceRecords: that.data.deviceRecords.concat(res.data.result)
         })
         wx.hideLoading();
-
-        //  存储deviceRecordArray到本地
-        wx.setStorage({
-          key: 'deviceRecordArray',
-          data: that.data.deviceRecords,
-        })
       },
       fail: function (res) {
         wx.hideLoading();
@@ -342,6 +305,12 @@ Page({
    */
   onHide: function () {
 
+    var that = this;
+    //  存储数组到本地存储
+    wx.setStorage({
+      key: 'deviceRecordArray',
+      data: that.data.deviceRecords.slice(-13)
+    })
   },
 
   /**

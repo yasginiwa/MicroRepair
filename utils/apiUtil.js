@@ -1,10 +1,10 @@
 var api = {
-  loginUrl: 'http://192.168.0.172:3002/login',
-  recordUrl: 'http://192.168.0.172:3002/record',
-  dorecordUrl: 'http://192.168.0.172:3002/record.do',
-  uploadUrl: 'http://192.168.0.172:3002/upload',
-  userrecordUrl: 'http://192.168.0.172:3002/userrecord',
-  devicerecordUrl: 'http://192.168.0.172:3002/devicerecord'
+  loginUrl: 'https://crowncake.cn:10443/login',
+  recordUrl: 'https://crowncake.cn:10443/record',
+  dorecordUrl: 'https://crowncake.cn:10443/record.do',
+  uploadUrl: 'https://crowncake.cn:10443/upload',
+  userrecordUrl: 'https://crowncake.cn:10443/userrecord',
+  devicerecordUrl: 'https://crowncake.cn:10443/devicerecord'
   }
 
 module.exports = api;
