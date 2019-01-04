@@ -51,12 +51,7 @@ Page({
       console.log(e);
     }
 
-    if (!deviceRecordArray) deviceRecordArray = [];
-
-    //  利用缓存数据作为页面
-    this.setData({
-      deviceRecords: deviceRecordArray
-    })
+    // if (!deviceRecordArray) deviceRecordArray = [];
 
     if (deviceRecordArray.length > 0) {
       this.requestDataWithCaches();
@@ -87,6 +82,13 @@ Page({
       console.log(e);
     }
 
+    //  从本地获取deviceRecordArray
+    try {
+      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
+    } catch (e) {
+      console.log(e);
+    }
+
 
     var that = this;
     wx.request({
@@ -100,6 +102,11 @@ Page({
       success: function (res) {
         that.setData({
           deviceRecords: res.data.result
+        })
+
+        wx.setStorage({
+          key: 'deviceRecordArray',
+          data: res.data.result,
         })
 
         // 隐藏toast
@@ -304,12 +311,11 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
-    var that = this;
+    var that = this
     //  存储数组到本地存储
     wx.setStorage({
       key: 'deviceRecordArray',
-      data: that.data.deviceRecords.slice(-13)
+      data: that.data.deviceRecords.slice(20)
     })
   },
 
@@ -325,6 +331,7 @@ Page({
    */
   onPullDownRefresh: function () {
     console.log('下拉刷新');
+
     this.loadData();
     wx.stopPullDownRefresh();
   },
