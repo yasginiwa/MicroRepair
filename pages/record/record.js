@@ -313,7 +313,7 @@ Page({
     //  存储数组到本地存储
     wx.setStorage({
       key: 'deviceRecordArray',
-      data: that.data.deviceRecords.slice(20)
+      data: that.data.deviceRecords.slice(0, 20)
     })
   },
 
