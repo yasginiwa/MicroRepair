@@ -51,8 +51,6 @@ Page({
       console.log(e);
     }
 
-    // if (!deviceRecordArray) deviceRecordArray = [];
-
     if (deviceRecordArray.length > 0) {
       this.requestDataWithCaches();
     } else {
