@@ -52,16 +52,16 @@ Page({
     }
 
     if (deviceRecordArray.length > 0) {
-      this.requestDataWithCaches();
+      this.requestDataWithCaches(deviceRecordArray);
     } else {
-      this.loadDataWithoutCaches();
+      this.requestDataWithoutCaches();
     }
   },
 
   /**
    * 无数据时请求
    */
-  loadDataWithoutCaches() {
+  requestDataWithoutCaches() {
     wx.showLoading({
       title: '加载中...',
     })
@@ -79,14 +79,6 @@ Page({
     } catch (e) {
       console.log(e);
     }
-
-    //  从本地获取deviceRecordArray
-    try {
-      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
-    } catch (e) {
-      console.log(e);
-    }
-
 
     var that = this;
     wx.request({
@@ -109,7 +101,6 @@ Page({
 
         // 隐藏toast
         wx.hideLoading();
-
       },
       fail: function (res) {
         wx.hideLoading();
@@ -125,7 +116,7 @@ Page({
   /**
    * 请求数据
    */
-  requestDataWithCaches() {
+  requestDataWithCaches(deviceRecordArray) {
     wx.showLoading({
       title: '加载中...',
     })
@@ -143,14 +134,6 @@ Page({
     } catch (e) {
       console.log(e);
     }
-
-    //  从本地获取deviceRecordArray
-    try {
-      var deviceRecordArray = wx.getStorageSync('deviceRecordArray');
-    } catch (e) {
-      console.log(e);
-    }
-
 
     var that = this;
     wx.request({
@@ -247,6 +230,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    try {
+      var deviceRecordArray = wx.getStorageSync('deviceRecordArray')
+    } catch (e) {
+      console.log(e);
+    }
+
+    // //  设置缓存为初始数据
+    // this.setData({
+    //   deviceRecords : deviceRecordArray
+    // })
+    // wx.startPullDownRefresh();
+    // this.onPullDownRefresh();
+    //  设置缓存为初始数据
+    this.setData({
+      deviceRecords : deviceRecordArray
+    })
     this.loadData();
   },
 
