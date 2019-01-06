@@ -43,7 +43,7 @@ page{
 .cells .devider {
   width: 2rpx;
   height: 60%;
-  background-color: rgba(230, 230, 230, 0.5);
+  background-color: rgba(230, 230, 230, 0.6);
 }
 
 .cells .textDesc {
@@ -56,7 +56,8 @@ page{
 
 .cells .textDesc .no {
   position: absolute;
-  right: 70rpx;
+  left: 450rpx;
+  margin-top: 2px;
   color: rgb(102, 102, 102);
   font-size: 22rpx;
 }

@@ -236,12 +236,6 @@ Page({
       console.log(e);
     }
 
-    // //  设置缓存为初始数据
-    // this.setData({
-    //   deviceRecords : deviceRecordArray
-    // })
-    // wx.startPullDownRefresh();
-    // this.onPullDownRefresh();
     //  设置缓存为初始数据
     this.setData({
       deviceRecords : deviceRecordArray

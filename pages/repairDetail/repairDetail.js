@@ -234,6 +234,11 @@ Page({
           wx.switchTab({
             url: '../repair/repair',
           })
+        },
+        fail: function (res) {
+          wx.showToast({
+            title: '网络超时，请检查手机网络设置！',
+          })
         }
       })
     } else { // 有录音、
@@ -267,6 +272,11 @@ Page({
               //  切换至record页面
               wx.switchTab({
                 url: '../repair/repair',
+              })
+            },
+            fail: function(res) {
+              wx.showToast({
+                title: '网络超时，请检查手机网络设置！',
               })
             }
           })
