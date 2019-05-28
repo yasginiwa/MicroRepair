@@ -1,6 +1,6 @@
 /* pages/repair/repair.wxss */
 page{
-  background-color: #eee;
+  /* background-color: #eee; */
 }
 
 .banner image{

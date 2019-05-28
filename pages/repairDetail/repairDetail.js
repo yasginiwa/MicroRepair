@@ -2,7 +2,7 @@
 const recorderManager = wx.getRecorderManager()
 const innerAudioContext = wx.createInnerAudioContext();
 var util = require('../../utils/util.js');
-var api = require('../../utils/apiUtil.js');
+var api = require('../../utils/api.js');
 
 Page({
   /**

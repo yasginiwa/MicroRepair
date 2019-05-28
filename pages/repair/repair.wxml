@@ -1,6 +1,6 @@
 <!--pages/repair/repair.wxml-->
-<!-- 首页banner -->
 
+<!-- 首页banner -->
 <view class='banner'>
   <image src='../../assets/images/repair/banner.png'></image>
 </view>

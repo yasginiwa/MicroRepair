@@ -1,4 +1,9 @@
 // pages/repair/repair.js
+
+const api = require('../../utils/api.js');
+var urlSafeBase64 = require('../../utils/safebase64.js');
+const dateUtil = require('../../utils/util.js');
+
 Page({
   /**
    * 页面的初始数据
@@ -32,9 +37,9 @@ Page({
       success: function (res) {
         wx.navigateTo({
           url: '../deviceRecord/deviceRecord?scanCode=' + res.result,
-          success: function(res) {},
-          fail: function(res) {},
-          complete: function(res) {},
+          success: function (res) { },
+          fail: function (res) { },
+          complete: function (res) { },
         })
       },
       fail: function (res) { },
@@ -75,7 +80,7 @@ Page({
           }
         })
       },
-      fail: function (res) {}
+      fail: function (res) { }
     })
   },
 
@@ -83,7 +88,41 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var now = dateUtil.formatTime(new Date());
 
+    var content = {
+      'wxopenid': 'oh0Ca5VTFEfTji19ihHdxVeu3sAs',
+      'nickname': '李',
+      'phoneno': '135451261238',
+      'bindsource': 'DeviceMaintainMP',
+      'timestamp': now
+    }
+
+
+
+    var userBindUrl = api.userBind,
+      encContent = urlSafeBase64.encode(api.encryptContent(content)),
+      sign = api.sign(content),
+      token = api.token;
+
+    wx.request({
+      url: userBindUrl,
+      method: 'GET',
+      data: {
+        token: token,
+        sign: sign,
+        content: encContent
+      },
+      success: function (res) {
+        if (res.data) {
+          var data = JSON.parse(res.data);
+          var user = api.decryptContent(data.content);
+          console.log(user);
+          }        
+      }, fail: function (err) {
+        console.log(err);
+      }
+    })
   },
 
   /**

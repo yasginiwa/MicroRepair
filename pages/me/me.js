@@ -1,5 +1,5 @@
 // pages/me/me.js
-var api = require('../../utils/apiUtil.js');
+var api = require('../../utils/api.js');
 
 Page({
   /**
