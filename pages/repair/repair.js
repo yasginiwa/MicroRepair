@@ -88,19 +88,36 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var now = dateUtil.formatTime(new Date());
+    wx.login({
+      success(res) {
+        console.log(res);
+        if (res.code) {
+          //发起网络请求
+          wx.request({
+            url: 'http://192.168.5.214:10443/getopenid',
+            method: 'POST',
+            data: {
+              code: res.code
+            }
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    })
 
+
+
+    var now = dateUtil.formatTime(new Date());
     var content = {
-      'wxopenid': 'oh0Ca5VTFEfTji19ihHdxVeu3sAs',
-      'nickname': '李',
-      'phoneno': '135451261238',
+      'wxopenid': 'oh1Ca5VTFEfTji19ihHdxVeu3sAc',
+      'nickname': '李玉刚',
+      'phoneno': '13545126358',
       'bindsource': 'DeviceMaintainMP',
       'timestamp': now
     }
 
-
-
-    var userBindUrl = api.userBind,
+    var userBindUrl = api.userBindUrl,
       encContent = urlSafeBase64.encode(api.encryptContent(content)),
       sign = api.sign(content),
       token = api.token;
@@ -114,11 +131,12 @@ Page({
         content: encContent
       },
       success: function (res) {
-        if (res.data) {
-          var data = JSON.parse(res.data);
-          var user = api.decryptContent(data.content);
-          console.log(user);
-          }        
+        if (res.data) { // 在一网用户列表内 注册成功
+          var dataObj = JSON.parse(res.data);
+          console.log(dataObj);
+        } else {
+          console.log(res); // 不在一网用户列表内 注册失败
+        }   
       }, fail: function (err) {
         console.log(err);
       }
