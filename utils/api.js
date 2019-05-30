@@ -9,7 +9,7 @@ var appKey = 'MTIzNDU2YWJjZEUxMjM0NQ==',
   deviceBindUrl = `${host}/icapi/devicebind`,
   addMaintainUrl = `${host}/icapi/addmaintain`,
   maintainQueryUrl = `${host}/icapi/maintainquery`,
-  getopenidUrl = '192.168.5.214:10443/getopenid';
+  getopenidUrl = 'https://repair.hgsp.cn:10445/getopenid';
 
 
 /**

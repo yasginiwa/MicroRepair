@@ -90,14 +90,16 @@ Page({
   onLoad: function (options) {
     wx.login({
       success(res) {
-        console.log(res);
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: 'http://192.168.5.214:10443/getopenid',
+            url: 'https://repair.hgsp.cn:10445/getopenid',
             method: 'POST',
             data: {
               code: res.code
+            },
+            success:(res)=> {
+              console.log(res);
             }
           })
         } else {
@@ -124,7 +126,6 @@ Page({
 
     wx.request({
       url: userBindUrl,
-      method: 'GET',
       data: {
         token: token,
         sign: sign,
