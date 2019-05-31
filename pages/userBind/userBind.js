@@ -2,6 +2,7 @@
 const api = require('../../utils/api.js');
 var urlSafeBase64 = require('../../utils/safebase64.js');
 const dateUtil = require('../../utils/util.js');
+const regeneratorRuntime = require('../../utils/regenerator/runtime.js');
 
 Page({
 
@@ -10,7 +11,7 @@ Page({
    */
   data: {
     btnDisable: true,
-    userusername: '',
+    username: '',
     phone: ''
   },
 
@@ -46,15 +47,23 @@ Page({
     //  显示hud
     wx.showLoading({
       title: '绑定中...',
+      mask: true
     })
 
     //  判断是否获取到用户信息
-    if (e.detail.userInfo) {
-      wx.setStorageSync('userInfo', e.detail.userInfo);
+    if (!e.detail.userInfo) {
+      wx.showToast({
+        image: '../../assets/images/warning.png',
+        title: '请点击允许继续'
+      })
+      return;
+    }
 
-      //  登录获取openid
+    wx.setStorageSync('userInfo', e.detail.userInfo);
+    //  登录获取openid
+    let getOpenId = new Promise((resolve, reject) => {
       wx.login({
-        success(res) {
+        success: (res) => {
           if (res.code) {
             //发起网络请求
             wx.request({
@@ -65,19 +74,26 @@ Page({
               },
               success: (res) => {
                 wx.setStorageSync('wxopenid', res.data.result.wxopenid);
+                return resolve(res.data.result.wxopenid);
               }
             })
           } else {
-            console.log('登录失败！' + res.errMsg)
+            return reject(res.errMsg);
           }
         }
       })
+    });
+
+let that = this;
+    async function bindUser() {
+
+      let wxopenid = await getOpenId;
 
       var now = dateUtil.formatTime(new Date());
       var content = {
-        'wxopenid': wx.getStorageSync('wxopenid'),
-        'nickname': this.data.username,
-        'phoneno': this.data.phone,
+        'wxopenid': wxopenid,
+        'nickname': that.data.username,
+        'phoneno': that.data.phone,
         'bindsource': 'DeviceMaintainMP',
         'timestamp': now
       }
@@ -98,32 +114,32 @@ Page({
           //  移除绑定hud
           wx.hideLoading();
 
-          var result = JSON.parse(res.data);
-          if (result) { // 在一网用户列表内 注册成功
-            var resultObj = JSON.parse(result);
-            if (resultObj.content) {
-              console.log(api.decryptContent(resultObj.content) + '注册成功');
+          var data = JSON.parse(res.data);
+          if (data) { // 在一网用户列表内 注册成功
+            var dataObj = JSON.parse(data);
+            if (dataObj.content) {
+              console.log(api.decryptContent(dataObj.content) + '注册成功');
+              wx.reLaunch({
+                url: '../repair/repair',
+              })
             } else {
+              console.log(data + '注册失败'); // 不在一网用户列表内 注册失败
               // 显示绑定失败hud 直接返回
               wx.showToast({
                 image: '../../assets/images/fail.png',
                 title: '绑定失败',
               })
-              console.log(res + '注册失败'); // 不在一网用户列表内 注册失败
-              return;
             }
           }
-        }, fail: function (err) {
+        },
+        fail: function (err) {
           console.log(err);
         }
       })
-    } else {
-      wx.showToast({
-        image: '../../assets/images/warning.png',
-        title: '请点击允许继续'
-      })
-    }
-  },
+  }
+
+  bindUser();
+},
 
 
   /**
@@ -131,6 +147,23 @@ Page({
    */
   onLoad: function (options) {
 
+
+
+    // let a = new Promise((resolve, reject) => {
+    //   let data = '';
+    //   setTimeout(function () {
+    //     data = '李毛毛'
+    //     return resolve(data);
+    //   }, 3000)
+
+    // });
+
+    // async function f2() {
+    //   let d = await a;
+    //   console.log(d);
+    // }
+
+    // f2();
   },
 
   /**
