@@ -1,0 +1,32 @@
+<!--pages/userBind/userBind.wxml-->
+<view class='sec1'>
+  <image src='../../assets/images/userBind/registry.png'></image>
+</view>
+
+<view class='sec2'>
+  <text>运维人员与一网烘焙用户绑定</text>
+</view>
+
+<view class='sec3'>
+  <view class='profile'>
+    <input bindinput ='usernameInput' placeholder='真实姓名' placeholder-class='phstyle'></input>
+  </view>
+
+  <view class='profile'>
+    <input type='number' bindinput='phoneInput' placeholder='手机号' placeholder-class='phstyle'></input>
+  </view>
+
+  <!-- <view class='profile'>
+    <input bindinput='passwordInput' password='true' placeholder='密码（不少于6位）' placeholder-class='phstyle'></input>
+  </view>
+
+  <view class='profile'>
+    <input bindinput ='passwordConfirmInput' password='true' placeholder='确认密码' placeholder-class='phstyle'></input>
+  </view> -->
+</view>
+
+<view class='sec4'>
+
+
+<button open-type="getUserInfo" bindgetuserinfo="onRegistry" disabled='{{btnDisable}}' type='default'>绑 定</button>
+</view>

@@ -88,6 +88,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+
     wx.login({
       success(res) {
         if (res.code) {
@@ -98,7 +100,7 @@ Page({
             data: {
               code: res.code
             },
-            success:(res)=> {
+            success: (res) => {
               console.log(res);
             }
           })
@@ -112,12 +114,20 @@ Page({
 
     var now = dateUtil.formatTime(new Date());
     var content = {
-      'wxopenid': 'oh1Ca5VTFEfTji19ihHdxVeu3sAc',
+      'wxopenid': 'ov4_64vTqTzSOLmnmw9sfeE19f7Y',
       'nickname': '李玉刚',
       'phoneno': '13545126358',
       'bindsource': 'DeviceMaintainMP',
       'timestamp': now
     }
+
+    // var content = {
+    //   'wxopenid': 'ov4_64vTqTzSOLmnmw9sfeE19454',
+    //   'nickname': '李玉',
+    //   'phoneno': '13511111111',
+    //   'bindsource': 'DeviceMaintainMP',
+    //   'timestamp': now
+    // }
 
     var userBindUrl = api.userBindUrl,
       encContent = urlSafeBase64.encode(api.encryptContent(content)),
@@ -128,16 +138,19 @@ Page({
       url: userBindUrl,
       data: {
         token: token,
-        sign: sign,
-        content: encContent
+        content: encContent,
+        sign: sign
       },
       success: function (res) {
-        if (res.data) { // 在一网用户列表内 注册成功
-          var dataObj = JSON.parse(res.data);
-          console.log(dataObj);
-        } else {
-          console.log(res); // 不在一网用户列表内 注册失败
-        }   
+        var result = JSON.parse(res.data);
+        if (result) { // 在一网用户列表内 注册成功
+          var resultObj = JSON.parse(result);
+          if (resultObj.content) {
+            console.log(api.decryptContent(resultObj.content) + '注册成功');
+          } else {
+            console.log(res + '注册失败'); // 不在一网用户列表内 注册失败
+          }
+        }
       }, fail: function (err) {
         console.log(err);
       }

@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/userBind/userBind",
     "pages/repair/repair",
     "pages/record/record",
     "pages/me/me",

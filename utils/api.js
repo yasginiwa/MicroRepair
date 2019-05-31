@@ -4,12 +4,12 @@ var safeBase64 = require('../utils/safebase64.js')
 var appKey = 'MTIzNDU2YWJjZEUxMjM0NQ==',
   signKey = 'uTjPnNmlGrtlbDNi25s3DY3CSVwONAYs',
   token = 'HGTestTOKEN',
-  host = 'http://repair.hgsp.cn:27777',
+  host = 'https://repair.hgsp.cn:10445',
   userBindUrl = `${host}/icapi/userbind`,
   deviceBindUrl = `${host}/icapi/devicebind`,
   addMaintainUrl = `${host}/icapi/addmaintain`,
   maintainQueryUrl = `${host}/icapi/maintainquery`,
-  getopenidUrl = 'https://repair.hgsp.cn:10445/getopenid';
+  getopenidUrl = `${host}/getopenid`;
 
 
 /**
@@ -55,5 +55,6 @@ module.exports = {
   userBindUrl: userBindUrl,
   deviceBindUrl: deviceBindUrl,
   addMaintainUrl: addMaintainUrl,
-  maintainQueryUrl: maintainQueryUrl
+  maintainQueryUrl: maintainQueryUrl,
+  getopenidUrl: getopenidUrl
 };

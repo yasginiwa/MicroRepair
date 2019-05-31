@@ -1,0 +1,68 @@
+/* pages/userBind/userBind.wxss */
+page {
+  background-color: #F6FAFD;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.sec1 {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.sec1 image {
+  margin-top: 100rpx;
+  width: 150rpx;
+  height: 150rpx;
+}
+
+.sec2 {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin-top: 50rpx;
+  color: #999;
+  font-size: 34rpx;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+.sec3 {
+  display: flex;
+  flex-flow: column nowrap;
+  border: solid #EBEDEC 1rpx;
+  border-radius: 5rpx;
+  background-color: white;
+  width: 460rpx;
+  margin-top: 50rpx;
+  overflow: hidden;
+}
+
+.sec3 .profile {
+  border-bottom: solid #EBEDEC 1rpx;
+  height: 80rpx;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  margin-left: 20rpx;
+  width: 100%;
+  font-size: 30rpx;
+  background: no-repeat 
+}
+
+.sec3 .phstyle {
+  color: #d7d7d7;
+  font-size: 30rpx;
+}
+
+.sec4 {
+  margin-top: 50rpx;
+}
+
+.sec4 button {
+  width: 460rpx;
+  background-color: #0079C0;
+  color: white;
+  border-bottom: none;
+}
