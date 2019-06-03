@@ -95,7 +95,7 @@ Page({
         if (res.code) {
           //发起网络请求
           wx.request({
-            url: 'https://repair.hgsp.cn:10445/getopenid',
+            url: api.getopenidUrl,
             method: 'POST',
             data: {
               code: res.code
@@ -120,14 +120,6 @@ Page({
       'bindsource': 'DeviceMaintainMP',
       'timestamp': now
     }
-
-    // var content = {
-    //   'wxopenid': 'ov4_64vTqTzSOLmnmw9sfeE19454',
-    //   'nickname': '李玉',
-    //   'phoneno': '13511111111',
-    //   'bindsource': 'DeviceMaintainMP',
-    //   'timestamp': now
-    // }
 
     var userBindUrl = api.userBindUrl,
       encContent = urlSafeBase64.encode(api.encryptContent(content)),

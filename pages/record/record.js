@@ -22,11 +22,6 @@ Page({
   },
 
   logoutRefresh() {
-    try {
-      var hasLogin = wx.getStorageSync('hasLogin');
-    } catch (e) {
-      console.log(e);
-    }
     if (!hasLogin) {
       this.setData({
         deviceRecords: []

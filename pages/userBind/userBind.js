@@ -12,7 +12,9 @@ Page({
   data: {
     btnDisable: true,
     username: '',
-    phone: ''
+    phone: '',
+    wxopenid: '',
+    userInfo: {}
   },
 
   usernameInput: function (e) {
@@ -59,7 +61,10 @@ Page({
       return;
     }
 
-    wx.setStorageSync('userInfo', e.detail.userInfo);
+    this.setData({
+      userInfo: e.detail.userInfo
+    });
+
     //  登录获取openid
     let getOpenId = new Promise((resolve, reject) => {
       wx.login({
@@ -73,7 +78,7 @@ Page({
                 code: res.code
               },
               success: (res) => {
-                wx.setStorageSync('wxopenid', res.data.result.wxopenid);
+
                 return resolve(res.data.result.wxopenid);
               }
             })
@@ -88,6 +93,12 @@ let that = this;
     async function bindUser() {
 
       let wxopenid = await getOpenId;
+
+      that.setData({
+        wxopenid: wxopenid
+      });
+
+      console.log(that.data.wxopenid);
 
       var now = dateUtil.formatTime(new Date());
       var content = {
@@ -122,13 +133,34 @@ let that = this;
               wx.reLaunch({
                 url: '../repair/repair',
               })
+
+              // 存储wxopenid 用户信息 到本地 
+              wx.setStorage({
+                key: 'wxopenid',
+                data: that.data.wxopenid,
+              })
+
+              // 存储用户信息 到本地 
+              wx.setStorage({
+                key: 'userInfo',
+                data: that.data.userInfo
+              })
+
+              // 存储用户登录状态
+              wx.setStorage({
+                key: 'hasLogin',
+                data: true
+              })
+
             } else {
+
               console.log(data + '注册失败'); // 不在一网用户列表内 注册失败
               // 显示绑定失败hud 直接返回
               wx.showToast({
                 image: '../../assets/images/fail.png',
                 title: '绑定失败',
               })
+
             }
           }
         },
@@ -137,7 +169,8 @@ let that = this;
         }
       })
   }
-
+  
+  // 执行绑定方法
   bindUser();
 },
 
@@ -147,23 +180,6 @@ let that = this;
    */
   onLoad: function (options) {
 
-
-
-    // let a = new Promise((resolve, reject) => {
-    //   let data = '';
-    //   setTimeout(function () {
-    //     data = '李毛毛'
-    //     return resolve(data);
-    //   }, 3000)
-
-    // });
-
-    // async function f2() {
-    //   let d = await a;
-    //   console.log(d);
-    // }
-
-    // f2();
   },
 
   /**

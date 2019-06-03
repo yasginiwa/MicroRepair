@@ -39,6 +39,7 @@ page{
 
 .userInfo .user_desc text{
   color: white;
+  text-shadow: #111 2rpx 2rpx;
   font-size: 32rpx;
   width: 320rpx;
 }
