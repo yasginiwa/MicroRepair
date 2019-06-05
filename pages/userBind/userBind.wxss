@@ -32,7 +32,7 @@ page {
   display: flex;
   flex-flow: column nowrap;
   border: solid #EBEDEC 1rpx;
-  border-radius: 5rpx;
+  border-radius: 10rpx;
   background-color: white;
   width: 460rpx;
   margin-top: 50rpx;

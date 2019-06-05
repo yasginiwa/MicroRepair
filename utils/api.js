@@ -9,7 +9,8 @@ var appKey = 'MTIzNDU2YWJjZEUxMjM0NQ==',
   deviceBindUrl = `${host}/icapi/devicebind`,
   addMaintainUrl = `${host}/icapi/addmaintain`,
   maintainQueryUrl = `${host}/icapi/maintainquery`,
-  getopenidUrl = `${host}/getopenid`;
+  getopenidUrl = `${host}/getopenid`,
+  basedataqueryUrl = `${host}/icapi/basedataquery`;
 
 
 /**
@@ -56,5 +57,6 @@ module.exports = {
   deviceBindUrl: deviceBindUrl,
   addMaintainUrl: addMaintainUrl,
   maintainQueryUrl: maintainQueryUrl,
-  getopenidUrl: getopenidUrl
+  getopenidUrl: getopenidUrl,
+  basedataqueryUrl: basedataqueryUrl
 };

@@ -161,6 +161,32 @@ Page({
    */
   onShow: function () {
 
+    var now = dateUtil.formatTime(new Date());
+    var content = {
+      'datavalue': 'POS',
+      'datasource': '15',
+      'timestamp': now
+    }
+
+    var basedataqueryUrl = 'http://192.168.10.20:27777/icapi/basedataquery',
+      encContent = urlSafeBase64.encode(api.encryptContent(content)),
+      sign = api.sign(content),
+      token = api.token;
+
+    wx.request({
+      url: basedataqueryUrl,
+      data: {
+        token: token,
+        content: encContent,
+        sign: sign
+      },
+      success: function (res) {
+        console.log(res);
+      }, fail: function (err) {
+        console.log(err);
+      }
+    })
+
   },
 
   /**

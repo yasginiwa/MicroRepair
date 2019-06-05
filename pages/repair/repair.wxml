@@ -1,5 +1,6 @@
 <!--pages/repair/repair.wxml-->
 
+
 <!-- 首页banner -->
 <view class='banner'>
   <image src='../../assets/images/repair/banner.png'></image>
@@ -19,4 +20,9 @@
     <image src='../../assets/images/repair/scanRepair.png'></image>
     <text class='scan_text'>扫码维修</text>
   </view>
+</view>
+
+<view class='devicebind'>
+  <image src='../../assets/images/repair/devicebind.png'></image>
+  <text>设备绑定</text>
 </view>
