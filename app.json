@@ -6,7 +6,8 @@
     "pages/me/me",
     "pages/repairDetail/repairDetail",
     "pages/deviceRecord/deviceRecord",
-    "pages/deviceRecordDetail/deviceRecordDetail"
+    "pages/deviceRecordDetail/deviceRecordDetail",
+    "pages/searchDevice/searchDevice"
   ],
   "window": {
     "backgroundTextStyle": "light",

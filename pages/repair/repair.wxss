@@ -1,11 +1,41 @@
 /* pages/repair/repair.wxss */
-page {
-  background-color: #eee;
-}
 
 .banner image {
   width: 100%;
   height: 460rpx;
+}
+
+.devicebind {
+  display: flex;
+  align-items: center;
+  border-radius: 15rpx;
+  border: 1rpx solid #DBDBDB;
+  width: 90%;
+  height: 60rpx;
+  line-height: 60rpx;
+  margin: 10rpx auto;
+  font-size: 25rpx;
+  color: #dbdbdb;
+  box-shadow: 0 1rpx rgba(50, 50, 50, 0.1);
+}
+
+.devicebind input {
+  width: 100%;
+  flex: 1;
+  padding-left: 40%;
+}
+
+.devicebind .plh {
+  height: 60rpx;
+  color: #dbdbdb;
+  line-height:60rpx;
+}
+
+.devicebind image {
+  width: 35rpx;
+  height: 35rpx;
+  position: relative;
+  left: 40%;
 }
 
 .middle {
@@ -60,30 +90,4 @@ page {
 .scan_text {
   color: white;
   font-size: 25rpx;
-}
-
-.devicebind {
-  position: fixed;
-  left: 50rpx;
-  bottom: 50rpx;
-  background-color: #5b4b22;
-  width: 90rpx;
-  height: 90rpx;
-  border-radius: 50%;
-  text-align: center;
-}
-
-.devicebind image {
-  width: 40rpx;
-  height: 40rpx;
-  position: relative;
-  top: 10rpx;
-}
-
-.devicebind text {
-  display: block;
-  color: #fff;
-  font-size: 15rpx;
-  position: relative;
-  top: 5rpx;
 }

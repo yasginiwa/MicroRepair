@@ -1,0 +1,35 @@
+<!--pages/bindDevice/bindDevice.wxml-->
+<view class='searchbar'>
+
+  <image src='../../assets/images/repair/search.png'></image>
+
+  <input placeholder='海信收银机' placeholder-class='plh' bindinput='onInput' auto-focus='true' value='{{keyword}}'></input>
+
+  <text bindtap='onSearchCancel'>取消</text>
+
+</view>
+
+<view class='recommend'>
+
+  <text class='title'>常用设备</text>
+
+  <view class='cate'>
+    <view wx:for='{{recommend}}' wx:key='devicename' bindtap='onSelectRecommend' data-index='{{index}}'>
+
+      <text>{{item}}</text>
+
+    </view>
+
+  </view>
+
+</view>
+
+<view class='results' wx:if='{{results.length > 0}}'>
+
+    <view wx:for='{{results}}' wx:key='devicename' bindtap='onSearchConfirm' data-index='{{index}}'>
+
+      <text>{{item.name}}</text>
+
+    </view>
+
+</view>

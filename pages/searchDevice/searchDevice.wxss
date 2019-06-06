@@ -1,0 +1,90 @@
+/* pages/bindDevice/bindDevice.wxss */
+.searchbar {
+  display: flex;
+  width: 100%;
+  height: 100rpx;
+  align-items: center;
+  border-bottom: 1rpx #eee solid;
+}
+
+.searchbar input {
+  width: 70%;
+  height: 60rpx;
+  background-color: #f7f7f7;
+  border-radius: 10rpx;
+  padding-left: 60rpx;
+  font-size: 26rpx;
+  margin-left: -10rpx;
+}
+
+.searchbar .plh {
+  font-size: 26rpx;
+  color: #dbdbdb;
+}
+
+.searchbar image {
+  width: 35rpx;
+  height: 35rpx;
+  position: relative;
+  left: 5%;
+}
+
+.searchbar text {
+  letter-spacing: 5rpx;
+  display: block;
+  text-align: center;
+  width: 20%;
+  font-size: 26rpx;
+}
+
+.recommend {
+  display: flex;
+  flex-flow: column wrap;
+}
+
+.recommend .title {
+  font-size: 26rpx;
+  font-weight: bold;
+  margin: 20rpx auto 0 20rpx;
+}
+
+.recommend .cate{
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.cate text {
+  display: block;
+  background-color: #eee;
+  font-size: 20rpx;
+  padding: 10rpx 30rpx;
+  margin: 10rpx 20rpx;
+  border-radius: 10rpx;
+  color: #555;
+}
+
+.results {
+  position: fixed;
+  top: 110rpx;
+  background-color: #fff;
+  width: 100%;
+}
+
+.results view {
+  height: 80rpx;
+  line-height: 80rpx;
+  padding-left: 20rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.results view:hover {
+  background-color: #eee;
+}
+
+.results view text {
+  font-size: 26rpx;
+  color: #555;
+}
+
+
+
