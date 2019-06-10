@@ -25,8 +25,9 @@
   </view> -->
 </view>
 
+
 <view class='sec4'>
 
+  <button open-type="getUserInfo" bindgetuserinfo="onRegistry" disabled='{{btnDisable}}' type='default'>绑 定</button>
 
-<button open-type="getUserInfo" bindgetuserinfo="onRegistry" disabled='{{btnDisable}}' type='default'>绑 定</button>
 </view>

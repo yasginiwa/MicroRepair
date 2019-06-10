@@ -86,5 +86,76 @@
   color: #555;
 }
 
+.bind-cover {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(10, 10, 10, 0.2);
+  z-index: 1;
+}
+
+.bind-popup {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  background-color: #fff;
+  width: 80%;
+  height: 500rpx;
+  position: relative;
+  left: 10%;
+  z-index: 2;
+  border-radius: 10rpx;
+  
+}
+
+.bind-popup .pop-cancel {
+  width: 50rpx;
+  height: 50rpx;
+  position: absolute;
+  right: -10rpx;
+  top: -10rpx;
+  background-color: rgba(10, 10, 10, 0.1);
+  border-radius: 50%;
+}
+
+.bind-popup .pop-banner
+{
+  flex: 1;
+  width: 120rpx;
+  height: 120rpx;
+  margin-top: 50rpx;
+}
+
+.bind-popup form {
+  border: 1px solid #d7d7d7;
+  overflow: hidden;
+  border-radius: 3rpx;
+}
+
+.profile .deviceProfile {
+  border-bottom: solid #EBEDEC 1rpx;
+  height: 60rpx;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  margin-left: 20rpx;
+  font-size: 25rpx;
+}
+
+.deviceProfile text {
+  display: inline-block;
+}
+
+.deviceProfile input {
+  width: 200rpx;
+}
+
+.bind-popup .phstyle {
+  color: #d7d7d7;
+  font-size: 30rpx;
+}
+
 
 

@@ -92,11 +92,68 @@ Page({
   },
 
   /**
+   * 初始化扫码查询动画
+   */
+  initAnimMid: function () {
+    var anim = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'ease-in'
+    });
+
+    this.anim = anim;
+
+    anim.translateY(700).step();
+    anim.translateY(695).step({duration:250});
+    anim.translateY(700).step({duration:400});
+    this.setData({
+      animMid: this.anim.export()
+    })
+  },
+  
+  /**
+   * 初始化维修动画
+   */
+  initAnimBott: function () {
+    var anim = wx.createAnimation({
+      duration: 1000,
+      timingFunction: 'ease-in'
+    });
+
+    this.anim = anim;
+
+    anim.translateY(730).step({delay: 200});
+    anim.translateY(725).step({duration: 250});
+    anim.translateY(730).step({duration:400});
+    this.setData({
+      animBott: this.anim.export()
+    })
+  },
+
+  /**
+   * 初始化绑定设备动画
+   */
+  initAnimBind: function () {
+    var anim = wx.createAnimation({
+      duration: 500,
+      timingFunction: 'ease-out'
+    });
+
+    this.anim = anim;
+
+    var screenW = wx.getSystemInfoSync().windowWidth;
+
+    anim.translateX(-screenW).step({delay: 1000})
+
+    this.setData({
+      animBind: this.anim.export()
+    })
+  },
+
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-
     wx.login({
       success(res) {
         if (res.code) {
@@ -116,8 +173,6 @@ Page({
         }
       }
     })
-
-
 
     var now = dateUtil.formatTime(new Date());
     var content = {
@@ -167,7 +222,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.initAnimMid();
+    this.initAnimBott();
+    this.initAnimBind();
   },
 
   /**

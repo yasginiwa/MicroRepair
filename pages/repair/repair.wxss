@@ -8,14 +8,16 @@
 .devicebind {
   display: flex;
   align-items: center;
-  border-radius: 15rpx;
-  border: 1rpx solid #DBDBDB;
-  width: 90%;
+  border-radius: 10rpx;
+  border: 1rpx solid #bbb;
+  width: 96%;
   height: 60rpx;
   line-height: 60rpx;
-  margin: 10rpx auto;
-  font-size: 25rpx;
-  color: #dbdbdb;
+  margin: 8rpx auto;
+  position: relative;
+  left: 100vw;
+  font-size: 30rpx;
+  color: #bbb;
   box-shadow: 0 1rpx rgba(50, 50, 50, 0.1);
 }
 
@@ -27,8 +29,9 @@
 
 .devicebind .plh {
   height: 60rpx;
-  color: #dbdbdb;
+  color: #bbb;
   line-height:60rpx;
+  margin-left: 5rpx;
 }
 
 .devicebind image {
@@ -42,7 +45,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 60rpx;
+  margin-top: -1200rpx;
 }
 
 .middle .scan_query {
@@ -67,7 +70,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 80rpx;
+  margin-top: 20rpx;
 }
 
 .bottom .scan_repair {

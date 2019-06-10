@@ -6,13 +6,13 @@
   <image src='../../assets/images/repair/banner.png'></image>
 </view>
 
-<view class='devicebind'>
+<view class='devicebind' animation='{{animBind}}'>
   <image src='../../assets/images/repair/search.png'></image>
-  <input type='text' placeholder='绑定设备' placeholder-class='plh' bindfocus='onBindDevice'></input>
+  <input type='text' placeholder='绑定设备' placeholder-class='plh' bindtap='onBindDevice'></input>
 </view>
 
 <!-- 扫码查询维修 -->
-<view class='middle'>
+<view class='middle' animation='{{animMid}}'>
   <view class='scan_query' bindtap='query'>
     <image src='../../assets/images/repair/scan.png'></image>
     <text class='scan_text'>扫码查询</text>
@@ -20,7 +20,7 @@
 </view>
 
 <!--  扫码增加维修记录 -->
-<view class='bottom'>
+<view class='bottom' animation='{{animBott}}'>
   <view class='scan_repair' bindtap='repair'>
     <image src='../../assets/images/repair/scanRepair.png'></image>
     <text class='scan_text'>扫码维修</text>

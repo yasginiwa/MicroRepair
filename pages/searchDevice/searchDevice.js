@@ -10,7 +10,9 @@ Page({
   data: {
     results: [],
     keyword: '',
-    recommend: ['POS', '电脑', '路由器', '交换机', '小票打印机', '摄像头', '报警主机', 'NVR']
+    recommend: ['POS', '电脑', '路由器', '交换机', '小票打印机', '摄像头', '报警主机', 'NVR'],
+    bindActive: false,
+    selectedDevice: {}
   },
 
   onInput: function (e) {
@@ -22,6 +24,10 @@ Page({
   },
 
   queryDevice: function (devicename) {
+    wx.showLoading({
+      title: '玩命搜索中...',
+    })
+
     // 清空数组 避免上次搜索结果加入result
     this.setData({
       results: []
@@ -51,6 +57,8 @@ Page({
         sign: sign
       },
       success: (res) => {
+        // 隐藏加载菊花
+        wx.hideLoading();
 
         // 如果没有返回结果 直接return
         if (!res.data) return;
@@ -88,6 +96,9 @@ Page({
     })
   },
 
+  /**
+   * 选择了推荐搜索关键词
+   */
   onSelectRecommend: function(e) {
 
     var devicename = this.data.recommend[e.currentTarget.dataset.index];
@@ -100,12 +111,28 @@ Page({
 
   },
 
+  /**
+   * 选中了搜索结果
+   */
   onSearchConfirm: function(e) {
 
     var device = this.data.results[e.currentTarget.dataset.index];
+
+    this.setData({
+      bindActive: true,
+      selectedDevice: device
+    })
     
     console.log(device);
+  },
 
+  /**
+   * 关闭弹窗
+   */
+  cancelBind: function () {
+    this.setData({
+      bindActive: false
+    })
   },
 
   /**
