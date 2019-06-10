@@ -44,16 +44,14 @@
     <image class='pop-banner' src='../../assets/images/searchDevice/bindDevice.png'></image>
   </view>
 
-   <view class='profile'>
-    <view class='deviceProfile'>
-      <text>设备名称：</text>
-      <input type='text' value='{{selectedDevice.name}}'></input>
-    </view>
+  <text>{{selectedDevice.name}}</text>
 
+   <view class='profile'>
+   
     <view class='deviceProfile'>
       <text>资产编码：</text>
-      <input type='text' placeholder='扫描资产编码牌'></input>
-      <image src='../../assets/images/repair/scanRepair.png'></image>
+      <input type='text' placeholder='填写资产编码'></input>
+      <image src='../../assets/images/searchDevice/scan.png'></image>
     </view>
 
     <view class='deviceProfile'>

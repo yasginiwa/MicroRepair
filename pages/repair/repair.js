@@ -3,6 +3,8 @@
 const api = require('../../utils/api.js');
 var urlSafeBase64 = require('../../utils/safebase64.js');
 const dateUtil = require('../../utils/util.js');
+const screenW = wx.getSystemInfoSync().windowWidth;
+const screenH = wx.getSystemInfoSync().windowHeight;
 
 Page({
   /**
@@ -102,9 +104,9 @@ Page({
 
     this.anim = anim;
 
-    anim.translateY(700).step();
-    anim.translateY(695).step({duration:250});
-    anim.translateY(700).step({duration:400});
+    anim.translateY(screenH * 0.5).step();
+    anim.translateY(screenH * 0.5 - 5).step({duration:250});
+    anim.translateY(screenH * 0.5).step({duration:400});
     this.setData({
       animMid: this.anim.export()
     })
@@ -121,9 +123,9 @@ Page({
 
     this.anim = anim;
 
-    anim.translateY(730).step({delay: 200});
-    anim.translateY(725).step({duration: 250});
-    anim.translateY(730).step({duration:400});
+    anim.translateY(screenH * 1.02).step({delay: 200});
+    anim.translateY(screenH * 1.02 - 5).step({duration: 250});
+    anim.translateY(screenH * 1.02).step({duration:400});
     this.setData({
       animBott: this.anim.export()
     })
