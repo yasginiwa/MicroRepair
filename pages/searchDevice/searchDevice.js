@@ -16,8 +16,19 @@ Page({
     assetNum: '扫描资产编码',
     shopIdx: 0,
     storageIdx: 0,
-    shops: ['1店', '2店', '3店', '4店', '5店'],
-    storages: ['五金仓', '材料仓']
+    shops: [],
+    storages: [
+      {
+        id: 24,
+        name: '五金仓'
+      },
+      {
+        id: 22,
+        name: '材料仓'
+      }
+    ],
+    shopObj: {},
+    storageObj: {},
   },
 
   onInput: function (e) {
@@ -83,10 +94,10 @@ Page({
 
         })
 
-      }, fail: (err) => {
+      },
+      fail: (err) => {
 
         console.log(err);
-
       }
 
     })
@@ -96,7 +107,7 @@ Page({
   /**
    * 查询一网其他资料
    */
- queryData: function (data, datatype, success) {
+  queryData: function (data, datatype, success) {
     wx.showLoading({
       title: '玩命搜索中...'
     })
@@ -136,9 +147,10 @@ Page({
 
         if (!api.decryptContent(content)) return;
 
-        success(api.decryptContent(content));      
+        success(api.decryptContent(content));
 
-      }, fail: (err) => {
+      },
+      fail: (err) => {
 
         console.log(err);
 
@@ -184,7 +196,6 @@ Page({
       selectedDevice: device
     })
 
-    console.log(device);
   },
 
   /**
@@ -219,10 +230,14 @@ Page({
       shopIdx: e.detail.value
     })
 
-    var arr = this.queryData('001店', 3, (res) => {
-      console.log(res);
+    this.queryData(this.data.shops[this.data.shopIdx], 3, (res) => {
+      if (res) {
+        this.setData({
+          shopObj: res[0]
+        })
+      }
     });
-    
+
   },
 
   /**
@@ -232,32 +247,98 @@ Page({
     this.setData({
       storageIdx: e.detail.value
     })
+
+    this.setData({
+      storageObj: this.data.storages[this.data.storageIdx]
+    })
+
   },
 
   /**
    * 绑定设备
    */
   bindDevice: function () {
-    console.log('bindDevice');
+
+    var now = dateUtil.formatTime(new Date());
+    var wxopenid = wx.getStorageSync('wxopenid');
+    var content = {
+      'wxopenid': wxopenid,
+      'deviceid': this.data.assetNum,
+      'shopid': this.data.shopObj.id,
+      'pid': this.data.selectedDevice.id,
+      'storeid': this.data.storageObj.id.toString(),
+      'bindsource': 'DeviceMaintainMP',
+      'timestamp': now
+    }
+
+    console.log(content);
+
+    var deviceBindUrl = api.deviceBindUrl,
+      encContent = urlSafeBase64.encode(api.encryptContent(content)),
+      sign = api.sign(content),
+      token = api.token;
+
+    // 发出搜索请求
+    wx.request({
+      url: deviceBindUrl,
+      data: {
+        token: token,
+        content: encContent,
+        sign: sign
+      },
+      success: (res) => {
+        // 隐藏加载菊花
+        wx.hideLoading();
+
+        console.log(res);
+
+        // 如果没有返回结果 直接return
+        if (!res.data) return;
+
+        // content转换成对象
+        var content = JSON.parse(JSON.parse(res.data)).content;
+
+        if (!api.decryptContent(content)) return;
+
+      },
+      fail: (err) => {
+
+        console.log(err);
+
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
     var shop = '';
-    for (var i = 0; i < 201; i++) {
-      shop = `${i}店`;
-      var t = shop.length;
-      if (t < 4) {
-        shop = '0' + shop;
-        this.setData({
-          shops: this.data.shops.push(shop)
-        })
+    var shops = [];
+    for (var i = 1; i < 201; i++) {
+
+      shop = i + '店';
+      switch (shop.length) {
+        case 2:
+          shop = '00' + shop;
+          break;
+
+        case 3:
+          shop = '0' + shop;
+          break;
+
+        default:
+          break;
       }
+
+      shops.push(shop);
     }
 
-    console.log(shops);
+    this.setData({
+      shops: shops
+    })
+
   },
 
   /**
@@ -271,7 +352,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+
   },
 
   /**

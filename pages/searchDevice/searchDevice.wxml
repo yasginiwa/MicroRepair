@@ -64,7 +64,7 @@
     <view class='deviceProfile'>
       <text>仓库编号：</text>
       <view class='phstyle'>
-      <picker catchchange='onFillStorageNum' range='{{storages}}' value='{{storageIdx}}'>{{storages[storageIdx]}}</picker>
+      <picker catchchange='onFillStorageNum' range='{{storages}}' value='{{storageIdx}}'>{{storages[storageIdx].name}}</picker>
       </view>
     </view>
 
