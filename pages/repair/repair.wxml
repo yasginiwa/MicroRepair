@@ -8,7 +8,8 @@
 
 <view class='devicebind' animation='{{animBind}}'>
   <image src='../../assets/images/repair/search.png'></image>
-  <input type='text' placeholder='绑定设备' placeholder-class='plh' bindtap='onBindDevice'></input>
+  <text bindtap='onBindDevice'>绑定设备</text>
+  <!-- <input type='text' placeholder='绑定设备' placeholder-class='plh' bindtap='onBindDevice'></input> -->
 </view>
 
 <!-- 扫码查询维修 -->

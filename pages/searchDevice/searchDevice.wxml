@@ -50,21 +50,26 @@
    
     <view class='deviceProfile'>
       <text>资产编码：</text>
-      <input type='text' placeholder='填写资产编码'></input>
-      <image src='../../assets/images/searchDevice/scan.png'></image>
+      <text class='phstyle'>{{assetNum}}</text>
+      <image catchtap='onScanDeviceQR' src='../../assets/images/searchDevice/scan.png'></image>
     </view>
 
     <view class='deviceProfile'>
       <text>门店编号：</text>
-      <input type='text' placeholder='填写门店编号'></input>
+      <view class='phstyle'>
+      <picker catchchange='onFillShopNum' range='{{shops}}' value='{{shopIdx}}'>{{shops[shopIdx]}}</picker>
+      </view>
     </view>
 
     <view class='deviceProfile'>
       <text>仓库编号：</text>
-      <input type='text' placeholder='填写仓库编号'></input>
+      <view class='phstyle'>
+      <picker catchchange='onFillStorageNum' range='{{storages}}' value='{{storageIdx}}'>{{storages[storageIdx]}}</picker>
+      </view>
     </view>
 
     </view>
 
-    <button bindtap='bindDevice'>绑定设备</button>
+    <button catchtap='bindDevice'>绑定设备</button>
 </view>
+

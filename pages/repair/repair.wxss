@@ -27,11 +27,12 @@
   padding-left: 40%;
 }
 
-.devicebind .plh {
-  height: 60rpx;
+.devicebind text {
+  display: inline-block;
+  height: 50rpx;
   color: #bbb;
-  line-height:60rpx;
-  margin-left: 5rpx;
+  line-height:50rpx;
+  margin-left: 42%;
 }
 
 .devicebind image {

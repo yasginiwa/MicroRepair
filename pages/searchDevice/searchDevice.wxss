@@ -139,7 +139,8 @@
 .profile {
   display: flex;
   flex-flow: column nowrap;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
   margin-top: 20rpx;
   width: 90%;
   font-size: 25rpx;
@@ -147,32 +148,48 @@
 
 .profile .deviceProfile {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   margin-left: 5%;
-  width: 90%; 
+  width: 100%; 
   margin-top: 10rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+}
+
+.profile .deviceProfile text {
+  height: 40rpx;
+  line-height: 40rpx;
 }
 
 .profile .deviceProfile image {
   width: 40rpx;
   height: 40rpx;
   position: absolute;
-  right: 7%;
+  right: 10%;
 }
 
-.deviceProfile input {
-  border-bottom: solid #EBEDEC 1rpx;
+.profile .deviceProfile picker {
+  width: 100rpx;
+  height: 40rpx;
+  padding-bottom: 10rpx;
 }
+
 
 .bind-popup .phstyle {
   color: #d7d7d7;
   font-size: 25rpx;
+  width: 58%;
+  border-bottom: #d7d7d7 solid 1rpx;
+}
+
+.bind-popup .phstyle :nth-child(1) {
+  color: #000;
 }
 
 .bind-popup button {
   margin: 40rpx auto;
-  height: 60rpx;
+  height: 65rpx;
   line-height: 60rpx;
   width: 70%;
   outline: none;

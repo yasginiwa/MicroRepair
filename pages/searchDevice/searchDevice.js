@@ -12,7 +12,12 @@ Page({
     keyword: '',
     recommend: ['POS', '电脑', '路由器', '交换机', '小票打印机', '摄像头', '报警主机', 'NVR'],
     bindActive: false,
-    selectedDevice: {}
+    selectedDevice: {},
+    assetNum: '扫描资产编码',
+    shopIdx: 0,
+    storageIdx: 0,
+    shops: ['1店', '2店', '3店', '4店', '5店'],
+    storages: ['五金仓', '材料仓']
   },
 
   onInput: function (e) {
@@ -23,6 +28,9 @@ Page({
     this.queryDevice(e.detail.value);
   },
 
+  /**
+   * 查询一网设备资料
+   */
   queryDevice: function (devicename) {
     wx.showLoading({
       title: '玩命搜索中...',
@@ -86,6 +94,59 @@ Page({
   },
 
   /**
+   * 查询一网其他资料
+   */
+ queryData: function (data, datatype, success) {
+    wx.showLoading({
+      title: '玩命搜索中...'
+    })
+
+    var now = dateUtil.formatTime(new Date());
+    var wxopenid = wx.getStorageSync('wxopenid');
+    var content = {
+      'wxopenid': wxopenid,
+      'datatype': datatype,
+      'datavalue': data,
+      'datasource': '15',
+      'timestamp': now
+    }
+
+    var basedataqueryUrl = api.basedataqueryUrl,
+      encContent = urlSafeBase64.encode(api.encryptContent(content)),
+      sign = api.sign(content),
+      token = api.token;
+
+    // 发出搜索请求
+    wx.request({
+      url: basedataqueryUrl,
+      data: {
+        token: token,
+        content: encContent,
+        sign: sign
+      },
+      success: (res) => {
+        // 隐藏加载菊花
+        wx.hideLoading();
+
+        // 如果没有返回结果 直接return
+        if (!res.data) return;
+
+        // content转换成对象
+        var content = JSON.parse(JSON.parse(res.data)).content;
+
+        if (!api.decryptContent(content)) return;
+
+        success(api.decryptContent(content));      
+
+      }, fail: (err) => {
+
+        console.log(err);
+
+      }
+    })
+  },
+
+  /**
    * 取消搜索
    */
   onSearchCancel: function () {
@@ -99,7 +160,7 @@ Page({
   /**
    * 选择了推荐搜索关键词
    */
-  onSelectRecommend: function(e) {
+  onSelectRecommend: function (e) {
 
     var devicename = this.data.recommend[e.currentTarget.dataset.index];
 
@@ -114,7 +175,7 @@ Page({
   /**
    * 选中了搜索结果
    */
-  onSearchConfirm: function(e) {
+  onSearchConfirm: function (e) {
 
     var device = this.data.results[e.currentTarget.dataset.index];
 
@@ -122,7 +183,7 @@ Page({
       bindActive: true,
       selectedDevice: device
     })
-    
+
     console.log(device);
   },
 
@@ -136,10 +197,67 @@ Page({
   },
 
   /**
+   * 扫描资产编码
+   */
+  onScanDeviceQR: function () {
+    wx.scanCode({
+      onlyFromCamera: true,
+      scanType: [],
+      success: (res) => {
+        this.setData({
+          assetNum: res.result
+        })
+      },
+    })
+  },
+
+  /**
+   * 门店编号选择 
+   */
+  onFillShopNum: function (e) {
+    this.setData({
+      shopIdx: e.detail.value
+    })
+
+    var arr = this.queryData('001店', 3, (res) => {
+      console.log(res);
+    });
+    
+  },
+
+  /**
+   * 仓库编号选择
+   */
+  onFillStorageNum: function (e) {
+    this.setData({
+      storageIdx: e.detail.value
+    })
+  },
+
+  /**
+   * 绑定设备
+   */
+  bindDevice: function () {
+    console.log('bindDevice');
+  },
+
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var shop = '';
+    for (var i = 0; i < 201; i++) {
+      shop = `${i}店`;
+      var t = shop.length;
+      if (t < 4) {
+        shop = '0' + shop;
+        this.setData({
+          shops: this.data.shops.push(shop)
+        })
+      }
+    }
 
+    console.log(shops);
   },
 
   /**
@@ -153,7 +271,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    
   },
 
   /**
