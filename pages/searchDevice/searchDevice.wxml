@@ -44,7 +44,7 @@
     <image class='pop-banner' src='../../assets/images/searchDevice/bindDevice.png'></image>
   </view>
 
-  <text>{{selectedDevice.name}}</text>
+  <text class='title'>{{selectedDevice.name}}</text>
 
    <view class='profile'>
    
@@ -55,16 +55,16 @@
     </view>
 
     <view class='deviceProfile'>
-      <text>门店编号：</text>
+      <text>所属门店：</text>
       <view class='phstyle'>
       <picker catchchange='onFillShopNum' range='{{shops}}' value='{{shopIdx}}'>{{shops[shopIdx]}}</picker>
       </view>
     </view>
 
     <view class='deviceProfile'>
-      <text>仓库编号：</text>
+      <text>所属仓库：</text>
       <view class='phstyle'>
-      <picker catchchange='onFillStorageNum' range='{{storages}}' value='{{storageIdx}}'>{{storages[storageIdx].name}}</picker>
+      <picker catchchange='onFillStorageNum' range='{{storages}}' range-key="{{'name'}}" value='{{storageIdx}}'>{{storages[storageIdx].name}}</picker>
       </view>
     </view>
 

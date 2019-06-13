@@ -1,44 +1,126 @@
 // pages/repairDetail/repairDetail.js
-const recorderManager = wx.getRecorderManager()
-const innerAudioContext = wx.createInnerAudioContext();
-var util = require('../../utils/util.js');
-var api = require('../../utils/api.js');
+const api = require('../../utils/api.js');
+var urlSafeBase64 = require('../../utils/safebase64.js');
+const dateUtil = require('../../utils/util.js');
 
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    category: ['请选择', '打印设备', '收银设备', '通信设备', 'PC主机', 'PC外设', '监控设备', '入侵设备', '音频设备'],
-    cateIdx: 0,
     record: {
-      deviceId: '',
-      cate: '',
-      name: '',
+      wxopenid: '',
+      deviceid: '',
+      shopid: '',
+      pid: '',
+      storeid: '',
       reason: '',
       result: '',
-      audioDesc: '',
-      date: '',
-      engineer: ''
+      maintaindate: '',
+      timestamps:'',
+      memo: ''
     },
     commitDisable: true, //  提交按钮disable
-    frame: 1, //  序列帧动画初始帧
-    isSpeaking: false, //  是否正在讲话
-    isPlaying: false, //  是否播放录音  
-    token: ''
+    shops: [],
+    storages: [
+      {
+        id: 24,
+        name: '五金仓'
+      },
+      {
+        id: 22,
+        name: '材料仓'
+      }
+    ],
+    shopObj: {},
+    storageObj: {},
+    shopIdx: 0,
+    storageIdx: 0,
   },
 
   /**
-   * 选择设备分类
+  * 查询一网其他资料
+  */
+  queryData: function (data, datatype, success) {
+    wx.showLoading({
+      title: '加载中...'
+    })
+
+    var now = dateUtil.formatTime(new Date());
+    var wxopenid = wx.getStorageSync('wxopenid');
+    var content = {
+      'wxopenid': wxopenid,
+      'datatype': datatype,
+      'datavalue': data,
+      'datasource': '15',
+      'timestamp': now
+    }
+
+    var basedataqueryUrl = api.basedataqueryUrl,
+      encContent = urlSafeBase64.encode(api.encryptContent(content)),
+      sign = api.sign(content),
+      token = api.token;
+
+    // 发出搜索请求
+    wx.request({
+      url: basedataqueryUrl,
+      data: {
+        token: token,
+        content: encContent,
+        sign: sign
+      },
+      success: (res) => {
+        // 隐藏加载菊花
+        wx.hideLoading();
+
+        // 如果没有返回结果 直接return
+        if (!res.data) return;
+
+        // content转换成对象
+        var content = JSON.parse(JSON.parse(res.data)).content;
+
+        if (!api.decryptContent(content)) return;
+
+        success(api.decryptContent(content));
+
+      },
+      fail: (err) => {
+
+        console.log(err);
+      }
+    })
+  },
+
+  /**
+ * 门店编号选择 
+ */
+  onFillShopNum: function (e) {
+    this.setData({
+      shopIdx: e.detail.value
+    })
+
+    this.queryData(this.data.shops[this.data.shopIdx], 3, (res) => {
+      if (res) {
+        this.setData({
+          shopObj: res[0]
+        })
+      }
+    });
+
+  },
+
+  /**
+   * 仓库编号选择
    */
-  selectCategory(e) {
-    //  设置设备分类名称为record.cate
+  onFillStorageNum: function (e) {
     this.setData({
-      cateIdx: e.detail.value
+      storageIdx: e.detail.value
     })
+
     this.setData({
-      'record.cate': this.data.category[this.data.cateIdx]
+      storageObj: this.data.storages[this.data.storageIdx]
     })
+
   },
 
   /**
@@ -81,95 +163,10 @@ Page({
   },
 
   /**
-   * 开始录音
-   */
-  onRecordVoice() {
-    //  取消播放路径
-    innerAudioContext.stop();
-
-    //  录音取样选项
-    const options = {
-      duration: 60000,
-      sampleRate: 44100,
-      numberOfChannels: 1,
-      encodeBitRate: 192000,
-      format: 'aac',
-      frameSize: 50
-    }
-
-    //  开始录音
-    recorderManager.start(options);
-
-    //  录音回调
-    recorderManager.onStart(() => {
-      console.log('recorder start')
-    })
-
-    //  录音错误回调
-    recorderManager.onError((res) => {
-      wx.showToast({
-        title: '手指按住姿势不对!',
-        icon: 'none',
-        duration: 2000,
-        mask: true
-      })
-    })
-
-    this.setData({
-      isSpeaking: true
-    })
-  },
-
-  /**
-   * 停止录音
-   */
-  stopRecordVoice() {
-    var that = this;
-    recorderManager.stop();
-    //  录音停止回调
-    recorderManager.onStop((res) => {
-      console.log('recorder stop', res)
-      that.setData({
-        'record.audioDesc': res.tempFilePath
-      })
-      const {
-        tempFilePath
-      } = res
-    })
-
-    this.setData({
-      isSpeaking: false
-    })
-  },
-
-  /**
-   * 播放语音描述
-   */
-  playAudioDesc() {
-    var that = this;
-    innerAudioContext.src = this.data.record.audioDesc;
-    innerAudioContext.play();
-    innerAudioContext.onPlay(() => {
-      that.setData({
-        isPlaying: true
-      })
-    })
-    innerAudioContext.onError((res) => {
-      console.log(res.errMsg)
-      console.log(res.errCode)
-    })
-    innerAudioContext.onStop(() => {
-      that.setData({
-        isPlaying: false
-      })
-    })
-  },
-
-  /**
-   * 判断record中的cate、name、reason、result属性是否为空，按条件disable提交按钮
+   * 判断record中的reason、result属性是否为空，按条件disable提交按钮
    */
   editHasCompleted() {
-    if (this.data.record.cate.length == 0 || this.data.record.name.length == 0 || this.data.record.reason.length == 0 || this.data.record.result.length == 0) {
+    if (this.data.record.reason.length == 0 || this.data.record.result.length == 0) {
       this.setData({
         commitDisable: true
       })
@@ -209,142 +206,139 @@ Page({
       mask: true
     })
     var that = this;
-    if (that.data.record.audioDesc.length == 0) { // 无录音
-      wx.hideLoading();
-      wx.request({
-        url: api.dorecordUrl,
-        method: 'POST',
-        data: {
-          deviceId: that.data.record.deviceId,
-          cate: that.data.record.cate,
-          name: that.data.record.name,
-          reason: that.data.record.reason,
-          result: that.data.record.result,
-          date: that.data.record.date,
-          engineer: that.data.record.engineer,
-          token: that.data.token
-        },
-        success: function(res) {
-          //  添加一个提交成功的标记 便于record表格刷新
-          wx.setStorage({
-            key: 'commitSuccess',
-            data: true,
-          })
-          //  切换至record页面
-          wx.switchTab({
-            url: '../repair/repair',
-          })
-        },
-        fail: function (res) {
-          wx.showToast({
-            title: '网络超时，请检查手机网络设置！',
-          })
-        }
-      })
-    } else { // 有录音、
-      wx.uploadFile({
-        url: api.uploadUrl,
-        filePath: that.data.record.audioDesc,
-        name: 'audio',
-        success: function(res) {
-          wx.hideLoading();
-          var audio = JSON.parse(res.data);
-          wx.request({
-            url: api.dorecordUrl,
-            method: 'POST',
-            data: {
-              deviceId: that.data.record.deviceId,
-              cate: that.data.record.cate,
-              name: that.data.record.name,
-              reason: that.data.record.reason,
-              result: that.data.record.result,
-              audioDesc: audio.audioUrl,
-              date: that.data.record.date,
-              engineer: that.data.record.engineer,
-              token: that.data.token
-            },
-            success: function(res) {
-              //  添加一个提交成功的标记 便于record表格刷新
-              wx.setStorage({
-                key: 'commitSuccess',
-                data: true,
-              })
-              //  切换至record页面
-              wx.switchTab({
-                url: '../repair/repair',
-              })
-            },
-            fail: function(res) {
-              wx.showToast({
-                title: '网络超时，请检查手机网络设置！',
-              })
-            }
-          })
-        }
-      })
-    }
+
+    wx.hideLoading();
+    wx.request({
+      url: api.addMaintainUrl,
+      data: {
+        deviceId: that.data.record.deviceId,
+        cate: that.data.record.cate,
+        name: that.data.record.name,
+        reason: that.data.record.reason,
+        result: that.data.record.result,
+        date: that.data.record.date,
+        engineer: that.data.record.engineer,
+        token: that.data.token
+      },
+      success: function (res) {
+        //  添加一个提交成功的标记 便于record表格刷新
+        wx.setStorage({
+          key: 'commitSuccess',
+          data: true,
+        })
+        //  切换至record页面
+        wx.switchTab({
+          url: '../repair/repair',
+        })
+      },
+      fail: function (res) {
+        wx.showToast({
+          title: '网络超时，请检查手机网络设置！',
+        })
+      }
+    })
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function(options) {
+  onLoad: function (options) {
+    var shop = '';
+    var shops = [];
+    for (var i = 1; i < 201; i++) {
+
+      shop = i + '店';
+      switch (shop.length) {
+        case 2:
+          shop = '00' + shop;
+          break;
+
+        case 3:
+          shop = '0' + shop;
+          break;
+
+        default:
+          break;
+      }
+
+      shops.push(shop);
+    }
+
+    this.setData({
+      shops: shops
+    })
+
+    // 选择默认门店 001店
+    this.queryData(this.data.shops[this.data.shopIdx], 3, (res) => {
+      if (res) {
+        this.setData({
+          shopObj: res[0]
+        })
+      }
+    });
+
+    // 选择默认仓库 五金仓
+    this.setData({
+      storageObj: this.data.storages[this.data.storageIdx]
+    })
+
     this.setData({
       'record.deviceId': options.scanCode
     })
 
-    var now = new Date();
     this.setData({
-      'record.date': util.dateFormater(now)
+      'record.date': dateUtil.formatDate(new Date())
     })
+
+
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function() {
+  onReady: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function() {
+  onShow: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide: function() {
+  onHide: function () {
 
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload: function() {
+  onUnload: function () {
 
   },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
 
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function() {
+  onReachBottom: function () {
 
   },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   }
 })

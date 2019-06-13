@@ -153,7 +153,6 @@ Page({
       fail: (err) => {
 
         console.log(err);
-
       }
     })
   },
@@ -337,6 +336,20 @@ Page({
 
     this.setData({
       shops: shops
+    })
+
+    // 选择默认门店 001店
+    this.queryData(this.data.shops[this.data.shopIdx], 3, (res) => {
+      if (res) {
+        this.setData({
+          shopObj: res[0]
+        })
+      }
+    });
+
+    // 选择默认仓库 五金仓
+    this.setData({
+      storageObj: this.data.storages[this.data.storageIdx]
     })
 
   },

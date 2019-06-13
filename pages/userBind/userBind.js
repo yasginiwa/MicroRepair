@@ -89,7 +89,7 @@ Page({
       })
     });
 
-let that = this;
+    let that = this;
     async function bindUser() {
 
       let wxopenid = await getOpenId;
@@ -97,8 +97,6 @@ let that = this;
       that.setData({
         wxopenid: wxopenid
       });
-
-      console.log(that.data.wxopenid);
 
       var now = dateUtil.formatTime(new Date());
       var content = {
@@ -129,9 +127,18 @@ let that = this;
           if (data) { // 在一网用户列表内 注册成功
             var dataObj = JSON.parse(data);
             if (dataObj.content) {
-              console.log(api.decryptContent(dataObj.content) + '注册成功');
+              var decContent = api.decryptContent(dataObj.content);
+
+              console.log('注册成功');
+
               wx.reLaunch({
                 url: '../repair/repair',
+              })
+
+              // 存储netbakeuser到本地
+              wx.setStorage({
+                key: 'netbakeuser',
+                data: decContent
               })
 
               // 存储wxopenid 用户信息 到本地 
@@ -154,7 +161,7 @@ let that = this;
 
             } else {
 
-              console.log(data + '注册失败'); // 不在一网用户列表内 注册失败
+              console.log('注册失败'); // 不在一网用户列表内 注册失败
               // 显示绑定失败hud 直接返回
               wx.showToast({
                 image: '../../assets/images/fail.png',
@@ -168,17 +175,25 @@ let that = this;
           console.log(err);
         }
       })
-  }
-  
-  // 执行绑定方法
-  bindUser();
-},
+    }
+
+    // 执行绑定方法
+    bindUser();
+  },
 
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+    let netbakeuser = wx.getStorageSync('netbakeuser');
+
+    if (!netbakeuser) return;
+
+    wx.reLaunch({
+      url: '../repair/repair',
+    })
 
   },
 
