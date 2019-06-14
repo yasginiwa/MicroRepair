@@ -1,5 +1,7 @@
-const crypto = requirePlugin('Crypto');
-var safeBase64 = require('../utils/safebase64.js')
+const crypto = requirePlugin('Crypto'),
+   safeBase64 = require('../utils/safebase64.js'),
+   urlSafeBase64 = require('../utils/safebase64.js'),
+   dateUtil = require('../utils/util.js');
 
 var appKey = 'MTIzNDU2YWJjZEUxMjM0NQ==',
   signKey = 'uTjPnNmlGrtlbDNi25s3DY3CSVwONAYs',
@@ -46,6 +48,93 @@ var decryptContent = function (content) {
   return JSON.parse(crypto.Utf8.stringify(decContent));
 }
 
+/**
+ * 一网烘焙接口请求封装
+ */
+var netbakeRequest = function (url, content, success, fail) {
+  var encContent = urlSafeBase64.encode(encryptContent(content)),
+    sign = this.sign(content),
+    token = this.token;
+
+  // 发出请求
+  wx.request({
+    url: url,
+    data: {
+      token: token,
+      content: encContent,
+      sign: sign
+    },
+    success: (res) => {
+
+      console.log(res);
+      // 如果没有返回结果 直接return
+      if (!res.data) return;
+
+      // content转换成对象
+      var content = JSON.parse(JSON.parse(res.data)).content;
+      var decContent = decryptContent(content);
+
+      if (!decContent) return;
+
+      success(decContent);
+
+    },
+    fail: (err) => {
+
+      fail(err);
+    }
+  })
+};
+
+/**
+* 查询一网基本资料查询请求
+*/
+var netbakeBaseDataRequest = function (data, datatype, success, fail) {
+
+  var now = dateUtil.formatTime(new Date());
+  var wxopenid = wx.getStorageSync('wxopenid');
+  var content = {
+    'wxopenid': wxopenid,
+    'datatype': datatype,
+    'datavalue': data,
+    'datasource': '15',
+    'timestamp': now
+  }
+
+  var basedataqueryUrl = this.basedataqueryUrl,
+    encContent = urlSafeBase64.encode(encryptContent(content)),
+    sign = this.sign(content),
+    token = this.token;
+
+  // 发出搜索请求
+  wx.request({
+    url: basedataqueryUrl,
+    data: {
+      token: token,
+      content: encContent,
+      sign: sign
+    },
+    success: (res) => {
+      // 如果没有返回结果 直接return
+      if (!res.data) return;
+
+      // content转换成对象
+      var content = JSON.parse(JSON.parse(res.data)).content;
+      var decContent = decryptContent(content);
+      console.log(decContent)
+      if (!decContent) return;
+
+      success(decContent);
+
+    },
+    fail: (err) => {
+
+      fail(err);
+    }
+  })
+};
+
+
 module.exports = {
   token: token,
   sign: sign,
@@ -58,5 +147,7 @@ module.exports = {
   addMaintainUrl: addMaintainUrl,
   maintainQueryUrl: maintainQueryUrl,
   getopenidUrl: getopenidUrl,
-  basedataqueryUrl: basedataqueryUrl
+  basedataqueryUrl: basedataqueryUrl,
+  netbakeRequest: netbakeRequest,
+  netbakeBaseDataRequest: netbakeBaseDataRequest
 };

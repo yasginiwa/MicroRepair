@@ -181,62 +181,13 @@ Page({
    * 提交数据
    */
   onCommit() {
-    //  从本地获取用户信息
-    try {
-      var userInfo = wx.getStorageSync('userInfo');
-      this.setData({
-        'record.engineer': userInfo.nickName
-      })
-    } catch (e) {
-      console.log(e);
-    }
-
-    //  从本地获取token信息
-    try {
-      var tokenInfo = wx.getStorageSync('token');
-      this.setData({
-        token: tokenInfo
-      })
-    } catch (e) {
-      console.log(e);
-    }
 
     wx.showLoading({
       title: '提交中...',
       mask: true
     })
-    var that = this;
 
-    wx.hideLoading();
-    wx.request({
-      url: api.addMaintainUrl,
-      data: {
-        deviceId: that.data.record.deviceId,
-        cate: that.data.record.cate,
-        name: that.data.record.name,
-        reason: that.data.record.reason,
-        result: that.data.record.result,
-        date: that.data.record.date,
-        engineer: that.data.record.engineer,
-        token: that.data.token
-      },
-      success: function (res) {
-        //  添加一个提交成功的标记 便于record表格刷新
-        wx.setStorage({
-          key: 'commitSuccess',
-          data: true,
-        })
-        //  切换至record页面
-        wx.switchTab({
-          url: '../repair/repair',
-        })
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '网络超时，请检查手机网络设置！',
-        })
-      }
-    })
+
   },
 
   /**
@@ -290,7 +241,31 @@ Page({
       'record.date': dateUtil.formatDate(new Date())
     })
 
+    var content = {
+      'wxopenid': wx.getStorageSync('wxopenid'),
+      'deviceid': '123',
+      'shopid': '32',
+      'pid': '1007025',
+      'storeid': '24',
+      'reasontype': 1,
+      'reason': '',
+      'resulttype': 3,
+      'result': '',
+      'maintaindate': '2019-06-14',
+      'memo': 'hahah',
+      'timestamp': dateUtil.formatTime(new Date()),
+    };
 
+    console.log(content);
+
+    var url = api.addMaintainUrl;
+
+    api.netbakeRequest(url, content, (res) => {
+      console.log(res);
+    }, (err) => {
+
+    })
+ 
   },
 
   /**

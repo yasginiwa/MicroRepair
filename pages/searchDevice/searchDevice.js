@@ -289,16 +289,33 @@ Page({
         // 隐藏加载菊花
         wx.hideLoading();
 
-        console.log(res);
-
         // 如果没有返回结果 直接return
         if (!res.data) return;
 
         // content转换成对象
         var content = JSON.parse(JSON.parse(res.data)).content;
+        var decContent = api.decryptContent(content);
 
-        if (!api.decryptContent(content)) return;
+        if (!decContent) {
+          wx.showToast({
+            title: '设备已绑定!',
+            image: '../../assets/images/warning.png',
+            mask: true
+          })
+        } else {
+          console.log(decContent);
+          wx.showToast({
+            title: '设备绑定成功!',
+            image: '../../assets/images/success.png',
+            mask: true
+          })
 
+          setTimeout(() => {
+            wx.navigateBack({
+              url:'../repair/repair'
+            })
+          }, 1000);
+        }
       },
       fail: (err) => {
 

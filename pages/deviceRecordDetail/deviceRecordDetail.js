@@ -1,6 +1,4 @@
 // pages/deviceRecordDetail/deviceRecordDetail.js
-const recorderManager = wx.getRecorderManager()
-const innerAudioContext = wx.createInnerAudioContext();
 
 Page({
 
@@ -10,40 +8,6 @@ Page({
   data: {
     currentRecord: null,
     isSpeaking: false
-  },
-
-  /**
-   * 播放语音描述
-   */
-  playAudioDesc() {
-    var that = this;
-    innerAudioContext.src = this.data.currentRecord.audioDesc;
-    innerAudioContext.play();
-    innerAudioContext.onPlay(() => {
-      console.log('start');
-      // 开始播放 设置isSpeaking标记为true
-      that.setData({
-        isSpeaking: true
-      })
-    })
-    innerAudioContext.onError((res) => {
-      wx.showToast({
-        title: '播放失败,请检查网络...',
-        icon: 'none',
-      })
-    })
-
-    innerAudioContext.onWaiting((res) => {
-      console.log(res);
-    })
-
-    innerAudioContext.onEnded((res) => {
-      console.log('stop');
-      // 停止播放 设置isSpeaking标记为false
-      that.setData({
-        isSpeaking: false
-      })
-    })
   },
 
   /**
