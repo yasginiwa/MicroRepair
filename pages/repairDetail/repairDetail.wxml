@@ -2,7 +2,7 @@
 <view class='block'>
   <view class='item'>
     <text>资产标识</text>
-    <text class='recordID'>{{record.deviceId}}</text>
+    <text class='recordID'>{{record.deviceid}}</text>
   </view>
 
   <view class='item'>
@@ -22,23 +22,29 @@
   <view class='item'>
     <text>维修时间</text>
     <picker bindchange='selectDate' mode='date' start='2000-01-01' end='2030-01-01'>
-      <view>{{record.date}}</view>
+      <view>{{record.maintaindate}}</view>
     </picker>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
 
-    <view class='description'>
-    <text>故障原因</text>
-    <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;'></textarea>
+  <view class='description'>
+    <view class='title'>
+      <text>故障原因</text>
+      <image src='../../assets/images/repairDetail/reason.png'></image>
+    </view>
+    <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;' value="{{record.reason}}"></textarea>
   </view>
 
   <view class='description'>
-    <text>维修结果</text>
-    <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx;'></textarea>
+    <view class='title'>
+      <text>维修结果</text>
+      <image src='../../assets/images/repairDetail/result.png'></image>
+    </view>
+    <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx;' value="{{record.result}}"></textarea>
   </view>
 
-<view class='commit'>
-  <button type='primary' bindtap='onCommit' disabled='{{commitDisable}}'>提 交</button>
-</view>
+  <view class='commit'>
+    <button type='primary' bindtap='onCommit' disabled='{{commitDisable}}'>提 交</button>
+  </view>
 
 </view>

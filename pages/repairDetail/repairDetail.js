@@ -120,17 +120,6 @@ Page({
     this.setData({
       storageObj: this.data.storages[this.data.storageIdx]
     })
-
-  },
-
-  /**
-   * 设置设备名称
-   */
-  OnNameConfirm(e) {
-    this.setData({
-      'record.name': e.detail.value
-    })
-    this.editHasCompleted();
   },
 
   /**
@@ -187,6 +176,36 @@ Page({
       mask: true
     })
 
+    var content = {
+      'wxopenid': wx.getStorageSync('wxopenid'),
+      'deviceid': this.data.record.deviceid,
+      'shopid': this.data.shopObj.id,
+      'storeid': this.data.storageObj.id,
+      'reason': this.data.record.reason,
+      'result': this.data.record.result,
+      'maintaindate': this.data.record.maintaindate,
+      'timestamp': dateUtil.formatTime(new Date()),
+    };
+    
+    var url = api.addMaintainUrl;
+
+    api.netbakeRequest(url, content, (res) => {
+      
+      wx.showToast({
+        title: '提交成功!',
+        image: '../../assets/images/success.png',
+        mask: true
+      })
+
+      console.log(res);
+
+      setTimeout(function(){
+        wx.navigateBack({});
+      }, 1000)
+
+    }, (err) => {
+
+    })
 
   },
 
@@ -215,6 +234,9 @@ Page({
       shops.push(shop);
     }
 
+    // 数组的最前添加五金仓
+    shops.unshift('五金仓');
+
     this.setData({
       shops: shops
     })
@@ -234,36 +256,11 @@ Page({
     })
 
     this.setData({
-      'record.deviceId': options.scanCode
+      'record.deviceid': options.scanCode
     })
 
     this.setData({
-      'record.date': dateUtil.formatDate(new Date())
-    })
-
-    var content = {
-      'wxopenid': wx.getStorageSync('wxopenid'),
-      'deviceid': '123',
-      'shopid': '32',
-      'pid': '1007025',
-      'storeid': '24',
-      'reasontype': 1,
-      'reason': '',
-      'resulttype': 3,
-      'result': '',
-      'maintaindate': '2019-06-14',
-      'memo': 'hahah',
-      'timestamp': dateUtil.formatTime(new Date()),
-    };
-
-    console.log(content);
-
-    var url = api.addMaintainUrl;
-
-    api.netbakeRequest(url, content, (res) => {
-      console.log(res);
-    }, (err) => {
-
+      'record.maintaindate': dateUtil.formatDate(new Date())
     })
  
   },

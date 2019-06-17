@@ -70,6 +70,6 @@
 
     </view>
 
-    <button catchtap='bindDevice'>绑定设备</button>
+    <button catchtap='bindDevice' disabled='{{bindBtnActive==false}}'>绑定设备</button>
 </view>
 

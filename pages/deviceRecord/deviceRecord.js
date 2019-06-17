@@ -1,5 +1,7 @@
 // pages/deviceRecord/deviceRecord.js
-var api = require('../../utils/api.js');
+const api = require('../../utils/api.js');
+var urlSafeBase64 = require('../../utils/safebase64.js');
+const dateUtil = require('../../utils/util.js');
 
 Page({
 
@@ -68,7 +70,25 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.requestData(options.scanCode);
+    // this.requestData(options.scanCode);
+    var maintainQueryUrl = api.maintainQueryUrl,
+      content = {
+        'wxopenid': wx.getStorageSync('wxopenid'),
+        'deviceid': options.scanCode,
+        'timestamp': dateUtil.formatTime(new Date()),
+        // 'startdate': '2019-06-01',
+        // 'enddate': '2019-06-18',
+        // 'shopid': '24',
+        // 'storeid': '24'
+      };
+      
+      console.log(content);
+
+    api.netbakeRequest(maintainQueryUrl, content, (res) => {
+      console.log(res);
+    }, (err) => {
+      console.log(err);
+    })
   },
 
   /**

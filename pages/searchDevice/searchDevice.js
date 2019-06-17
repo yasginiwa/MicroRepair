@@ -8,9 +8,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bindBtnActive: false,
     results: [],
     keyword: '',
-    recommend: ['POS', '电脑', '路由器', '交换机', '小票打印机', '摄像头', '报警主机', 'NVR'],
+    recommend: ['POS', '电脑', '扫描平台','读卡器', '路由器', '小票打印机', '摄像头', '报警主机'],
     bindActive: false,
     selectedDevice: {},
     assetNum: '扫描资产编码',
@@ -109,7 +110,7 @@ Page({
    */
   queryData: function (data, datatype, success) {
     wx.showLoading({
-      title: '玩命搜索中...'
+      title: '加载中...'
     })
 
     var now = dateUtil.formatTime(new Date());
@@ -215,7 +216,8 @@ Page({
       scanType: [],
       success: (res) => {
         this.setData({
-          assetNum: res.result
+          assetNum: res.result,
+          bindBtnActive: true
         })
       },
     })

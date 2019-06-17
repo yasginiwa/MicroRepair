@@ -122,8 +122,8 @@
   width: 60rpx;
   height: 60rpx;
   position: absolute;
-  right: -20rpx;
-  top: -20rpx;
+  right: -28rpx;
+  top: -28rpx;
   background-color: rgba(10, 10, 10, 0.1);
   border-radius: 50%;
 }

@@ -48,17 +48,28 @@ page {
   width: 100%;
 }
 
+.description .title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  }
+
 .description text{
   display: block;
-  margin: 20rpx 10rpx 20rpx;
+  margin: 20rpx 10rpx 20rpx 20rpx;
+}
+
+.description image {
+  width: 30rpx;
+  height: 30rpx;
 }
 
 .description textarea {
   border-radius: 10rpx;
   background-color: #fff;
   height: 120rpx;
-  width: 96%;
-  padding: 10rpx;
+  width: 100%;
+  padding: 20rpx;
 }
 
 .commit {

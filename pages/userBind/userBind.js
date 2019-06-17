@@ -98,13 +98,12 @@ Page({
         wxopenid: wxopenid
       });
 
-      var now = dateUtil.formatTime(new Date());
       var content = {
         'wxopenid': wxopenid,
         'nickname': that.data.username,
         'phoneno': that.data.phone,
         'bindsource': 'DeviceMaintainMP',
-        'timestamp': now
+        'timestamp': dateUtil.formatTime(new Date())
       }
 
       var userBindUrl = api.userBindUrl,
@@ -124,27 +123,21 @@ Page({
           wx.hideLoading();
 
           var data = JSON.parse(res.data);
+
           if (data) { // 在一网用户列表内 注册成功
             var dataObj = JSON.parse(data);
-            if (dataObj.content) {
-              var decContent = api.decryptContent(dataObj.content);
-
-              console.log('注册成功');
-
+            
+            if (dataObj.content || (dataObj.msg.indexOf('已审核') != -1)) {  // 需要审核才能正式登录维修操作
+ 
+              // 跳转到repair页面
               wx.reLaunch({
                 url: '../repair/repair',
-              })
-
-              // 存储netbakeuser到本地
-              wx.setStorage({
-                key: 'netbakeuser',
-                data: decContent
               })
 
               // 存储wxopenid 用户信息 到本地 
               wx.setStorage({
                 key: 'wxopenid',
-                data: that.data.wxopenid,
+                data: that.data.wxopenid
               })
 
               // 存储用户信息 到本地 
@@ -159,9 +152,9 @@ Page({
                 data: true
               })
 
-            } else {
+            } else {    // 不在一网用户列表内或未审核 注册失败
 
-              console.log('注册失败'); // 不在一网用户列表内 注册失败
+              console.log('注册失败'); 
               // 显示绑定失败hud 直接返回
               wx.showToast({
                 image: '../../assets/images/fail.png',
@@ -187,9 +180,9 @@ Page({
    */
   onLoad: function (options) {
 
-    let netbakeuser = wx.getStorageSync('netbakeuser');
+    let wxopenid = wx.getStorageSync('wxopenid');
 
-    if (!netbakeuser) return;
+    if (!wxopenid) return;
 
     wx.reLaunch({
       url: '../repair/repair',
