@@ -98,76 +98,76 @@ Page({
         wxopenid: wxopenid
       });
 
-      var content = {
-        'wxopenid': wxopenid,
-        'nickname': that.data.username,
-        'phoneno': that.data.phone,
-        'bindsource': 'DeviceMaintainMP',
-        'timestamp': dateUtil.formatTime(new Date())
-      }
-
       var userBindUrl = api.userBindUrl,
-        encContent = urlSafeBase64.encode(api.encryptContent(content)),
-        sign = api.sign(content),
-        token = api.token;
+        content = {
+          'wxopenid': wxopenid,
+          'nickname': that.data.username,
+          'phoneno': that.data.phone,
+          'bindsource': 'DeviceMaintainMP',
+          'timestamp': dateUtil.formatTime(new Date())
+        };
 
-      wx.request({
-        url: userBindUrl,
-        data: {
-          token: token,
-          content: encContent,
-          sign: sign
-        },
-        success: function (res) {
-          //  移除绑定hud
-          wx.hideLoading();
+      api.netbakeRequest(userBindUrl, content, (res) => {
 
-          var data = JSON.parse(res.data);
+        // content空:一网无用户信息 code==15005:绑定未审核 code==15006:绑定已审核
+        if (!res.content && res.code != 15006 && res.code != 15005) { 
 
-          if (data) { // 在一网用户列表内 注册成功
-            var dataObj = JSON.parse(data);
-            
-            if (dataObj.content || (dataObj.msg.indexOf('已审核') != -1)) {  // 需要审核才能正式登录维修操作
- 
-              // 跳转到repair页面
-              wx.reLaunch({
-                url: '../repair/repair',
-              })
+          wx.showToast({
+            title: '绑定失败!',
+            image: '../../assets/images/warning.png',
+            mask: true
+          })
 
-              // 存储wxopenid 用户信息 到本地 
-              wx.setStorage({
-                key: 'wxopenid',
-                data: that.data.wxopenid
-              })
+        } else {
+          
+          // 跳转到repair页面
+          wx.reLaunch({
+            url: '../repair/repair',
+          })
 
-              // 存储用户信息 到本地 
-              wx.setStorage({
-                key: 'userInfo',
-                data: that.data.userInfo
-              })
+          // 存储wxopenid 用户信息 到本地 
+          wx.setStorage({
+            key: 'wxopenid',
+            data: that.data.wxopenid
+          })
 
-              // 存储用户登录状态
-              wx.setStorage({
-                key: 'hasLogin',
-                data: true
-              })
+          // 存储用户信息 到本地 
+          wx.setStorage({
+            key: 'userInfo',
+            data: that.data.userInfo
+          })
 
-            } else {    // 不在一网用户列表内或未审核 注册失败
+          // 存储用户登录状态
+          wx.setStorage({
+            key: 'hasLogin',
+            data: true
+          })
+          
+          if (res.msg.indexOf('未审核') != -1 || res.code == 15005) {
 
-              console.log('注册失败'); 
-              // 显示绑定失败hud 直接返回
-              wx.showToast({
-                image: '../../assets/images/fail.png',
-                title: '绑定失败',
-              })
+            wx.showToast({
+              title: '用户需审核后才能使用,请联系管理员！',
+              icon: 'none',
+              duration: 6000,
+              mask: true
+            })
 
-            }
           }
-        },
-        fail: function (err) {
-          console.log(err);
+
         }
-      })
+
+      },
+
+      (err) => {
+
+          wx.showToast({
+            title: '网络不给力...',
+            image: '../../assets/images/fail.png',
+            mask: true
+          })
+
+        })
+
     }
 
     // 执行绑定方法

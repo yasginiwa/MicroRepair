@@ -68,13 +68,14 @@ Page({
     }
 
     var that = this;
+
     wx.getStorage({
       key: 'userInfo',
       success: function (res) {
         wx.scanCode({
           onlyFromCamera: true,
           scanType: [],
-          success: function (res) {
+          success: (res) => {
             //  跳转至维修详情页面
             wx.navigateTo({
               url: '../repairDetail/repairDetail?scanCode=' + res.result
@@ -82,8 +83,13 @@ Page({
           }
         })
       },
-      fail: function (res) { }
+
+      fail: (err) => { 
+
+      }
+      
     })
+
   },
 
   onBindDevice: function () {
@@ -156,61 +162,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.login({
-      success(res) {
-        if (res.code) {
-          //发起网络请求
-          wx.request({
-            url: api.getopenidUrl,
-            method: 'POST',
-            data: {
-              code: res.code
-            },
-            success: (res) => {
-              console.log(res);
-            }
-          })
-        } else {
-          console.log('登录失败！' + res.errMsg)
-        }
-      }
-    })
-
-    var now = dateUtil.formatTime(new Date());
-    var content = {
-      'wxopenid': 'ov4_64vTqTzSOLmnmw9sfeE19f7Y',
-      'nickname': '李玉刚',
-      'phoneno': '13545126358',
-      'bindsource': 'DeviceMaintainMP',
-      'timestamp': now
-    }
-
-    var userBindUrl = api.userBindUrl,
-      encContent = urlSafeBase64.encode(api.encryptContent(content)),
-      sign = api.sign(content),
-      token = api.token;
-
-    wx.request({
-      url: userBindUrl,
-      data: {
-        token: token,
-        content: encContent,
-        sign: sign
-      },
-      success: function (res) {
-        var result = JSON.parse(res.data);
-        if (result) { // 在一网用户列表内 注册成功
-          var resultObj = JSON.parse(result);
-          if (resultObj.content) {
-            console.log(api.decryptContent(resultObj.content) + '注册成功');
-          } else {
-            console.log(res + '注册失败'); // 不在一网用户列表内 注册失败
-          }
-        }
-      }, fail: function (err) {
-        console.log(err);
-      }
-    })
+ 
   },
 
   /**

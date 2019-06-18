@@ -76,16 +76,36 @@ Page({
         'wxopenid': wx.getStorageSync('wxopenid'),
         'deviceid': options.scanCode,
         'timestamp': dateUtil.formatTime(new Date()),
-        // 'startdate': '2019-06-01',
-        // 'enddate': '2019-06-18',
-        // 'shopid': '24',
-        // 'storeid': '24'
+        'startdate': '2019-01-06',
+        'enddate': '2019-08-06',
+        'shopid': 24,
+        'storeid': 24,
+        'pid': 1007992
       };
       
-      console.log(content);
 
     api.netbakeRequest(maintainQueryUrl, content, (res) => {
       console.log(res);
+      
+      if(!res) {
+        wx.showToast({
+          title: '设备未绑定',
+          image: '../../assets/images/warning.png',
+          mask: true
+        })
+      }
+
+      console.log(content);
+      console.log(api.decryptContent(res.content));
+
+      if (dataObj.code == 15013) {
+        wx.showToast({
+          title: dataObj.msg,
+          image: '../../assets/images/warning.png',
+          mask: true
+        })
+      }
+      
     }, (err) => {
       console.log(err);
     })

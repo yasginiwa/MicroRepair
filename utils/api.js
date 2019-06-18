@@ -1,7 +1,7 @@
 const crypto = requirePlugin('Crypto'),
-   safeBase64 = require('../utils/safebase64.js'),
-   urlSafeBase64 = require('../utils/safebase64.js'),
-   dateUtil = require('../utils/util.js');
+  safeBase64 = require('../utils/safebase64.js'),
+  urlSafeBase64 = require('../utils/safebase64.js'),
+  dateUtil = require('../utils/util.js');
 
 var appKey = 'MTIzNDU2YWJjZEUxMjM0NQ==',
   signKey = 'uTjPnNmlGrtlbDNi25s3DY3CSVwONAYs',
@@ -65,8 +65,35 @@ var netbakeRequest = function (url, content, success, fail) {
       sign: sign
     },
     success: (res) => {
+      var resultJson = JSON.parse(res.data);
+      success(JSON.parse(resultJson));
+    },
+    fail: (err) => {
 
-      console.log(res);
+      fail(err);
+    }
+  })
+};
+
+
+/**
+ * 一网烘焙接口请求封装 返回已解密
+ */
+var netbakeRequestDecrypt = function (url, content, success, fail) {
+  var encContent = urlSafeBase64.encode(encryptContent(content)),
+    sign = this.sign(content),
+    token = this.token;
+
+  // 发出请求
+  wx.request({
+    url: url,
+    data: {
+      token: token,
+      content: encContent,
+      sign: sign
+    },
+    success: (res) => {
+
       // 如果没有返回结果 直接return
       if (!res.data) return;
 
@@ -85,6 +112,7 @@ var netbakeRequest = function (url, content, success, fail) {
     }
   })
 };
+
 
 /**
 * 查询一网基本资料查询请求
@@ -121,7 +149,7 @@ var netbakeBaseDataRequest = function (data, datatype, success, fail) {
       // content转换成对象
       var content = JSON.parse(JSON.parse(res.data)).content;
       var decContent = decryptContent(content);
-      console.log(decContent)
+
       if (!decContent) return;
 
       success(decContent);
@@ -149,5 +177,6 @@ module.exports = {
   getopenidUrl: getopenidUrl,
   basedataqueryUrl: basedataqueryUrl,
   netbakeRequest: netbakeRequest,
+  netbakeRequestDecrypt: netbakeRequestDecrypt,
   netbakeBaseDataRequest: netbakeBaseDataRequest
 };

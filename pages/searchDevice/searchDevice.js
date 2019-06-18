@@ -11,7 +11,7 @@ Page({
     bindBtnActive: false,
     results: [],
     keyword: '',
-    recommend: ['POS', '电脑', '扫描平台','读卡器', '路由器', '小票打印机', '摄像头', '报警主机'],
+    recommend: ['POS', '电脑', '扫描平台', '读卡器', '路由器', '小票打印机', '摄像头', '报警主机'],
     bindActive: false,
     selectedDevice: {},
     assetNum: '扫描资产编码',
@@ -33,129 +33,38 @@ Page({
   },
 
   onInput: function (e) {
-    this.setData({
-      keyword: e.detail.value
-    })
 
-    this.queryDevice(e.detail.value);
-  },
-
-  /**
-   * 查询一网设备资料
-   */
-  queryDevice: function (devicename) {
     wx.showLoading({
-      title: '玩命搜索中...',
+      title: '玩命搜索中....',
     })
 
-    // 清空数组 避免上次搜索结果加入result
     this.setData({
-      results: []
-    });
+      keyword: e.detail.value,
+      results: []  // 清空数组 避免上次搜索结果加入result
+    })
 
-    var now = dateUtil.formatTime(new Date());
-    var wxopenid = wx.getStorageSync('wxopenid');
-    var content = {
-      'wxopenid': wxopenid,
-      'datatype': 1,
-      'datavalue': devicename,
-      'datasource': '15',
-      'timestamp': now
-    }
+    api.netbakeBaseDataRequest(e.detail.value, 1, (res) => {
+      
+      wx.hideLoading();      
 
-    var basedataqueryUrl = api.basedataqueryUrl,
-      encContent = urlSafeBase64.encode(api.encryptContent(content)),
-      sign = api.sign(content),
-      token = api.token;
+      if (!res) return;
 
-    // 发出搜索请求
-    wx.request({
-      url: basedataqueryUrl,
-      data: {
-        token: token,
-        content: encContent,
-        sign: sign
-      },
-      success: (res) => {
-        // 隐藏加载菊花
-        wx.hideLoading();
+      // 设置页面搜索数据
+      this.setData({
+        results: res
+      })
 
-        // 如果没有返回结果 直接return
-        if (!res.data) return;
+    },
+    (err) => {  // 网络错误
 
-        // content转换成对象
-        var content = JSON.parse(JSON.parse(res.data)).content;
-
-        if (!api.decryptContent(content)) return;
-
-        // 设置页面搜索数据
-        this.setData({
-
-          results: this.data.results.concat(api.decryptContent(content))
-
-        })
-
-      },
-      fail: (err) => {
-
-        console.log(err);
-      }
+      wx.showToast({
+        title: '网络不给力',
+        image: '../../assets/images/fail.png',
+        mask: true
+      })
 
     })
 
-  },
-
-  /**
-   * 查询一网其他资料
-   */
-  queryData: function (data, datatype, success) {
-    wx.showLoading({
-      title: '加载中...'
-    })
-
-    var now = dateUtil.formatTime(new Date());
-    var wxopenid = wx.getStorageSync('wxopenid');
-    var content = {
-      'wxopenid': wxopenid,
-      'datatype': datatype,
-      'datavalue': data,
-      'datasource': '15',
-      'timestamp': now
-    }
-
-    var basedataqueryUrl = api.basedataqueryUrl,
-      encContent = urlSafeBase64.encode(api.encryptContent(content)),
-      sign = api.sign(content),
-      token = api.token;
-
-    // 发出搜索请求
-    wx.request({
-      url: basedataqueryUrl,
-      data: {
-        token: token,
-        content: encContent,
-        sign: sign
-      },
-      success: (res) => {
-        // 隐藏加载菊花
-        wx.hideLoading();
-
-        // 如果没有返回结果 直接return
-        if (!res.data) return;
-
-        // content转换成对象
-        var content = JSON.parse(JSON.parse(res.data)).content;
-
-        if (!api.decryptContent(content)) return;
-
-        success(api.decryptContent(content));
-
-      },
-      fail: (err) => {
-
-        console.log(err);
-      }
-    })
   },
 
   /**
@@ -174,13 +83,35 @@ Page({
    */
   onSelectRecommend: function (e) {
 
+    wx.showLoading({
+      title: '玩命搜索中....',
+    })
+
     var devicename = this.data.recommend[e.currentTarget.dataset.index];
 
     this.setData({
       keyword: devicename
     })
 
-    this.queryDevice(devicename);
+    api.netbakeBaseDataRequest(devicename, 1, (res) => {
+      wx.hideLoading();
+
+      if (!res) return;
+
+      // 设置页面搜索数据
+      this.setData({
+        results: res
+      })
+
+    }, (err) => { // 网络不给力
+
+      wx.showToast({
+        title: '网络不给力',
+        image: '../../assets/images/fail.png',
+        mask: true
+      })
+
+    })
 
   },
 
@@ -259,72 +190,57 @@ Page({
    * 绑定设备
    */
   bindDevice: function () {
-
-    var now = dateUtil.formatTime(new Date());
-    var wxopenid = wx.getStorageSync('wxopenid');
-    var content = {
-      'wxopenid': wxopenid,
-      'deviceid': this.data.assetNum,
-      'shopid': this.data.shopObj.id,
-      'pid': this.data.selectedDevice.id,
-      'storeid': this.data.storageObj.id.toString(),
-      'bindsource': 'DeviceMaintainMP',
-      'timestamp': now
-    }
-
-    console.log(content);
-
-    var deviceBindUrl = api.deviceBindUrl,
-      encContent = urlSafeBase64.encode(api.encryptContent(content)),
-      sign = api.sign(content),
-      token = api.token;
-
-    // 发出搜索请求
-    wx.request({
-      url: deviceBindUrl,
-      data: {
-        token: token,
-        content: encContent,
-        sign: sign
-      },
-      success: (res) => {
-        // 隐藏加载菊花
-        wx.hideLoading();
-
-        // 如果没有返回结果 直接return
-        if (!res.data) return;
-
-        // content转换成对象
-        var content = JSON.parse(JSON.parse(res.data)).content;
-        var decContent = api.decryptContent(content);
-
-        if (!decContent) {
-          wx.showToast({
-            title: '设备已绑定!',
-            image: '../../assets/images/warning.png',
-            mask: true
-          })
-        } else {
-          console.log(decContent);
-          wx.showToast({
-            title: '设备绑定成功!',
-            image: '../../assets/images/success.png',
-            mask: true
-          })
-
-          setTimeout(() => {
-            wx.navigateBack({
-              url:'../repair/repair'
-            })
-          }, 1000);
-        }
-      },
-      fail: (err) => {
-
-        console.log(err);
-
-      }
+    wx.showLoading({
+      title: '绑定中...',
     })
+
+    var now = dateUtil.formatTime(new Date()),
+      wxopenid = wx.getStorageSync('wxopenid'),
+      deviceBindUrl = api.deviceBindUrl,
+      content = {
+        'wxopenid': wxopenid,
+        'deviceid': this.data.assetNum,
+        'shopid': this.data.shopObj.id,
+        'pid': this.data.selectedDevice.id,
+        'storeid': this.data.storageObj.id.toString(),
+        'bindsource': 'DeviceMaintainMP',
+        'timestamp': now
+      };
+
+    api.netbakeRequest(deviceBindUrl, content, (res) => {
+
+      if (res.code == 15104) {  // 设备已绑定
+        wx.showToast({
+          title: res.msg,
+          image: '../../assets/images/warning.png',
+          mask: true
+        })
+
+      } else {  // 设备绑定成功
+
+        wx.showToast({
+          title: '设备绑定成功!',
+          image: '../../assets/images/success.png',
+          mask: true
+        })
+
+        setTimeout(() => {  // 1s后跳转repair页面
+          wx.navigateBack({
+            url: '../repair/repair'
+          })
+        }, 1000);
+      }
+
+    }, (err) => { // 网络错误
+
+      wx.showToast({
+        title: '网络不给力',
+        image: '../../assets/images/fail.png',
+        mask: true
+      })
+
+    })
+
   },
 
   /**
@@ -353,18 +269,32 @@ Page({
       shops.push(shop);
     }
 
+    // 数组的最前添加五金仓
+    shops.unshift('五金仓');
+
     this.setData({
       shops: shops
     })
 
-    // 选择默认门店 001店
-    this.queryData(this.data.shops[this.data.shopIdx], 3, (res) => {
+    api.netbakeBaseDataRequest(this.data.shops[this.data.shopIdx], 3, (res) => {
+
       if (res) {
         this.setData({
           shopObj: res[0]
         })
       }
-    });
+
+    },
+      (err) => {
+
+        wx.showToast({
+          title: '网络不给力',
+          image: '../../assets/images/fail.png',
+          mask: true
+        })
+
+      })
+
 
     // 选择默认仓库 五金仓
     this.setData({
