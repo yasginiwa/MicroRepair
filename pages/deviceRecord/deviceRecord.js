@@ -26,86 +26,50 @@ Page({
   },
 
   /**
- * 请求数据
- */
-  requestData(params) {
-    wx.showLoading({
-      title: '加载中...',
-    })
-
-    var that = this;
-
-    //  从本地存储获取token信息
-    try {
-      var token = wx.getStorageSync('token');
-    } catch (e) {
-      console.log(e);
-    }
-
-    wx.request({
-      url: api.devicerecordUrl,
-      method: 'POST',
-      data: {
-        scanCode: params,
-        token: token
-      },
-      success: function (res) {
-        that.setData({
-          deviceRecords: res.data.result
-        })
-        wx.hideLoading();
-      },
-      fail: function (res) {
-        wx.hideLoading();
-        wx.showToast({
-          title: '网络错误,请检查网络设置!',
-          icon: 'none',
-          mask: true
-        })
-      }
-    })
-  },
-
-  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // this.requestData(options.scanCode);
     var maintainQueryUrl = api.maintainQueryUrl,
       content = {
         'wxopenid': wx.getStorageSync('wxopenid'),
         'deviceid': options.scanCode,
         'timestamp': dateUtil.formatTime(new Date()),
-        'startdate': '2019-01-06',
-        'enddate': '2019-08-06',
-        'shopid': 24,
-        'storeid': 24,
-        'pid': 1007992
+        'queryall': true,
+        'storeid': '111',
+        'shopid': '111'
       };
-      
+
 
     api.netbakeRequest(maintainQueryUrl, content, (res) => {
       console.log(res);
-      
-      if(!res) {
+
+      if (res.code == 15013) {
         wx.showToast({
-          title: '设备未绑定',
+          title: '该设备未绑定!',
           image: '../../assets/images/warning.png',
           mask: true
         })
       }
+      // 返回的是所有该deviceid的维修记录
+      var records = api.decryptContent(res.content);
+      var curRecords = records.map((item) => {
+        if (item.deviceid == options.scanCode) {
+          return item;
+        }
+      });
 
-      console.log(content);
-      console.log(api.decryptContent(res.content));
+      // 过滤掉map后元素为undefined的元素
+      curRecords = curRecords.filter((item) => {
+        if (item != undefined) {
+          return item;
+        }
+      });
 
-      if (dataObj.code == 15013) {
-        wx.showToast({
-          title: dataObj.msg,
-          image: '../../assets/images/warning.png',
-          mask: true
-        })
-      }
-      
+      console.log(curRecords);
+
+      this.setData({
+        deviceRecords: curRecords
+      })
     }, (err) => {
       console.log(err);
     })
