@@ -16,12 +16,10 @@ Page({
    * 点击进入设备记录详情
    */
   clickToDeviceRecordDetail(e) {
+
     var deviceRecord = JSON.stringify(this.data.deviceRecords[e.currentTarget.dataset.index]);
     wx.navigateTo({
       url: '../deviceRecordDetail/deviceRecordDetail?deviceRecord=' + deviceRecord,
-      success: function (res) { },
-      fail: function (res) { },
-      complete: function (res) { },
     })
   },
 
@@ -29,6 +27,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '玩命加载中...',
+    })
+
     var maintainQueryUrl = api.maintainQueryUrl,
       content = {
         'wxopenid': wx.getStorageSync('wxopenid'),
@@ -41,7 +43,8 @@ Page({
 
 
     api.netbakeRequest(maintainQueryUrl, content, (res) => {
-      console.log(res);
+      
+      wx.hideLoading();
 
       if (res.code == 15013) {
         wx.showToast({
@@ -54,6 +57,8 @@ Page({
       var records = api.decryptContent(res.content);
       var curRecords = records.map((item) => {
         if (item.deviceid == options.scanCode) {
+          // 返回的时间砍掉HH:mm:ss
+          item.maintaindate = item.maintaindate.substring(0, 10);
           return item;
         }
       });
@@ -65,13 +70,17 @@ Page({
         }
       });
 
-      console.log(curRecords);
-
       this.setData({
         deviceRecords: curRecords
       })
     }, (err) => {
-      console.log(err);
+      
+      wx.showToast({
+        title: '网络错误,请检查网络设置!',
+        icon: 'none',
+        mask: true
+      })
+
     })
   },
 

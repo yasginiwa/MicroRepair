@@ -6,7 +6,13 @@ App({
    */
   onLaunch: function () {
  
+    let wxopenid = wx.getStorageSync('wxopenid');
 
+    if (!wxopenid) return;
+
+    wx.reLaunch({
+      url: 'pages/repair/repair',
+    })
   },
 
   /**

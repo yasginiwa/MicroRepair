@@ -180,13 +180,13 @@ Page({
    */
   onLoad: function (options) {
 
-    let wxopenid = wx.getStorageSync('wxopenid');
+    // let wxopenid = wx.getStorageSync('wxopenid');
 
-    if (!wxopenid) return;
+    // if (!wxopenid) return;
 
-    wx.reLaunch({
-      url: '../repair/repair',
-    })
+    // wx.reLaunch({
+    //   url: '../repair/repair',
+    // })
 
   },
 

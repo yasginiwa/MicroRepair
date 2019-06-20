@@ -17,7 +17,7 @@ Page({
       reason: '',
       result: '',
       maintaindate: '',
-      timestamps:'',
+      timestamps: '',
       memo: ''
     },
     commitDisable: true, //  提交按钮disable
@@ -85,8 +85,11 @@ Page({
 
       },
       fail: (err) => {
-
-        console.log(err);
+        wx.showToast({
+          title: '网络错误,请检查网络设置!',
+          icon: 'none',
+          mask: true
+        })
       }
     })
   },
@@ -186,11 +189,11 @@ Page({
       'maintaindate': this.data.record.maintaindate,
       'timestamp': dateUtil.formatTime(new Date()),
     };
-    
+
     var url = api.addMaintainUrl;
 
     api.netbakeRequest(url, content, (res) => {
-      
+
       wx.showToast({
         title: '提交成功!',
         image: '../../assets/images/success.png',
@@ -199,7 +202,7 @@ Page({
 
       console.log(res);
 
-      setTimeout(function(){
+      setTimeout(function () {
         wx.navigateBack({});
       }, 1000)
 
@@ -262,7 +265,7 @@ Page({
     this.setData({
       'record.maintaindate': dateUtil.formatDate(new Date())
     })
- 
+
   },
 
   /**

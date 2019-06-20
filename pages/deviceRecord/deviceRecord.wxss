@@ -1,6 +1,6 @@
 /* pages/deviceRecord/deviceRecord.wxss */
 page{
-  background-color: #eee;
+  background-color: #f7f7f7;
 }
 
 .norecord image {
@@ -47,7 +47,7 @@ page{
 }
 
 .cells .textDesc {
-  margin-left: 10rpx;
+  margin-left: 20rpx;
 }
 
 .cells .textDesc .name {
@@ -72,19 +72,19 @@ page{
 }
 
 .cells .textDesc .secondDesc .engineer {
-  color: rgb(102, 102, 102);
+  color: rgb(153, 153, 153);
   font-size: 22rpx;
 }
 
 .cells .textDesc .secondDesc .repairDate {
   margin-left: 20rpx;
   color: rgb(153, 153, 153);
-  font-size: 20rpx;
+  font-size: 22rpx;
 }
 
 .cells .indicator {
   position: absolute;
-  right: 10rpx;
-  width: 60rpx;
-  height: 60rpx;
+  right: 20rpx;
+  width: 50rpx;
+  height: 50rpx;
 }

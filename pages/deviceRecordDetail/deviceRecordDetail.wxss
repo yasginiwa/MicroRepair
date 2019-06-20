@@ -23,9 +23,12 @@ page {
 
 .deviceInfo .content text {
   margin-left: 20rpx;
-  margin-top: 10rpx;
-  margin-bottom: 10rpx;
+  margin-top: 20rpx;
   font-size: 28rpx;
+}
+
+.deviceInfo .content .name {
+  margin-bottom: 20rpx;
 }
 
 .reason {
@@ -112,7 +115,15 @@ page {
   background-color: white;
   display: flex;
   flex-flow: column nowrap;
-  margin-top: 10rpx;
+  margin-top: 20rpx;
+}
+
+.repairInfo .content .engineer {
+  margin-top: 20rpx;
+}
+
+.repairInfo .content .date {
+  margin-bottom: 20rpx;
 }
 
 .repairInfo .content text {

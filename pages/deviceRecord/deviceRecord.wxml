@@ -5,22 +5,13 @@
 </view>
 <view class='block' wx:elif='{{deviceRecords.length > 0}}'>
   <view class='cells' wx:for='{{deviceRecords}}' wx:key='{{deviceRecordId}}' bindtap='clickToDeviceRecordDetail' data-index='{{index}}'>
-    <image class='icon' wx:if="{{item.cate == '打印设备'}}" src='../../assets/images/deviceRecord/printer.png'></image>
-    <image class='icon' wx:elif="{{item.cate == '收银设备'}}" src='../../assets/images/deviceRecord/pos.png'></image>
-    <image class='icon' wx:elif="{{item.cate == '通信设备'}}" src='../../assets/images/deviceRecord/router.png'></image>
-    <image class='icon' wx:elif="{{item.cate == 'PC主机'}}" src='../../assets/images/deviceRecord/pc.png'></image>
-    <image class='icon' wx:elif="{{item.cate == 'PC外设'}}" src='../../assets/images/deviceRecord/usb.png'></image>
-    <image class='icon' wx:elif="{{item.cate == '监控设备'}}" src='../../assets/images/deviceRecord/camera.png'></image>
-    <image class='icon' wx:elif="{{item.cate == '入侵设备'}}" src='../../assets/images/deviceRecord/instusion.png'></image>
-    <image class='icon' wx:elif="{{item.cate == '音频设备'}}" src='../../assets/images/deviceRecord/audio.png'></image>
     <view class='devider'></view>
     <view class='textDesc'>
       <text class='name'>{{item.pname}}</text>
-      <text class='no.'>资产号:{{item.deviceid}}</text>
       <view class='blank'></view>
       <view class='secondDesc'>
         <text class='engineer'>维修工程师: {{item.username}}</text>
-        <text class='repairDate'>{{item.maintaindate}}</text>
+        <text class='repairDate'>维修时间: {{item.maintaindate}}</text>
       </view>
     </view>
     <image class='indicator' src='../../assets/images/me/arrow.png'></image>

@@ -69,8 +69,11 @@ var netbakeRequest = function (url, content, success, fail) {
       success(JSON.parse(resultJson));
     },
     fail: (err) => {
-
-      fail(err);
+      wx.showToast({
+        title: '网络错误,请检查网络设置!',
+        icon: 'none',
+        mask: true
+      })
     }
   })
 };

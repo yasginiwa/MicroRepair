@@ -1,6 +1,6 @@
 /* pages/me/me.wxss */
 page{
-  background-color: #eee;
+  background-color: #f7f7f7;
 }
 
 .userInfo{
@@ -94,9 +94,9 @@ margin-left: 20rpx;
 
 .block .item .arrow{
   position: absolute;
-  right: 10rpx;
-  width: 60rpx;
-  height: 60rpx;
+  right: 20rpx;
+  width: 50rpx;
+  height: 50rpx;
 }
 
 .logoff{
