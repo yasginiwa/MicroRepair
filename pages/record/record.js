@@ -38,6 +38,15 @@ Page({
 
     api.netbakeRequest(maintainQueryUrl, content, (res) => {
 
+      if (res.code == 15005) {
+        wx.showToast({
+          title: '用户未审核',
+          image: '../../assets/images/warning.png',
+          duration: 3000
+        })
+        return;
+      }
+
       // 返回的是所有该deviceid的维修记录
       var records = api.decryptContent(res.content);
       
@@ -89,20 +98,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
 
   },
 

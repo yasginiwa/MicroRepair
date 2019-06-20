@@ -148,7 +148,7 @@ Page({
             wx.showToast({
               title: '用户需审核后才能使用,请联系管理员！',
               icon: 'none',
-              duration: 6000,
+              duration: 3000,
               mask: true
             })
 
