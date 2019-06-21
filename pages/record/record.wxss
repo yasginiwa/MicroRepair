@@ -52,6 +52,7 @@ page{
 
 .cells .textDesc .name {
   font-size: 30rpx;
+  color: #2a2a2a;
 }
 
 .cells .textDesc .no {

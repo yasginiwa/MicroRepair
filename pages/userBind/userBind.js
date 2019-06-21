@@ -56,7 +56,7 @@ Page({
     if (!e.detail.userInfo) {
       wx.showToast({
         image: '../../assets/images/warning.png',
-        title: '请点击允许继续'
+        title: '点击允许继续'
       })
       return;
     }
@@ -179,14 +179,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    // let wxopenid = wx.getStorageSync('wxopenid');
-
-    // if (!wxopenid) return;
-
-    // wx.reLaunch({
-    //   url: '../repair/repair',
-    // })
 
   },
 

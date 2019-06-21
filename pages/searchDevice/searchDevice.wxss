@@ -198,7 +198,7 @@
   line-height: 60rpx;
   width: 70%;
   outline: none;
-  background-color: #1195db;
+  background-color: #f3c516;
   color: #fff;
   font-size: 25rpx;
 }

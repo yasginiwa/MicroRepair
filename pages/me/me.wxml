@@ -25,7 +25,6 @@
     </view>
   </view>
 
-  <!-- <button class='user_login' wx:if='{{!hasLogin}}' bindgetuserinfo='onGotUserInfo' open-type='getUserInfo'>点击登录</button> -->
 </view>
 
 <view class='block' >
@@ -35,5 +34,3 @@
     <image class='arrow' src='{{item.indicator}}'></image>
   </view>
 </view>
-
-<!-- <button class='logoff' wx:if='{{hasLogin == true}}' type='warn' bindtap='logoff'>注销</button> -->

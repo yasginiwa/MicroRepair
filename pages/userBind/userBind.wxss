@@ -62,7 +62,7 @@ page {
 
 .sec4 button {
   width: 460rpx;
-  background-color: #0079C0;
+  background-color: #f3c516;
   color: white;
   border-bottom: none;
 }

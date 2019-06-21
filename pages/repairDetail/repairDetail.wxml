@@ -32,7 +32,7 @@
       <text>故障原因</text>
       <image src='../../assets/images/repairDetail/reason.png'></image>
     </view>
-    <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;' value="{{record.reason}}"></textarea>
+    <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;color: #dbdbdb;' value="{{record.reason}}"></textarea>
   </view>
 
   <view class='description'>
@@ -40,11 +40,11 @@
       <text>维修结果</text>
       <image src='../../assets/images/repairDetail/result.png'></image>
     </view>
-    <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx;' value="{{record.result}}"></textarea>
+    <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx; color: #dbdbdb;' value="{{record.result}}"></textarea>
   </view>
 
   <view class='commit'>
-    <button type='primary' bindtap='onCommit' disabled='{{commitDisable}}'>提 交</button>
+    <button bindtap='onCommit' disabled='{{commitDisable}}'>提 交</button>
   </view>
 
 </view>

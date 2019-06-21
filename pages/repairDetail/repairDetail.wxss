@@ -67,7 +67,7 @@ page {
 .description textarea {
   border-radius: 10rpx;
   background-color: #fff;
-  height: 120rpx;
+  height: 180rpx;
   width: 100%;
   padding: 20rpx;
 }
@@ -76,9 +76,12 @@ page {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
+  
 }
 
 .commit button {
   margin-top: 40rpx;
   width: 70%;
+  color: white;
+  background-color: #f3c516;
 }

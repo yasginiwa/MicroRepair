@@ -4,7 +4,7 @@ page{
 }
 
 .userInfo{
-  background-color: #0067A5;
+  background-color: #898d8d;
   width: 100%;
   height: 150rpx;
   display: flex;
@@ -90,6 +90,7 @@ page{
 
 .block .item .desc{
 margin-left: 20rpx;
+color: #2a2a2a;
 }
 
 .block .item .arrow{
