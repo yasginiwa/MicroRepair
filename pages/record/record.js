@@ -37,6 +37,7 @@ Page({
       };
 
     api.netbakeRequest(maintainQueryUrl, content, (res) => {
+      wx.stopPullDownRefresh();
 
       if (res.code == 15005) {
         wx.showToast({
@@ -106,5 +107,12 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  /**
+   * 下拉刷新
+   */
+  onPullDownRefresh: function () {
+    this.onLoad();
   }
 })
