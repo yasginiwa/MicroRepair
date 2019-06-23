@@ -70,7 +70,7 @@ var netbakeRequest = function (url, content, success, fail) {
     },
     fail: (err) => {
       wx.showToast({
-        title: '网络错误,请检查网络设置!',
+        title: '网络不给力哦',
         icon: 'none',
         mask: true
       })

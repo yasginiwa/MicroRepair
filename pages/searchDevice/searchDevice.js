@@ -11,7 +11,7 @@ Page({
     bindBtnActive: false,
     results: [],
     keyword: '',
-    recommend: ['POS', '电脑', '扫描平台', '读卡器', '路由器', '小票打印机', '摄像头', '报警主机'],
+    recommend: ['POS', '电脑', '扫描平台', '小票打印机', '读卡器', '路由器', '摄像头', '报警主机'],
     bindActive: false,
     selectedDevice: {},
     assetNum: '扫描资产编码',
@@ -35,7 +35,7 @@ Page({
   onInput: function (e) {
 
     wx.showLoading({
-      title: '玩命搜索中....',
+      title: '玩命搜索中',
     })
 
     this.setData({
@@ -58,7 +58,7 @@ Page({
     (err) => {  // 网络错误
 
       wx.showToast({
-        title: '网络不给力',
+        title: '网络不给力哦',
         image: '../../assets/images/fail.png',
         mask: true
       })
@@ -66,6 +66,8 @@ Page({
     })
 
   },
+  
+ 
 
   /**
    * 取消搜索
@@ -84,7 +86,7 @@ Page({
   onSelectRecommend: function (e) {
 
     wx.showLoading({
-      title: '玩命搜索中....',
+      title: '玩命搜索中',
     })
 
     var devicename = this.data.recommend[e.currentTarget.dataset.index];
@@ -106,7 +108,7 @@ Page({
     }, (err) => { // 网络不给力
 
       wx.showToast({
-        title: '网络不给力',
+        title: '网络不给力哦',
         image: '../../assets/images/fail.png',
         mask: true
       })
@@ -191,7 +193,7 @@ Page({
    */
   bindDevice: function () {
     wx.showLoading({
-      title: '绑定中...',
+      title: '绑定中',
     })
 
     var now = dateUtil.formatTime(new Date()),
@@ -219,7 +221,7 @@ Page({
       } else {  // 设备绑定成功
 
         wx.showToast({
-          title: '设备绑定成功!',
+          title: '设备绑定成功',
           image: '../../assets/images/success.png',
           mask: true
         })
@@ -234,7 +236,7 @@ Page({
     }, (err) => { // 网络错误
 
       wx.showToast({
-        title: '网络不给力',
+        title: '网络不给力哦',
         image: '../../assets/images/fail.png',
         mask: true
       })
@@ -288,7 +290,7 @@ Page({
       (err) => {
 
         wx.showToast({
-          title: '网络不给力',
+          title: '网络不给力哦',
           image: '../../assets/images/fail.png',
           mask: true
         })

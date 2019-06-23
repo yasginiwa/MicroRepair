@@ -48,7 +48,7 @@ Page({
   onRegistry: function (e) {
     //  显示hud
     wx.showLoading({
-      title: '绑定中...',
+      title: '绑定中',
       mask: true
     })
 
@@ -113,7 +113,7 @@ Page({
         if (!res.content && res.code != 15006 && res.code != 15005) { 
 
           wx.showToast({
-            title: '绑定失败!',
+            title: '绑定失败',
             image: '../../assets/images/warning.png',
             mask: true
           })
@@ -146,7 +146,7 @@ Page({
           if (res.msg.indexOf('未审核') != -1 || res.code == 15005) {
 
             wx.showToast({
-              title: '用户需审核后才能使用,请联系管理员！',
+              title: '用户需审核后才能使用,请联系管理员',
               icon: 'none',
               duration: 3000,
               mask: true
@@ -161,7 +161,7 @@ Page({
       (err) => {
 
           wx.showToast({
-            title: '网络不给力...',
+            title: '网络不给力哦',
             image: '../../assets/images/fail.png',
             mask: true
           })

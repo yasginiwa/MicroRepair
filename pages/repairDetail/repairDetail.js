@@ -43,7 +43,7 @@ Page({
   */
   queryData: function (data, datatype, success) {
     wx.showLoading({
-      title: '加载中...'
+      title: '加载中'
     })
 
     var now = dateUtil.formatTime(new Date());
@@ -86,7 +86,7 @@ Page({
       },
       fail: (err) => {
         wx.showToast({
-          title: '网络错误,请检查网络设置!',
+          title: '网络不给力哦',
           icon: 'none',
           mask: true
         })
@@ -175,7 +175,7 @@ Page({
   onCommit() {
 
     wx.showLoading({
-      title: '提交中...',
+      title: '提交中',
       mask: true
     })
 
@@ -195,7 +195,7 @@ Page({
     api.netbakeRequest(url, content, (res) => {
 
       wx.showToast({
-        title: '提交成功!',
+        title: '提交成功',
         image: '../../assets/images/success.png',
         mask: true
       })

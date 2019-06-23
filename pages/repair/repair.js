@@ -25,7 +25,7 @@ Page({
     }
     if (!hasLogin) {
       wx.showToast({
-        title: '请登录系统...',
+        title: '请登录系统',
         icon: 'none',
         mask: true
       })
@@ -39,13 +39,8 @@ Page({
       success: function (res) {
         wx.navigateTo({
           url: '../deviceRecord/deviceRecord?scanCode=' + res.result,
-          success: function (res) { },
-          fail: function (res) { },
-          complete: function (res) { },
         })
-      },
-      fail: function (res) { },
-      complete: function (res) { },
+      }
     })
   },
 
@@ -60,7 +55,7 @@ Page({
     }
     if (!hasLogin) {
       wx.showToast({
-        title: '请登录系统...',
+        title: '请登录系统',
         icon: 'none',
         mask: true
       })
@@ -87,7 +82,7 @@ Page({
       fail: (err) => { 
 
         wx.showToast({
-          title: '网络错误,请检查网络设置!',
+          title: '网络不给力哦',
           icon: 'none',
           mask: true
         })

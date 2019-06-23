@@ -28,7 +28,7 @@ Page({
    */
   onLoad: function (options) {
     wx.showLoading({
-      title: '玩命加载中...',
+      title: '玩命加载中',
     })
 
     var maintainQueryUrl = api.maintainQueryUrl,
@@ -48,7 +48,7 @@ Page({
 
       if (res.code == 15013) {
         wx.showToast({
-          title: '该设备未绑定!',
+          title: '该设备未绑定',
           image: '../../assets/images/warning.png',
           mask: true
         })
@@ -76,7 +76,7 @@ Page({
     }, (err) => {
       
       wx.showToast({
-        title: '网络错误,请检查网络设置!',
+        title: '网络不给力哦',
         icon: 'none',
         mask: true
       })
