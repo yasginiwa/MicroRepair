@@ -50,8 +50,8 @@
    
     <view class='deviceProfile'>
       <text>资产编码：</text>
-      <text class='phstyle'>{{assetNum}}</text>
-      <image catchtap='onScanDeviceQR' src='../../assets/images/searchDevice/scan.png'></image>
+      <input class='phstyle' type="text" placeholder='输入资产编码' placeholder-style="color: #d7d7d7;" value="{{assetNum}}" bindinput="onAssetInput"></input>
+      <image bindtouchstart='onScanDeviceQR' src='../../assets/images/searchDevice/scan.png'></image>
     </view>
 
     <view class='deviceProfile'>

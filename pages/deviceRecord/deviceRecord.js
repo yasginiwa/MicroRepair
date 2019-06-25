@@ -58,7 +58,7 @@ Page({
       var curRecords = records.map((item) => {
         if (item.deviceid == options.scanCode) {
           // 返回的时间砍掉HH:mm:ss
-          item.maintaindate = item.maintaindate.substring(0, 10);
+          item.maintaindate = item.maintaindate.substring(0, 19);
           return item;
         }
       });

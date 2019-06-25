@@ -2,12 +2,15 @@
 const api = require('../../utils/api.js');
 var urlSafeBase64 = require('../../utils/safebase64.js');
 const dateUtil = require('../../utils/util.js');
+var dateTimePicker = require('../../utils/dateTimePicker.js');
+
 
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    // 维修记录模型
     record: {
       wxopenid: '',
       deviceid: '',
@@ -18,8 +21,16 @@ Page({
       result: '',
       maintaindate: '',
       timestamps: '',
-      memo: ''
+      memo: '',
     },
+    date: '2018-10-01',
+    time: '12:00',
+    dateTimeArray: null,
+    dateTime: null,
+    dateTimeArray1: null,
+    dateTime1: null,
+    startYear: 2000,
+    endYear: 2050,
     commitDisable: true, //  提交按钮disable
     shops: [],
     storages: [
@@ -36,7 +47,116 @@ Page({
     storageObj: {},
     shopIdx: 0,
     storageIdx: 0,
+
+    // 故障原因模型
+    reasonTypes: [
+      {
+        reasontype: 0,
+        title: '轻度故障',
+        desc: '设备未损坏，需保养'
+      },
+      {
+        reasontype: 1,
+        title: '一般故障',
+        desc: '设备损坏，可在短期内修复'
+      },
+      {
+        reasontype: 2,
+        title: '严重故障',
+        desc: '设备严重损坏，无法在短期内修复'
+      },
+      {
+        reasontype: 3,
+        title: '严重故障',
+        desc: '设备完全损坏，无法修复'
+      }
+    ],
+
+    //  维修结果类型
+    resultTypes: [
+      {
+        resulttype: 0,
+        title: '已修复',
+        desc: '设备已能正常使用'
+      },
+      {
+        resulttype: 1,
+        title: '待处理',
+        desc: '设备暂时无法使用'
+      },
+      {
+        resulttype: 2,
+        title: '报废',
+        desc: '设备完全损坏致报废'
+      }
+    ],
+    reasonTypeObj: {},
+    resultTypeObj: {},
+    reasonTypeIdx: 0,
+    resultTypeIdx: 0
   },
+
+  //选择精确时间方法
+  changeDate(e) {
+    this.setData({
+      date: e.detail.value
+    });
+  },
+
+  changeTime(e) {
+    this.setData({
+      time: e.detail.value
+    });
+  },
+
+  changeDateTime(e) {
+    this.setData({
+      dateTime: e.detail.value
+    });
+  },
+
+  changeDateTime1(e) {
+    this.setData({
+      dateTime1: e.detail.value
+    });
+  },
+
+  changeDateTimeColumn(e) {
+    var arr = this.data.dateTime,
+      dateArr = this.data.dateTimeArray;
+
+
+    arr[e.detail.column] = e.detail.value;
+    dateArr[2] = dateTimePicker.getMonthDay(dateArr[0][arr[0]], dateArr[1][arr[1]]);
+
+    this.setData({
+      dateTimeArray: dateArr,
+      dateTime: arr
+    })
+
+  //时间拼接 （格式：2018-09-19 17:30:55）
+    let editTime = `${this.data.dateTimeArray[0][this.data.dateTime[0]]}-${this.data.dateTimeArray[1][this.data.dateTime[1]]}-${this.data.dateTimeArray[2][this.data.dateTime[2]]} ${this.data.dateTimeArray[3][this.data.dateTime[3]]}:${this.data.dateTimeArray[4][this.data.dateTime[4]]}:${this.data.dateTimeArray[5][this.data.dateTime[5]]}`
+
+    this.setData({
+      record: {
+        maintaindate: editTime
+      }
+    })
+  },
+
+  changeDateTimeColumn1(e) {
+    var arr = this.data.dateTime1,
+      dateArr = this.data.dateTimeArray1;
+
+    arr[e.detail.column] = e.detail.value;
+    dateArr[2] = dateTimePicker.getMonthDay(dateArr[0][arr[0]], dateArr[1][arr[1]]);
+
+    this.setData({
+      dateTimeArray1: dateArr,
+      dateTime1: arr
+    });
+  },
+
 
   /**
   * 查询一网其他资料
@@ -126,6 +246,32 @@ Page({
   },
 
   /**
+   * 故障原因类型选择
+   */
+  onFillReasonType: function (e) {
+    this.setData({
+      reasonTypeIdx: e.detail.value
+    })
+
+    this.setData({
+      reasonTypeObj: this.data.reasonTypes[this.data.reasonTypeIdx]
+    })
+  },
+
+  /**
+   * 维修结果类型选择
+   */
+  onFillResultType: function (e) {
+    this.setData({
+      resultTypeIdx: e.detail.value
+    })
+
+    this.setData({
+      resultTypeObj: this.data.resultTypes[this.data.resultTypeIdx]
+    })
+  },
+
+  /**
    * 设置故障原因
    */
   OnReasonConfirm(e) {
@@ -143,15 +289,6 @@ Page({
       'record.result': e.detail.value
     })
     this.editHasCompleted();
-  },
-
-  /**
-   * 选择维修时间
-   */
-  selectDate(e) {
-    this.setData({
-      'record.date': e.detail.value
-    })
   },
 
   /**
@@ -263,8 +400,28 @@ Page({
     })
 
     this.setData({
-      'record.maintaindate': dateUtil.formatDate(new Date())
+      'record.maintaindate': dateUtil.formatTime(new Date())
     })
+
+
+    // 选择默认日期
+    // 获取完整的年月日 时分秒，以及默认显示的数组
+    var obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
+    var obj1 = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
+    // 精确到分的处理，将数组的秒去掉
+    var lastArray = obj1.dateTimeArray.pop();
+    var lastTime = obj1.dateTime.pop();
+
+    this.setData({
+      dateTime: obj.dateTime,
+      dateTimeArray: obj.dateTimeArray,
+      dateTimeArray1: obj1.dateTimeArray,
+      dateTime1: obj1.dateTime
+    })
+
+    // this.setData({
+    //   maintaindate: `${this.data.dateTimeArray[0][this.data.dateTime[0]]}-${this.data.dateTimeArray[1][this.data.dateTime[1]]}-${this.data.dateTimeArray[2][this.data.dateTime[2]]} ${this.data.dateTimeArray[3][this.data.dateTime[3]]}:${this.data.dateTimeArray[4][this.data.dateTime[4]]}:${this.data.dateTimeArray[5][this.data.dateTime[5]]}`
+    // })
 
   },
 

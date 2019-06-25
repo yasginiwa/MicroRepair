@@ -78,7 +78,7 @@ page{
 }
 
 .cells .textDesc .secondDesc .repairDate {
-  margin-left: 20rpx;
+  margin-left: 30rpx;
   color: rgb(153, 153, 153);
   font-size: 22rpx;
 }

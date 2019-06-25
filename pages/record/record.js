@@ -54,7 +54,7 @@ Page({
       wx.hideLoading();
       
       records = records.map((item) => {
-        item.maintaindate = item.maintaindate.substring(0, 10);
+        item.maintaindate = item.maintaindate.substring(0, 19);
         return item;
       })
 

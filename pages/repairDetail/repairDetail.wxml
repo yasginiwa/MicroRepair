@@ -20,16 +20,38 @@
   </view>
 
   <view class='item'>
+    <text>原因类型</text>
+    
+    <picker-view bindchange='onFillReasonType'>
+
+      <picker-view-column>
+        <view wx:for='{{reasonTypes}}' wx:key='value'>{{item}}</view>
+      </picker-view-column>
+      
+    </picker-view>
+    <image src='../../assets/images/repairDetail/arrow.png'></image>
+
+  </view>
+
+  <view class='item'>
+    <text>结果类型</text>
+    <picker bindchange='onFillResultType' range='{{resultTypes}}' range-key="{{'title'}}" value='{{resultTypeIdx}}'>{{resultTypes[resultTypeIdx].title}}</picker>
+    <image src='../../assets/images/repairDetail/arrow.png'></image>
+  </view>
+
+  <view class='item'>
     <text>维修时间</text>
-    <picker bindchange='selectDate' mode='date' start='2000-01-01' end='2030-01-01'>
-      <view>{{record.maintaindate}}</view>
+    <picker class='alarm_picker' mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
+      <view class="picker">
+        {{record.maintaindate}}
+      </view>
     </picker>
     <image src='../../assets/images/repairDetail/arrow.png'></image>
   </view>
 
   <view class='description'>
     <view class='title'>
-      <text>故障原因</text>
+      <text>原因详情</text>
       <image src='../../assets/images/repairDetail/reason.png'></image>
     </view>
     <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;color: #dbdbdb;' value="{{record.reason}}"></textarea>
@@ -37,7 +59,7 @@
 
   <view class='description'>
     <view class='title'>
-      <text>维修结果</text>
+      <text>结果详情</text>
       <image src='../../assets/images/repairDetail/result.png'></image>
     </view>
     <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx; color: #dbdbdb;' value="{{record.result}}"></textarea>
@@ -46,5 +68,7 @@
   <view class='commit'>
     <button bindtap='onCommit' disabled='{{commitDisable}}'>提 交</button>
   </view>
+
+
 
 </view>

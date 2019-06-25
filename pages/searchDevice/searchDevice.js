@@ -14,7 +14,7 @@ Page({
     recommend: ['POS', '电脑', '扫描平台', '小票打印机', '读卡器', '路由器', '摄像头', '报警主机'],
     bindActive: false,
     selectedDevice: {},
-    assetNum: '扫描资产编码',
+    assetNum: '',
     shopIdx: 0,
     storageIdx: 0,
     shops: [],
@@ -157,6 +157,25 @@ Page({
   },
 
   /**
+   * 当资产编号input失去焦点 设置手填资产号
+   */
+  onAssetInput: function (e) {
+    this.setData({
+      assetNum: e.detail.value
+    })
+    if (e.detail.value.toString().length > 0) {
+      this.setData({
+        bindBtnActive: true
+      })
+    } else {
+      this.setData({
+        bindBtnActive: false
+      })
+    }
+
+  },
+
+  /**
    * 门店编号选择 
    */
   onFillShopNum: function (e) {
@@ -164,7 +183,7 @@ Page({
       shopIdx: e.detail.value
     })
 
-    this.queryData(this.data.shops[this.data.shopIdx], 3, (res) => {
+    api.netbakeBaseDataRequest(this.data.shops[this.data.shopIdx], 3, (res) => {
       if (res) {
         this.setData({
           shopObj: res[0]
@@ -213,7 +232,7 @@ Page({
 
       if (res.code == 15104) {  // 设备已绑定
         wx.showToast({
-          title: res.msg,
+          title: '资产编码已绑定',
           image: '../../assets/images/warning.png',
           mask: true
         })
