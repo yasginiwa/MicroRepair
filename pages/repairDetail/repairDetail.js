@@ -67,7 +67,7 @@ Page({
       },
       {
         reasontype: 3,
-        title: '严重故障',
+        title: '灾难故障',
         desc: '设备完全损坏，无法修复'
       }
     ],
@@ -92,7 +92,7 @@ Page({
     ],
     reasonTypeObj: {},
     resultTypeObj: {},
-    reasonTypeIdx: 0,
+    reasonTypeIdx: 1,
     resultTypeIdx: 0
   },
 
@@ -256,6 +256,11 @@ Page({
     this.setData({
       reasonTypeObj: this.data.reasonTypes[this.data.reasonTypeIdx]
     })
+
+    wx.showToast({
+      title: this.data.reasonTypeObj.desc,
+      icon: 'none'
+    })
   },
 
   /**
@@ -268,6 +273,11 @@ Page({
 
     this.setData({
       resultTypeObj: this.data.resultTypes[this.data.resultTypeIdx]
+    })
+
+    wx.showToast({
+      title: this.data.resultTypeObj.desc,
+      icon: 'none'
     })
   },
 
@@ -323,6 +333,8 @@ Page({
       'storeid': this.data.storageObj.id,
       'reason': this.data.record.reason,
       'result': this.data.record.result,
+      'reasontype': this.data.reasonTypeObj.reasontype,
+      'resulttype': this.data.resultTypeObj.resulttype,
       'maintaindate': this.data.record.maintaindate,
       'timestamp': dateUtil.formatTime(new Date()),
     };
@@ -331,13 +343,19 @@ Page({
 
     api.netbakeRequest(url, content, (res) => {
 
+      if (res.code == 15013) {
+        wx.showToast({
+          title: '设备还未绑定',
+          image: '../../assets/images/warning.png'
+        })
+        return;
+      }
+
       wx.showToast({
         title: '提交成功',
         image: '../../assets/images/success.png',
         mask: true
       })
-
-      console.log(res);
 
       setTimeout(function () {
         wx.navigateBack({});
@@ -419,9 +437,11 @@ Page({
       dateTime1: obj1.dateTime
     })
 
-    // this.setData({
-    //   maintaindate: `${this.data.dateTimeArray[0][this.data.dateTime[0]]}-${this.data.dateTimeArray[1][this.data.dateTime[1]]}-${this.data.dateTimeArray[2][this.data.dateTime[2]]} ${this.data.dateTimeArray[3][this.data.dateTime[3]]}:${this.data.dateTimeArray[4][this.data.dateTime[4]]}:${this.data.dateTimeArray[5][this.data.dateTime[5]]}`
-    // })
+    //  设备初始故障原因结果类型
+    this.setData({
+      reasonTypeObj: this.data.reasonTypes[1],
+      resultTypeObj: this.data.resultTypes[0]
+    })
 
   },
 

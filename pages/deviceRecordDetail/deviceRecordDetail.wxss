@@ -35,7 +35,7 @@ page {
   margin-top: 20rpx;
 }
 
-.reason .title {
+.reason .title, .reason .brief {
   margin-left: 20rpx;
   color: gray;
   font-size: 30rpx;
@@ -61,7 +61,7 @@ page {
   margin-top: 20rpx;
 }
 
-.result .title {
+.result .title, .result .brief {
   margin-left: 20rpx;
   color: gray;
   font-size: 30rpx;
@@ -99,6 +99,13 @@ page {
   width: 150rpx;
   height: 41rpx;
   margin-left: 20rpx;
+}
+
+.reason .brief, .result .brief
+{
+  color: black;
+  position: absolute;
+  right: 20rpx;
 }
 
 .repairInfo {

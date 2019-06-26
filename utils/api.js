@@ -3,9 +3,9 @@ const crypto = requirePlugin('Crypto'),
   urlSafeBase64 = require('../utils/safebase64.js'),
   dateUtil = require('../utils/util.js');
 
-var appKey = 'MTIzNDU2YWJjZEUxMjM0NQ==',
-  signKey = 'uTjPnNmlGrtlbDNi25s3DY3CSVwONAYs',
-  token = 'HGTestTOKEN',
+var appKey = 'SEdEZXZpY2VNYWludGFpbjIwMTk=',
+  signKey = '6AGC2HKHGBWMpQcxRdppqRg2Mn7wKJAi',
+  token = 'HGCakeDeviceMaintain',
   host = 'https://repair.hgsp.cn:10445',
   userBindUrl = `${host}/icapi/userbind`,
   deviceBindUrl = `${host}/icapi/devicebind`,
@@ -65,6 +65,7 @@ var netbakeRequest = function (url, content, success, fail) {
       sign: sign
     },
     success: (res) => {
+      console.log(res);
       var resultJson = JSON.parse(res.data);
       success(JSON.parse(resultJson));
     },
@@ -146,6 +147,9 @@ var netbakeBaseDataRequest = function (data, datatype, success, fail) {
       sign: sign
     },
     success: (res) => {
+
+      console.log(res);
+
       // 如果没有返回结果 直接return
       if (!res.data) return;
 

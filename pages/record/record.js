@@ -29,11 +29,11 @@ Page({
     var maintainQueryUrl = api.maintainQueryUrl,
       content = {
         'wxopenid': wx.getStorageSync('wxopenid'),
-        'deviceid': '123',
         'timestamp': dateUtil.formatTime(new Date()),
+        'deviceid': '111',
         'queryall': false,
-        'storeid': '111',
-        'shopid': '111'
+        'storeid': '24',
+        'shopid': '24'
       };
 
     api.netbakeRequest(maintainQueryUrl, content, (res) => {

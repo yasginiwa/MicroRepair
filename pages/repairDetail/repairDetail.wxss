@@ -39,8 +39,8 @@ page {
 }
 
 .block .item image {
-  width: 60rpx;
-  height: 60rpx;
+  width: 50rpx;
+  height: 50rpx;
   margin-right: 20rpx;
 }
 
@@ -51,6 +51,7 @@ page {
 
 .description {
   width: 100%;
+  font-size: 30rpx;
 }
 
 .description .title {
@@ -67,6 +68,20 @@ page {
 .description image {
   width: 30rpx;
   height: 30rpx;
+}
+
+.description .desc-brief {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1;
+  align-items: center;
+  position: absolute;
+  right: 20rpx;
+}
+
+.description .desc-brief image {
+  width: 50rpx;
+  height: 50rpx;
 }
 
 .description textarea {

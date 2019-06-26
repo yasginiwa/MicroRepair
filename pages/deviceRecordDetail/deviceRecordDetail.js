@@ -7,6 +7,48 @@ Page({
    */
   data: {
     currentRecord: {},
+    // 故障原因模型
+    reasonTypes: [
+      {
+        reasontype: 0,
+        title: '轻度故障',
+        desc: '设备未损坏，需保养'
+      },
+      {
+        reasontype: 1,
+        title: '一般故障',
+        desc: '设备损坏，可在短期内修复'
+      },
+      {
+        reasontype: 2,
+        title: '严重故障',
+        desc: '设备严重损坏，无法在短期内修复'
+      },
+      {
+        reasontype: 3,
+        title: '灾难故障',
+        desc: '设备完全损坏，无法修复'
+      }
+    ],
+
+    //  维修结果类型
+    resultTypes: [
+      {
+        resulttype: 0,
+        title: '已修复',
+        desc: '设备已能正常使用'
+      },
+      {
+        resulttype: 1,
+        title: '待处理',
+        desc: '设备暂时无法使用'
+      },
+      {
+        resulttype: 2,
+        title: '报废',
+        desc: '设备完全损坏致报废'
+      }
+    ]
   },
 
   /**

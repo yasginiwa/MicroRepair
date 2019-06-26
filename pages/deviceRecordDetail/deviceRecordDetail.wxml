@@ -10,6 +10,7 @@
 
 <view class='reason'>
   <text class='title'>故障原因</text>
+  <text class='brief'>{{reasonTypes[currentRecord.reasontype].title}}</text>
   <view class='content'>
     <view class='wrapper'>
       <text class='reasonDesc'>{{currentRecord.reason}}</text>
@@ -19,6 +20,7 @@
 
 <view class='result'>
   <text class='title'>维修结果</text>
+  <text class='brief'>{{resultTypes[currentRecord.resulttype].title}}</text>
   <view class='content'>
     <view class='wrapper'>
       <text class='resultDesc'>{{currentRecord.result}}</text>

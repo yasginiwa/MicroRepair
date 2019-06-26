@@ -20,26 +20,6 @@
   </view>
 
   <view class='item'>
-    <text>原因类型</text>
-    
-    <picker-view bindchange='onFillReasonType'>
-
-      <picker-view-column>
-        <view wx:for='{{reasonTypes}}' wx:key='value'>{{item}}</view>
-      </picker-view-column>
-      
-    </picker-view>
-    <image src='../../assets/images/repairDetail/arrow.png'></image>
-
-  </view>
-
-  <view class='item'>
-    <text>结果类型</text>
-    <picker bindchange='onFillResultType' range='{{resultTypes}}' range-key="{{'title'}}" value='{{resultTypeIdx}}'>{{resultTypes[resultTypeIdx].title}}</picker>
-    <image src='../../assets/images/repairDetail/arrow.png'></image>
-  </view>
-
-  <view class='item'>
     <text>维修时间</text>
     <picker class='alarm_picker' mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
       <view class="picker">
@@ -51,16 +31,26 @@
 
   <view class='description'>
     <view class='title'>
+
       <text>原因详情</text>
       <image src='../../assets/images/repairDetail/reason.png'></image>
+      <view class='desc-brief'>
+        <picker bindchange='onFillReasonType' range='{{reasonTypes}}' range-key="{{'title'}}" value='{{reasonTypeIdx}}'>{{reasonTypes[reasonTypeIdx].title}}</picker>
+        <image src='../../assets/images/repairDetail/arrow.png'></image>
+      </view>
     </view>
     <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;color: #dbdbdb;' value="{{record.reason}}"></textarea>
   </view>
 
   <view class='description'>
     <view class='title'>
+
       <text>结果详情</text>
       <image src='../../assets/images/repairDetail/result.png'></image>
+      <view class='desc-brief'>
+        <picker bindchange='onFillResultType' range='{{resultTypes}}' range-key="{{'title'}}" value='{{resultTypeIdx}}'>{{resultTypes[resultTypeIdx].title}}</picker>
+        <image src='../../assets/images/repairDetail/arrow.png'></image>
+      </view>
     </view>
     <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx; color: #dbdbdb;' value="{{record.result}}"></textarea>
   </view>
