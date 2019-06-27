@@ -30,10 +30,10 @@ Page({
       content = {
         'wxopenid': wx.getStorageSync('wxopenid'),
         'timestamp': dateUtil.formatTime(new Date()),
-        'deviceid': '111',
+        'deviceid': 'M1000000',
         'queryall': false,
-        'storeid': '24',
-        'shopid': '24'
+        'storeid': '123',
+        'shopid': '123'
       };
 
     api.netbakeRequest(maintainQueryUrl, content, (res) => {
