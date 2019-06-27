@@ -5,14 +5,16 @@ App({
    * 当小程序初始化完成时，会触发 onLaunch（全局只触发一次）
    */
   onLaunch: function () {
- 
+
     let wxopenid = wx.getStorageSync('wxopenid');
 
-    if (!wxopenid) return;
+    if (wxopenid) {
 
-    wx.reLaunch({
-      url: 'pages/repair/repair',
-    })
+      wx.reLaunch({
+        url: 'pages/repair/repair',
+      })
+      
+    } else return;
   },
 
   /**

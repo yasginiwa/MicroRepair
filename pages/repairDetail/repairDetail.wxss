@@ -99,7 +99,7 @@ page {
 }
 
 .commit button {
-  margin-top: 40rpx;
+  margin-top: 100rpx;
   width: 70%;
   color: white;
   background-color: #f3c516;

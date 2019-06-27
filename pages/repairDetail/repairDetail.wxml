@@ -5,6 +5,11 @@
     <text class='recordID'>{{record.deviceid}}</text>
   </view>
 
+    <view class='item'>
+    <text>设备名称</text>
+    <text class='recordID'>{{record.deviceid}}</text>
+  </view>
+
   <view class='item'>
     <text>所属门店</text>
     <picker bindchange='onFillShopNum' range='{{shops}}' value='{{shopIdx}}'>
@@ -39,7 +44,7 @@
         <image src='../../assets/images/repairDetail/arrow.png'></image>
       </view>
     </view>
-    <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;color: #dbdbdb;' value="{{record.reason}}"></textarea>
+    <textarea bindinput='OnReasonConfirm' placeholder='故障原因描述...' placeholder-style='font-size: 30rpx;color: #dbdbdb;' value="{{record.reason}}" cursor-spacing='10'></textarea>
   </view>
 
   <view class='description'>
@@ -52,7 +57,7 @@
         <image src='../../assets/images/repairDetail/arrow.png'></image>
       </view>
     </view>
-    <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx; color: #dbdbdb;' value="{{record.result}}"></textarea>
+    <textarea bindinput='OnResultConfirm' placeholder='维修结果描述...' placeholder-style='font-size: 30rpx; color: #dbdbdb;' value="{{record.result}}" cursor-spacing='10'></textarea>
   </view>
 
   <view class='commit'>

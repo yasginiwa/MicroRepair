@@ -163,7 +163,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
- 
+    api.netbakeBaseDataRequest('M1000000', 6, (res) => {
+      console.log(res);
+    })
   },
 
   /**
